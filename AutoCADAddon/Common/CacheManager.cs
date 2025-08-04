@@ -89,7 +89,8 @@ namespace AutoCADAddon.Common
                         FloorName TEXT NOT NULL,
                         UnitType TEXT,
                         Unit TEXT,
-                        Version TEXT
+                        Version TEXT,
+                        status TEXT
                     )
                 ");
                 //// 创建建筑表
@@ -136,6 +137,7 @@ namespace AutoCADAddon.Common
                         DepartmentCode TEXT,
                         divisionCode TEXT,
                         Length TEXT,
+                        Prorate TEXT,
                         UpdateTime DATETIME,
                         LayerId INTEGER  ,
                         layerName TEXT,
@@ -294,8 +296,8 @@ namespace AutoCADAddon.Common
             {
                 conn.Open();
                 var cmd = new SQLiteCommand(@"
-                            INSERT OR REPLACE INTO Blueprint (Name, UpdateTime, BuildingExternalCode,BuildingName,FloorCode,FloorName, UnitType,Unit,Version)
-                            VALUES (@Name, @UpdateTime, @BuildingExternalCode,@BuildingName,@FloorCode,@FloorName, @UnitType,@Unit,@Version)
+                            INSERT OR REPLACE INTO Blueprint (Name, UpdateTime, BuildingExternalCode,BuildingName,FloorCode,FloorName, UnitType,Unit,Version,status)
+                            VALUES (@Name, @UpdateTime, @BuildingExternalCode,@BuildingName,@FloorCode,@FloorName, @UnitType,@Unit,@Version,@status)
                         ", conn);
                 cmd.Parameters.AddWithValue("@Name", blueprint.Name);
                 cmd.Parameters.AddWithValue("@UpdateTime", blueprint.UpdateTime);
@@ -306,6 +308,7 @@ namespace AutoCADAddon.Common
                 cmd.Parameters.AddWithValue("@UnitType",blueprint.UnitType);
                 cmd.Parameters.AddWithValue("@Unit", blueprint.Unit);
                 cmd.Parameters.AddWithValue("@Version",blueprint.Version);
+                cmd.Parameters.AddWithValue("@status",blueprint.status);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -333,6 +336,7 @@ namespace AutoCADAddon.Common
                         res.UnitType = reader["UnitType"].ToString();
                         res.Unit = reader["Unit"].ToString();
                         res.Version = reader["Version"].ToString();
+                        res.status = reader["status"].ToString();
                         return res;
                     }
                 }
@@ -569,10 +573,10 @@ namespace AutoCADAddon.Common
                         {
                             var cmd = new SQLiteCommand(@"
                                 INSERT OR REPLACE INTO Room (
-                                     BuildingExternalCode,BuildingName,FloorCode,FloorName,  Name, Code, Area, Type, RoomStanardCode,Category,RoomType,Length,DepartmentCode,divisionCode,
+                                     BuildingExternalCode,BuildingName,FloorCode,FloorName,  Name, Code, Area, Type, RoomStanardCode,Category,RoomType,Length,DepartmentCode,divisionCode,Prorate,
                                     UpdateTime, Extensions,LayerId,layerName,Coordinates
                                 ) VALUES (
-                                     @BuildingExternalCode,@BuildingName,@FloorCode,@FloorName,  @Name, @Code, @Area, @Type,@RoomStanardCode, @Category,@RoomType,@Length,@DepartmentCode,@divisionCode,
+                                     @BuildingExternalCode,@BuildingName,@FloorCode,@FloorName,  @Name, @Code, @Area, @Type,@RoomStanardCode, @Category,@RoomType,@Length,@DepartmentCode,@divisionCode,@Prorate,
                                     @UpdateTime, @Extensions,@LayerId,@layerName,@Coordinates
                                 )
                             ", conn, tran);
@@ -590,6 +594,7 @@ namespace AutoCADAddon.Common
                             cmd.Parameters.AddWithValue("@DepartmentCode", r.DepartmentCode);
                             cmd.Parameters.AddWithValue("@divisionCode", r.divisionCode);
                             cmd.Parameters.AddWithValue("@Length", r.Length);
+                            cmd.Parameters.AddWithValue("@Prorate", r.Prorate);
                             cmd.Parameters.AddWithValue("@UpdateTime", r.UpdateTime);
                             cmd.Parameters.AddWithValue("@LayerId", r.LayerId);
                             cmd.Parameters.AddWithValue("@layerName", r.layerName);
@@ -641,6 +646,7 @@ namespace AutoCADAddon.Common
                             DepartmentCode = reader["DepartmentCode"].ToString(),
                             divisionCode = reader["divisionCode"].ToString(),
                             Length = reader["Length"].ToString(),
+                            Prorate = reader["Prorate"].ToString(),
                             UpdateTime = Convert.ToDateTime(reader["UpdateTime"]),
                             LayerId = long.Parse(reader["LayerId"].ToString()),
                             Coordinates = reader["Coordinates"].ToString(),
@@ -653,7 +659,11 @@ namespace AutoCADAddon.Common
             }
         }
 
-
+        /// <summary>
+        /// 根据房间编码获取
+        /// </summary>
+        /// <param name="RoomCode"></param>
+        /// <returns></returns>
         public static List<Room> GetRoomsByRoomCode(string RoomCode)
         {
             using (var conn = new SQLiteConnection(_connectionString))
@@ -686,6 +696,59 @@ namespace AutoCADAddon.Common
                             DepartmentCode = reader["DepartmentCode"].ToString(),
                             divisionCode = reader["divisionCode"].ToString(),
                             Length = reader["Length"].ToString(),
+                            Prorate = reader["Prorate"].ToString(),
+                            UpdateTime = Convert.ToDateTime(reader["UpdateTime"]),
+                            LayerId = long.Parse(reader["LayerId"].ToString()),
+                            Coordinates = reader["Coordinates"].ToString(),
+                            Extensions = JsonConvert.DeserializeObject<Dictionary<string, ExtensionField>>(
+                                reader["Extensions"].ToString() ?? "{}")
+                        });
+                    }
+                    return result;
+                }
+            }
+        }
+
+        /// <summary>
+        ///根据楼层和房间获取
+        /// </summary>
+        /// <param name="BuildingCode"></param>
+        /// <param name="floorCode"></param>
+        /// <returns></returns>
+        public static List<Room> GetRoomsByRoomCode(string BuildingCode,string floorCode)
+        {
+            using (var conn = new SQLiteConnection(_connectionString))
+            {
+                conn.Open();
+                var cmd = new SQLiteCommand(
+                    "SELECT * FROM Room WHERE BuildingExternalCode = @BuildingCode AND FloorCode = @floorCode", conn);
+                cmd.Parameters.AddWithValue("@BuildingCode", BuildingCode);
+                cmd.Parameters.AddWithValue("@floorCode", floorCode);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    var result = new List<Room>();
+                    while (reader.Read())
+                    {
+                        result.Add(new Room
+                        {
+                            Id = int.Parse(reader["Id"].ToString()),
+                            BuildingExternalCode = reader["BuildingExternalCode"].ToString(),
+                            BuildingName = reader["BuildingName"].ToString(),
+                            FloorCode = reader["FloorCode"].ToString(),
+                            FloorName = reader["FloorName"].ToString(),
+                            Name = reader["Name"].ToString(),
+                            Code = reader["Code"].ToString(),
+                            Area = reader["Area"].ToString(),
+                            Type = reader["Type"].ToString(),
+                            RoomStanardCode = reader["RoomStanardCode"].ToString(),
+                            layerName = reader["layerName"].ToString(),
+                            Category = reader["Category"].ToString(),
+                            RoomType = reader["RoomType"].ToString(),
+                            DepartmentCode = reader["DepartmentCode"].ToString(),
+                            divisionCode = reader["divisionCode"].ToString(),
+                            Length = reader["Length"].ToString(),
+                            Prorate = reader["Prorate"].ToString(),
                             UpdateTime = Convert.ToDateTime(reader["UpdateTime"]),
                             LayerId = long.Parse(reader["LayerId"].ToString()),
                             Coordinates = reader["Coordinates"].ToString(),

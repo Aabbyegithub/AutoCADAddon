@@ -39,8 +39,8 @@ namespace AutoCADAddon
             _Floor = floor;
             InitializeComponent();
             Prorate.SelectedIndex = 0;
-            Area.Text = polyline.Area.ToString();
-            Length.Text = polyline.Length.ToString();
+            Area.Text = Math.Round(polyline.Area / 1000000, 2).ToString();
+            Length.Text = Math.Round(polyline.Length / 1000, 2).ToString();
             LoeadingRoomData();
         }
 
@@ -94,6 +94,7 @@ namespace AutoCADAddon
                 RoomCategory.SetSelectedItem(RoomData.Category);
                 //_SelectRoomType = RoomData.Category;
                 RoomType.SetSelectedItem(RoomData.Type);
+                Prorate.Text = RoomData.Prorate;
 
 
             }
@@ -236,6 +237,7 @@ namespace AutoCADAddon
                 divisionCode = DivisionCode.SelectedText,
                 DepartmentCode = DepartmentCode.SelectedText,
                 RoomStanardCode = RoomStanard.SelectedText,
+                Prorate = Prorate.Text,
                 Coordinates = PolylineCommon.GetPolylineCoordinates(_Polyline),
                 Extensions = EditedRoom?.Extensions ?? new Dictionary<string, ExtensionField>()
             });
@@ -245,12 +247,16 @@ namespace AutoCADAddon
                  building = _Building.Code,
                  floor = _Floor.Code,
                  roomCode = RoomCodeBox.SelectedText,
+                 standard = RoomStanard.SelectedText,
+                 seniorManagement = DivisionCode.SelectedText,
+                 department = DepartmentCode.SelectedText,
                  roomCategory = RoomCategory.SelectedText,
+                 roomType = RoomType.SelectedText,
+                 prorate = Prorate.Text,
                  roomArea = Area.Text,
                  perimeter = Length.Text,
-                 seniorManagement = DivisionCode.SelectedText,
-                 facutly = RoomType.SelectedText,
-                 department = DepartmentCode.SelectedText
+
+
             });
             DialogResult = DialogResult.OK;
             Close();

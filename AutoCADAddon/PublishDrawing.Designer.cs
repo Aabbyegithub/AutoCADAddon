@@ -29,20 +29,20 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.AllDrawing = new System.Windows.Forms.RadioButton();
+            this.ThisDrawingOnly = new System.Windows.Forms.RadioButton();
             this.Publish = new System.Windows.Forms.Button();
             this.Cancel = new System.Windows.Forms.Button();
             this.Options = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.radioButton6 = new System.Windows.Forms.RadioButton();
-            this.radioButton5 = new System.Windows.Forms.RadioButton();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.NamedView = new System.Windows.Forms.RadioButton();
+            this.CurrentView = new System.Windows.Forms.RadioButton();
+            this.FloorBoundary = new System.Windows.Forms.RadioButton();
+            this.Extents = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.progressBar2 = new System.Windows.Forms.ProgressBar();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.PublishingRule = new System.Windows.Forms.ProgressBar();
+            this.PublishingDrawing = new System.Windows.Forms.ProgressBar();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
@@ -52,8 +52,8 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.radioButton2);
-            this.groupBox1.Controls.Add(this.radioButton1);
+            this.groupBox1.Controls.Add(this.AllDrawing);
+            this.groupBox1.Controls.Add(this.ThisDrawingOnly);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(271, 90);
@@ -61,27 +61,29 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Process Which Drawings";
             // 
-            // radioButton2
+            // AllDrawing
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(24, 57);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(95, 16);
-            this.radioButton2.TabIndex = 5;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "radioButton2";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.AllDrawing.AutoSize = true;
+            this.AllDrawing.Location = new System.Drawing.Point(24, 57);
+            this.AllDrawing.Name = "AllDrawing";
+            this.AllDrawing.Size = new System.Drawing.Size(89, 16);
+            this.AllDrawing.TabIndex = 5;
+            this.AllDrawing.Text = "All Drawing";
+            this.AllDrawing.UseVisualStyleBackColor = true;
+            this.AllDrawing.CheckedChanged += new System.EventHandler(this.AllDrawing_CheckedChanged);
             // 
-            // radioButton1
+            // ThisDrawingOnly
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(24, 27);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(95, 16);
-            this.radioButton1.TabIndex = 4;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "radioButton1";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.ThisDrawingOnly.AutoSize = true;
+            this.ThisDrawingOnly.Checked = true;
+            this.ThisDrawingOnly.Location = new System.Drawing.Point(24, 27);
+            this.ThisDrawingOnly.Name = "ThisDrawingOnly";
+            this.ThisDrawingOnly.Size = new System.Drawing.Size(125, 16);
+            this.ThisDrawingOnly.TabIndex = 4;
+            this.ThisDrawingOnly.TabStop = true;
+            this.ThisDrawingOnly.Text = "This Drawing Only";
+            this.ThisDrawingOnly.UseVisualStyleBackColor = true;
+            this.ThisDrawingOnly.CheckedChanged += new System.EventHandler(this.ThisDrawingOnly_CheckedChanged);
             // 
             // Publish
             // 
@@ -116,10 +118,10 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.comboBox1);
-            this.groupBox2.Controls.Add(this.radioButton6);
-            this.groupBox2.Controls.Add(this.radioButton5);
-            this.groupBox2.Controls.Add(this.radioButton4);
-            this.groupBox2.Controls.Add(this.radioButton3);
+            this.groupBox2.Controls.Add(this.NamedView);
+            this.groupBox2.Controls.Add(this.CurrentView);
+            this.groupBox2.Controls.Add(this.FloorBoundary);
+            this.groupBox2.Controls.Add(this.Extents);
             this.groupBox2.Location = new System.Drawing.Point(12, 118);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(363, 155);
@@ -135,54 +137,56 @@
             this.comboBox1.Size = new System.Drawing.Size(208, 20);
             this.comboBox1.TabIndex = 4;
             // 
-            // radioButton6
+            // NamedView
             // 
-            this.radioButton6.AutoSize = true;
-            this.radioButton6.Location = new System.Drawing.Point(24, 124);
-            this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(95, 16);
-            this.radioButton6.TabIndex = 3;
-            this.radioButton6.TabStop = true;
-            this.radioButton6.Text = "radioButton6";
-            this.radioButton6.UseVisualStyleBackColor = true;
+            this.NamedView.AutoSize = true;
+            this.NamedView.Location = new System.Drawing.Point(24, 124);
+            this.NamedView.Name = "NamedView";
+            this.NamedView.Size = new System.Drawing.Size(83, 16);
+            this.NamedView.TabIndex = 3;
+            this.NamedView.Text = "Named View";
+            this.NamedView.UseVisualStyleBackColor = true;
+            this.NamedView.CheckedChanged += new System.EventHandler(this.NamedView_CheckedChanged);
             // 
-            // radioButton5
+            // CurrentView
             // 
-            this.radioButton5.AutoSize = true;
-            this.radioButton5.Location = new System.Drawing.Point(24, 92);
-            this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(95, 16);
-            this.radioButton5.TabIndex = 2;
-            this.radioButton5.TabStop = true;
-            this.radioButton5.Text = "radioButton5";
-            this.radioButton5.UseVisualStyleBackColor = true;
+            this.CurrentView.AutoSize = true;
+            this.CurrentView.Location = new System.Drawing.Point(24, 92);
+            this.CurrentView.Name = "CurrentView";
+            this.CurrentView.Size = new System.Drawing.Size(95, 16);
+            this.CurrentView.TabIndex = 2;
+            this.CurrentView.Text = "Current View";
+            this.CurrentView.UseVisualStyleBackColor = true;
+            this.CurrentView.CheckedChanged += new System.EventHandler(this.CurrentView_CheckedChanged);
             // 
-            // radioButton4
+            // FloorBoundary
             // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(24, 60);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(95, 16);
-            this.radioButton4.TabIndex = 1;
-            this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "radioButton4";
-            this.radioButton4.UseVisualStyleBackColor = true;
+            this.FloorBoundary.AutoSize = true;
+            this.FloorBoundary.Location = new System.Drawing.Point(24, 60);
+            this.FloorBoundary.Name = "FloorBoundary";
+            this.FloorBoundary.Size = new System.Drawing.Size(107, 16);
+            this.FloorBoundary.TabIndex = 1;
+            this.FloorBoundary.Text = "Floor Boundary";
+            this.FloorBoundary.UseVisualStyleBackColor = true;
+            this.FloorBoundary.CheckedChanged += new System.EventHandler(this.FloorBoundary_CheckedChanged);
             // 
-            // radioButton3
+            // Extents
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(24, 28);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(95, 16);
-            this.radioButton3.TabIndex = 0;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "radioButton3";
-            this.radioButton3.UseVisualStyleBackColor = true;
+            this.Extents.AutoSize = true;
+            this.Extents.Checked = true;
+            this.Extents.Location = new System.Drawing.Point(24, 28);
+            this.Extents.Name = "Extents";
+            this.Extents.Size = new System.Drawing.Size(65, 16);
+            this.Extents.TabIndex = 0;
+            this.Extents.TabStop = true;
+            this.Extents.Text = "Extents";
+            this.Extents.UseVisualStyleBackColor = true;
+            this.Extents.CheckedChanged += new System.EventHandler(this.Extents_CheckedChanged);
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.progressBar2);
-            this.groupBox3.Controls.Add(this.progressBar1);
+            this.groupBox3.Controls.Add(this.PublishingRule);
+            this.groupBox3.Controls.Add(this.PublishingDrawing);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Location = new System.Drawing.Point(12, 285);
@@ -192,19 +196,19 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Progress";
             // 
-            // progressBar2
+            // PublishingRule
             // 
-            this.progressBar2.Location = new System.Drawing.Point(13, 113);
-            this.progressBar2.Name = "progressBar2";
-            this.progressBar2.Size = new System.Drawing.Size(344, 19);
-            this.progressBar2.TabIndex = 3;
+            this.PublishingRule.Location = new System.Drawing.Point(13, 113);
+            this.PublishingRule.Name = "PublishingRule";
+            this.PublishingRule.Size = new System.Drawing.Size(344, 19);
+            this.PublishingRule.TabIndex = 3;
             // 
-            // progressBar1
+            // PublishingDrawing
             // 
-            this.progressBar1.Location = new System.Drawing.Point(13, 50);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(344, 19);
-            this.progressBar1.TabIndex = 2;
+            this.PublishingDrawing.Location = new System.Drawing.Point(13, 50);
+            this.PublishingDrawing.Name = "PublishingDrawing";
+            this.PublishingDrawing.Size = new System.Drawing.Size(344, 19);
+            this.PublishingDrawing.TabIndex = 2;
             // 
             // label2
             // 
@@ -256,17 +260,17 @@
         private System.Windows.Forms.Button Publish;
         private System.Windows.Forms.Button Cancel;
         private System.Windows.Forms.Button Options;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton AllDrawing;
+        private System.Windows.Forms.RadioButton ThisDrawingOnly;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.RadioButton radioButton6;
-        private System.Windows.Forms.RadioButton radioButton5;
-        private System.Windows.Forms.RadioButton radioButton4;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.ProgressBar progressBar2;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.RadioButton NamedView;
+        private System.Windows.Forms.RadioButton CurrentView;
+        private System.Windows.Forms.RadioButton FloorBoundary;
+        private System.Windows.Forms.RadioButton Extents;
+        private System.Windows.Forms.ProgressBar PublishingRule;
+        private System.Windows.Forms.ProgressBar PublishingDrawing;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
     }
