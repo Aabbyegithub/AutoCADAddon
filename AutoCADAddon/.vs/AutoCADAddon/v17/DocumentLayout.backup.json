@@ -1,0 +1,219 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|d:\\lqproject\\waibaopro\\autocadaddon\\autocadaddon\\autocadaddon\\autocadaddon\\buildingpanel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|solutionrelative:autocadaddon\\buildingpanel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\autocadaddon\\model\\floorbuildingdatamodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|solutionrelative:autocadaddon\\model\\floorbuildingdatamodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|d:\\lqproject\\waibaopro\\autocadaddon\\autocadaddon\\autocadaddon\\autocadaddon\\drawingpropertiesform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|solutionrelative:autocadaddon\\drawingpropertiesform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\autocadaddon\\common\\cachemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|solutionrelative:autocadaddon\\common\\cachemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\autocadaddon\\common\\layermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|solutionrelative:autocadaddon\\common\\layermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\autocadaddon\\common\\datasyncservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|solutionrelative:autocadaddon\\common\\datasyncservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|d:\\lqproject\\waibaopro\\autocadaddon\\autocadaddon\\autocadaddon\\autocadaddon\\layersyncsettingsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|solutionrelative:autocadaddon\\layersyncsettingsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\autocadaddon\\extensionfieldform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|solutionrelative:autocadaddon\\extensionfieldform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\autocadaddon\\autocad\\pluginloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|solutionrelative:autocadaddon\\autocad\\pluginloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\autocadaddon\\common\\configmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|solutionrelative:autocadaddon\\common\\configmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\autocadaddon\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|solutionrelative:autocadaddon\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\autocadaddon\\common\\objectbinder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{08369A3F-EA93-47D2-970C-9E58B7AC3B1A}|AutoCADAddon\\SpaceManagementPlugin.csproj|solutionrelative:autocadaddon\\common\\objectbinder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DrawingPropertiesForm.cs",
+              "DocumentMoniker": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\DrawingPropertiesForm.cs",
+              "RelativeDocumentMoniker": "AutoCADAddon\\DrawingPropertiesForm.cs",
+              "ToolTip": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\DrawingPropertiesForm.cs",
+              "RelativeToolTip": "AutoCADAddon\\DrawingPropertiesForm.cs",
+              "ViewState": "AgIAAHUAAAAAAAAAAAAawBgAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T12:46:07.006Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CacheManager.cs",
+              "DocumentMoniker": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\Common\\CacheManager.cs",
+              "RelativeDocumentMoniker": "AutoCADAddon\\Common\\CacheManager.cs",
+              "ToolTip": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\Common\\CacheManager.cs",
+              "RelativeToolTip": "AutoCADAddon\\Common\\CacheManager.cs",
+              "ViewState": "AgIAACgAAAAAAAAAAAAewDgAAABSAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T13:20:38.829Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ExtensionFieldForm.cs",
+              "DocumentMoniker": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\ExtensionFieldForm.cs",
+              "RelativeDocumentMoniker": "AutoCADAddon\\ExtensionFieldForm.cs",
+              "ToolTip": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\ExtensionFieldForm.cs",
+              "RelativeToolTip": "AutoCADAddon\\ExtensionFieldForm.cs",
+              "ViewState": "AQIAABUAAAAAAAAAAAAQwCwAAAA7AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T15:02:05.771Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "LayerManager.cs",
+              "DocumentMoniker": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\Common\\LayerManager.cs",
+              "RelativeDocumentMoniker": "AutoCADAddon\\Common\\LayerManager.cs",
+              "ToolTip": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\Common\\LayerManager.cs",
+              "RelativeToolTip": "AutoCADAddon\\Common\\LayerManager.cs",
+              "ViewState": "AgIAAH8AAAAAAAAAAAAtwI0AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T17:02:40.32Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BuildingPanel.cs",
+              "DocumentMoniker": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\BuildingPanel.cs",
+              "RelativeDocumentMoniker": "AutoCADAddon\\BuildingPanel.cs",
+              "ToolTip": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\BuildingPanel.cs",
+              "RelativeToolTip": "AutoCADAddon\\BuildingPanel.cs",
+              "ViewState": "AgIAADoAAAAAAAAAAAAuwFEAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T12:13:23.903Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DataSyncService.cs",
+              "DocumentMoniker": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\Common\\DataSyncService.cs",
+              "RelativeDocumentMoniker": "AutoCADAddon\\Common\\DataSyncService.cs",
+              "ToolTip": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\Common\\DataSyncService.cs",
+              "RelativeToolTip": "AutoCADAddon\\Common\\DataSyncService.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABMAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T14:58:09.853Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FloorBuildingDataModel.cs",
+              "DocumentMoniker": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\Model\\FloorBuildingDataModel.cs",
+              "RelativeDocumentMoniker": "AutoCADAddon\\Model\\FloorBuildingDataModel.cs",
+              "ToolTip": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\Model\\FloorBuildingDataModel.cs",
+              "RelativeToolTip": "AutoCADAddon\\Model\\FloorBuildingDataModel.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAtwB4AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T14:38:44.434Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "LayerSyncSettingsForm.cs",
+              "DocumentMoniker": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\LayerSyncSettingsForm.cs",
+              "RelativeDocumentMoniker": "AutoCADAddon\\LayerSyncSettingsForm.cs",
+              "ToolTip": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\LayerSyncSettingsForm.cs",
+              "RelativeToolTip": "AutoCADAddon\\LayerSyncSettingsForm.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAowE8AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T12:53:22.476Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ConfigManager.cs",
+              "DocumentMoniker": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\Common\\ConfigManager.cs",
+              "RelativeDocumentMoniker": "AutoCADAddon\\Common\\ConfigManager.cs",
+              "ToolTip": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\Common\\ConfigManager.cs",
+              "RelativeToolTip": "AutoCADAddon\\Common\\ConfigManager.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAQwB8AAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T02:39:10.39Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "PluginLoader.cs",
+              "DocumentMoniker": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCAD\\PluginLoader.cs",
+              "RelativeDocumentMoniker": "AutoCADAddon\\AutoCAD\\PluginLoader.cs",
+              "ToolTip": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCAD\\PluginLoader.cs",
+              "RelativeToolTip": "AutoCADAddon\\AutoCAD\\PluginLoader.cs",
+              "ViewState": "AQIAACAAAAAAAAAAAAAqwDIAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T14:06:34.031Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "LoginForm.cs",
+              "DocumentMoniker": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\LoginForm.cs",
+              "RelativeDocumentMoniker": "AutoCADAddon\\LoginForm.cs",
+              "ToolTip": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\LoginForm.cs",
+              "RelativeToolTip": "AutoCADAddon\\LoginForm.cs",
+              "ViewState": "AQIAAD4AAAAAAAAAAAAcwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T12:10:29.137Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ObjectBinder.cs",
+              "DocumentMoniker": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\Common\\ObjectBinder.cs",
+              "RelativeDocumentMoniker": "AutoCADAddon\\Common\\ObjectBinder.cs",
+              "ToolTip": "D:\\LQProject\\WaiBaoPro\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\AutoCADAddon\\Common\\ObjectBinder.cs",
+              "RelativeToolTip": "AutoCADAddon\\Common\\ObjectBinder.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-07T17:03:35.474Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

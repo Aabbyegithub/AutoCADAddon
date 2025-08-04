@@ -1,0 +1,228 @@
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlugin.csproj.CoreCompileInputs.cache
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\AutoCADAddon.dll.config
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\AutoCADAddon.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\AutoCADAddon.pdb
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\Newtonsoft.Json.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\RestSharp.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Buffers.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Memory.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Numerics.Vectors.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Encodings.Web.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Json.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.ValueTuple.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\Newtonsoft.Json.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\RestSharp.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Buffers.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Memory.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Numerics.Vectors.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Encodings.Web.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Json.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.ValueTuple.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.LoginForm.resources
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlugin.csproj.GenerateResource.cache
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.pdb
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\accoremgd.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\acdbmgd.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\acmgd.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\AdUiPalettes.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\AcDx.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\AcDxPublishUi.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\AdWindows.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\AcCui.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\AcCustomize.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\AppHomeInterop.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\AcMr.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\AcWindows.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\AdUIMgd.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\AcTcMgd.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\AcMNUParser.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\Autodesk.AutoCAD.Interop.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\Autodesk.DesktopConnector.API.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\Serilog.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\Serilog.Sinks.File.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\Autodesk.AutoCAD.Interop.Common.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\zh-CN\acdbmgd.resources.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\zh-CN\AcDx.resources.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\zh-CN\AcDxPublishUi.resources.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\zh-CN\AdWindows.resources.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\zh-CN\AcCustomize.resources.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\zh-CN\AppHomeInterop.resources.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\zh-CN\AcMr.resources.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\zh-CN\AcWindows.resources.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\AutoCADAddon.dll.config
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\AutoCADAddon.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\AutoCADAddon.pdb
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\Newtonsoft.Json.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\RestSharp.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Buffers.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Memory.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Numerics.Vectors.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Encodings.Web.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Json.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.ValueTuple.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\Newtonsoft.Json.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\RestSharp.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Buffers.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Memory.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Numerics.Vectors.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Encodings.Web.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Json.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.ValueTuple.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlugin.csproj.AssemblyReference.cache
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.LoginForm.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlugin.csproj.GenerateResource.cache
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlugin.csproj.CoreCompileInputs.cache
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceMan.A2DCF153.Up2Date
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.pdb
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\ServiceStack.Interfaces.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.EF6.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.Linq.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\ServiceStack.Interfaces.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.EF6.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.Linq.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlugin.csproj.AssemblyReference.cache
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceMan.A2DCF153.Up2Date
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.BuildingEditForm.resources
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.FloorEditForm.resources
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.RoomEditForm.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\AutoCADAddon.dll.config
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\AutoCADAddon.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\AutoCADAddon.pdb
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\Newtonsoft.Json.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\ServiceStack.Interfaces.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Buffers.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.EF6.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.Linq.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Memory.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Numerics.Vectors.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Encodings.Web.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Json.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.ValueTuple.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\Newtonsoft.Json.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Buffers.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Memory.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Numerics.Vectors.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Encodings.Web.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Json.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.ValueTuple.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlugin.csproj.AssemblyReference.cache
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.BuildingEditForm.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.FloorEditForm.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.LoginForm.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.RoomEditForm.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlugin.csproj.GenerateResource.cache
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlugin.csproj.CoreCompileInputs.cache
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceMan.A2DCF153.Up2Date
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.pdb
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\AutoCADAddon.dll.config
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\AutoCADAddon.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\AutoCADAddon.pdb
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\Newtonsoft.Json.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\ServiceStack.Interfaces.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Buffers.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.EF6.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.Linq.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Memory.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Numerics.Vectors.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Encodings.Web.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Json.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.ValueTuple.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\Newtonsoft.Json.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Buffers.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Memory.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Numerics.Vectors.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Encodings.Web.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Json.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\bin\Debug\System.ValueTuple.xml
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlugin.csproj.AssemblyReference.cache
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.BuildingEditForm.resources
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.FloorEditForm.resources
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.LoginForm.resources
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.RoomEditForm.resources
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlugin.csproj.GenerateResource.cache
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlugin.csproj.CoreCompileInputs.cache
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceMan.A2DCF153.Up2Date
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.dll
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.pdb
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.DrawingPropertiesForm.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.DrawingPropertiesForm.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.dll.licenses
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.Controls.TopBarUserControl.resources
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.Resources.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.BuildingEditForm.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.DrawingPropertiesForm.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.FloorEditForm.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.LoginForm.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.Resources.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.RoomEditForm.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlugin.csproj.GenerateResource.cache
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlugin.csproj.CoreCompileInputs.cache
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.pdb
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\AutoCADAddon.dll.config
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\AutoCADAddon.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\AutoCADAddon.pdb
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\Newtonsoft.Json.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\ServiceStack.Interfaces.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Buffers.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.EF6.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.Linq.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Memory.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Numerics.Vectors.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Encodings.Web.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Json.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.ValueTuple.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\Newtonsoft.Json.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Buffers.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Data.SQLite.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Memory.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Numerics.Vectors.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Encodings.Web.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Text.Json.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\System.ValueTuple.xml
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlugin.csproj.AssemblyReference.cache
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceMan.A2DCF153.Up2Date
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADControls.Controls.ToolMenuData.resources
+D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.PublishDrawing.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADControls.Controls.ToolMenuData.resources
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.PublishDrawing.resources

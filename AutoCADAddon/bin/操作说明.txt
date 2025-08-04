@@ -1,0 +1,11 @@
+AutoCAD 202X   安装路径下acad2024doc.lsp文件用记事本打开---将下面的命令复制到最后，编码之前----- 文件路径换成插件的放置目录
+
+(if (not c:__MyPluginLoaded)
+    (progn
+        ; 加载插件 DLL
+        (command "NETLOAD" "D:/ProJect/LqProjrctTest/AutoCAD 2024/AutoCADAddon/AutoCADAddon/AutoCADAddon/bin/Debug/AutoCADAddon.dll")
+        ; 标记为已加载
+        (setq c:__MyPluginLoaded t)
+    )
+)
+(princ)
