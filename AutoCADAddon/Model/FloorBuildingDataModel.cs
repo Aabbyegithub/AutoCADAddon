@@ -36,7 +36,7 @@ namespace AutoCADAddon.Model
         {
             [JsonProperty("id")]
             [PrimaryKey]
-            public int Id { get; set; } 
+            public int Id { get; set; }
 
             [JsonProperty("building_id")]
             public string BuildingCode { get; set; }
@@ -63,6 +63,7 @@ namespace AutoCADAddon.Model
             [JsonProperty("id")]
             [PrimaryKey]
             public int Id { get; set; }
+            public string SerId { get; set; } = "0";
 
             public string BuildingExternalCode { get; set; }
             public string BuildingName { get; set; }
@@ -80,14 +81,16 @@ namespace AutoCADAddon.Model
 
             [JsonProperty("type")]
             public string Type { get; set; }
-            public string RoomStanardCode { get; set; } 
+            public string RoomStanardCode { get; set; }
 
             [JsonProperty("category")]
-            public string Category { get; set; } 
-            public string RoomType { get; set; } 
-            public string DepartmentCode { get; set; } 
-            public string divisionCode { get; set; } 
-            public string Length { get; set; } 
+            public string Category { get; set; }
+            public string RoomType { get; set; }
+            public string DepartmentCode { get; set; }
+            public string divisionCode { get; set; }
+            public string Prorate { get; set; }
+            public string Length { get; set; }
+            public string IsSave { get; set; } = "1";
 
             [JsonProperty("update_time")]
             public DateTime UpdateTime { get; set; } = DateTime.Now;
@@ -139,7 +142,8 @@ namespace AutoCADAddon.Model
         /// </summary>
         public class Blueprint
         {
-             public int Id { get; set; }
+            public int Id { get; set; }
+            public string SerId { get; set; } = "0";
             public string Name { get; set; }
             public DateTime UpdateTime { get; set; } = DateTime.Now;
             public string BuildingExternalCode { get; set; }
@@ -149,6 +153,8 @@ namespace AutoCADAddon.Model
             public string UnitType { get; set; }
             public string Unit { get; set; }
             public string Version { get; set; }
+            public string status { get; set; } = "Unpublished";
+            public string IsSave { get; set; } = "1";
 
         }
         /// <summary>
@@ -156,7 +162,7 @@ namespace AutoCADAddon.Model
         /// </summary>
         public class Sys_Server
         {
-            public int Id { get; set; } 
+            public int Id { get; set; }
             public string Url { get; set; }
             public string IsTrue { get; set; } = "0";
             public DateTime UpdateTime { get; set; } = DateTime.Now;

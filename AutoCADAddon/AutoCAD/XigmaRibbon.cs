@@ -3,6 +3,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.Windows;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,8 +20,8 @@ using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 namespace AutoCADAddon.AutoCAD
 {
     public class XigmaRibbon
-        {
-            private static bool isLoggedIn = false;
+    {
+        private static bool isLoggedIn = false;
         private static bool IsPanelAdded { get; set; } = false;
         private static RibbonButton signInOutButton;
         private static DrawingPanel _BuildingPanel = null;
@@ -51,8 +52,8 @@ namespace AutoCADAddon.AutoCAD
             RibbonPanelSource panelSource4 = new RibbonPanelSource { Title = "Synchronization" };
             RibbonPanel panel = new RibbonPanel { Source = panelSource1 };
             RibbonPanel pane2 = new RibbonPanel { Source = panelSource2 };
-            RibbonPanel pane3= new RibbonPanel { Source = panelSource3 };
-            RibbonPanel pane4= new RibbonPanel { Source = panelSource4};
+            RibbonPanel pane3 = new RibbonPanel { Source = panelSource3 };
+            RibbonPanel pane4 = new RibbonPanel { Source = panelSource4 };
             xigmaTab.Panels.Add(panel);
             xigmaTab.Panels.Add(pane2);
             xigmaTab.Panels.Add(pane3);
@@ -60,12 +61,12 @@ namespace AutoCADAddon.AutoCAD
 
             // ==== 第1行按钮 ====
             RibbonRowPanel row1 = new RibbonRowPanel();
-            signInOutButton = CreateButton( isLoggedIn ? "Sign Out" : "Sign In", "Xigma_SignInOut","点击登录或登出","点击进行登录连接服务器","","登陆.png",LoginAction);
+            signInOutButton = CreateButton(isLoggedIn ? "Sign Out" : "Sign In", "Xigma_SignInOut", "点击登录或登出", "点击进行登录连接服务器", "", "登陆.png", LoginAction);
             row1.Items.Add(signInOutButton);
             row1.Items.Add(CreateButton("Explorer", "Xigma_Explorer", "图纸管理", "主要进行图纸和楼层的绑定", "", "Explorer.png", ExplorerAction));
             panelSource1.Items.Add(row1);
 
-            RibbonRowPanel row2= new RibbonRowPanel();
+            RibbonRowPanel row2 = new RibbonRowPanel();
             row2.Items.Add(CreateButton("Properties", "Xigma_Properties", "显示属性", "显示属性", "", "设置工具添加.png", PropertiesAction));
             panelSource2.Items.Add(row2);
 
@@ -82,72 +83,149 @@ namespace AutoCADAddon.AutoCAD
         }
 
 
-        private static RibbonButton CreateButton(string text, string id, string tooltip,string tooltipContent,string commandName, string iconFileName, EventHandler clickHandler)
+        private static RibbonButton CreateButton(string text, string id, string tooltip, string tooltipContent, string commandName, string iconFileName, EventHandler clickHandler)
+        {
+            var button = new RibbonButton
             {
-                var button = new RibbonButton
-                {
-                    Text = text,
-                    Id = id,
-                    ShowText = true,
-                    //ToolTip = tooltip,
-                    Orientation = System.Windows.Controls.Orientation.Vertical,
-                   // LargeImage = LoadImage(iconFileName)
-                    Image = LoadImage(iconFileName)
-                };
-                // 构建 RibbonToolTip
-                var tip = new RibbonToolTip
-                {
-                    Title = tooltip,                          // 主标题
-                    Content = tooltipContent,                      // 描述文本
-                    Command = commandName,                         // 命令名（显示加粗）
-                    ExpandedContent = "按 F1 键获得更多帮助",         // 底部帮助信息
-                    IsHelpEnabled = true
-                };
+                Text = text,
+                Id = id,
+                ShowText = true,
+                //ToolTip = tooltip,
+                Orientation = System.Windows.Controls.Orientation.Vertical,
+                // LargeImage = LoadImage(iconFileName)
+                Image = LoadImage(iconFileName)
+            };
+            // 构建 RibbonToolTip
+            var tip = new RibbonToolTip
+            {
+                Title = tooltip,                          // 主标题
+                Content = tooltipContent,                      // 描述文本
+                Command = commandName,                         // 命令名（显示加粗）
+                ExpandedContent = "按 F1 键获得更多帮助",         // 底部帮助信息
+                IsHelpEnabled = true
+            };
 
             button.ToolTip = tip;
             button.CommandHandler = new RelayCommandHandler(clickHandler);
-                return button;
-            }
+            return button;
+        }
 
-            private static System.Windows.Media.ImageSource LoadImage(string imageName)
-            {
-                string resourceName = $"AutoCADAddon.Resources.{imageName}";
-                 var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
-                if (stream == null) return null;
+        private static System.Windows.Media.ImageSource LoadImage(string imageName)
+        {
+            string resourceName = $"AutoCADAddon.Resources.{imageName}";
+            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
+            if (stream == null) return null;
 
-                var img = new System.Windows.Media.Imaging.BitmapImage();
-                img.BeginInit();
-                img.StreamSource = stream;
-                img.CacheOption = System.Windows.Media.Imaging.BitmapCacheOption.OnLoad;
-                img.DecodePixelWidth = 16;  // 限制宽度
-                img.DecodePixelHeight = 16; // 限制高度
-                img.EndInit();
-                img.Freeze();
-                return img;
-            }
-         /// <summary>
-         /// 点击登录插件
-         /// </summary>
-         /// <param name="s"></param>
-         /// <param name="e"></param>
-        private static void LoginAction(object s, EventArgs e)
+            var img = new System.Windows.Media.Imaging.BitmapImage();
+            img.BeginInit();
+            img.StreamSource = stream;
+            img.CacheOption = System.Windows.Media.Imaging.BitmapCacheOption.OnLoad;
+            img.DecodePixelWidth = 16;  // 限制宽度
+            img.DecodePixelHeight = 16; // 限制高度
+            img.EndInit();
+            img.Freeze();
+            return img;
+        }
+        /// <summary>
+        /// 点击登录插件
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="e"></param>
+        private static async void LoginAction(object s, EventArgs e)
         {
             if (!isLoggedIn)
             {
                 //显示登录窗口和面板
-               var loginForm = new LoginForm();
+                var loginForm = new LoginForm();
                 if (loginForm.ShowDialog() == DialogResult.OK)
                 {
                     isLoggedIn = !isLoggedIn;
                     signInOutButton.Text = "Sign Out";
                     Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\n已登录");
                     Document _doc = Application.DocumentManager.MdiActiveDocument;
-                    var props = CacheManager.GetCurrentDrawingProperties(_doc.Window.Text);
-                    if (props == null || string.IsNullOrEmpty(props.BuildingExternalCode) || string.IsNullOrEmpty(props.FloorCode))
+
+                   await anewSave();
+
+                    var Drawing = await DataSyncService.SyncDrawingServiceAsync(_doc.Window.Text);
+                    if (Drawing.total == 0)
                     {
-                        PropertiesAction(null,null);
-                        return;
+                        var props = CacheManager.GetCurrentDrawingProperties(_doc.Window.Text);
+                        if (props == null || string.IsNullOrEmpty(props.BuildingExternalCode) || string.IsNullOrEmpty(props.FloorCode))
+                        {
+                            PropertiesAction(null, null);
+                            return;
+                        }
                     }
+                    else
+                    {
+                        try
+                        {
+                            string buildcode = Drawing.list[0].building;
+                            string floorcode = Drawing.list[0].floor;
+                            var BuildingName = ""; var floorname = "";
+                            var build = await DataSyncService.SyncBuildingAsync();
+                            var floor = await DataSyncService.SyncFloorAsync(buildcode);
+                            foreach (var item in build.list)
+                            {
+                                if (item.building_code == buildcode)
+                                {
+                                    BuildingName = item.building_name;
+                                }
+                            }
+                            foreach (var item in floor.list)
+                            {
+                                if (item.floor_code == floorcode)
+                                {
+                                    floorname = item.floor_name;
+                                }
+                            }
+                            CacheManager.SetCurrentDrawingProperties(new Blueprint
+                            {
+                                SerId = Drawing.list[0].id,
+                                BuildingExternalCode = buildcode,
+                                BuildingName = BuildingName,
+                                FloorCode = floorcode,
+                                FloorName = floorname,
+                                Name = Drawing.list[0].name,
+                                Version = "",
+                                UnitType = Drawing.list[0].unitType,
+                                Unit = Drawing.list[0].units,
+                                status = Drawing.list[0].status,
+                            });
+                            var RoomData = await DataSyncService.SyncRoomServicedataAsync(buildcode, floorcode);
+                            var Room = new List<Room>();
+                            foreach (var item in RoomData.list)
+                            {
+                                Room.Add(new Room
+                                {
+                                    Code = item.room_code,
+                                    Name = item.room_code,
+                                    BuildingExternalCode = buildcode,
+                                    BuildingName = BuildingName,
+                                    FloorCode = floorcode,
+                                    FloorName = floorname,
+                                    Area = item.room_area,
+                                    Length = item.perimeter,
+                                    Category = item.room_category,
+                                    //Type = RoomType.SelectedText,
+                                    divisionCode = item.senior_management,
+                                    DepartmentCode = item.department,
+                                    //RoomStanardCode = RoomStanard.SelectedText,
+                                    Prorate = item.prorate,
+                                    //Coordinates = PolylineCommon.GetPolylineCoordinates(_Polyline),
+                                    //Extensions = EditedRoom?.Extensions ?? new Dictionary<string, ExtensionField>()
+                                });
+                            }
+
+                            CacheManager.UpsertRooms(Room);
+                        }
+                        catch (Exception)
+                        {
+                            Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\n同步图纸数据失败");
+                        }
+                        
+                    }
+
                 }
             }
             else
@@ -157,23 +235,70 @@ namespace AutoCADAddon.AutoCAD
                 signInOutButton.Text = "Sign In";
                 Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\n已登出");
             }
-           
+
 
         }
 
+        /// <summary>
+        /// 断连重试
+        /// </summary>
+        private async static Task anewSave()
+        {
+            try
+            {
+                var Drawing = CacheManager.GetCurrentDrawingIsSaveProperties();
+                foreach (var item in Drawing)
+                {
+                    var res = await DataSyncService.SyncDrawingAsync(new
+                    {
+                        id = item.SerId,
+                        name = item.Name,
+                        title = item.Name,
+                        building = item.BuildingExternalCode,
+                        floor = item.FloorCode,
+                        unitType = item.UnitType,
+                        units = item.Unit
+                    });
+                }
+                var Room = CacheManager.GetRoomsByRoomIsSaveCode();
+                foreach (var item in Room)
+                {
+                    var res = await DataSyncService.SyncRoomdataAsync(new
+                    {
+                        id = item.SerId,
+                        building = item.BuildingExternalCode,
+                        floor = item.FloorCode,
+                        roomCode = item.Code,
+                        standard = item.RoomStanardCode,
+                        seniorManagement = item.divisionCode,
+                        department = item.DepartmentCode,
+                        roomCategory = item.Category,
+                        roomType = item.Type,
+                        prorate = item.Prorate,
+                        roomArea = item.Area,
+                        perimeter = item.Length,
+                    });
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+        }
         /// <summary>
         /// 点击展示左侧面板
         /// </summary>
         /// <param name="s"></param>
         /// <param name="e"></param>
-        private static void ExplorerAction(object s, EventArgs e) 
+        private static void ExplorerAction(object s, EventArgs e)
         {
             if (!isLoggedIn)
             {
                 Application.ShowAlertDialog("请先登录系统！");
                 return;
             }
-            if (IsPanelAdded && _BuildingPanel !=null)
+            if (IsPanelAdded && _BuildingPanel != null)
             {
                 IsPanelAdded = false;
                 //去掉面板
@@ -189,7 +314,7 @@ namespace AutoCADAddon.AutoCAD
         /// </summary>
         /// <param name="s"></param>
         /// <param name="e"></param>
-        private static void PropertiesAction(object s, EventArgs e) 
+        private static void PropertiesAction(object s, EventArgs e)
         {
             if (!isLoggedIn)
             {
@@ -203,7 +328,7 @@ namespace AutoCADAddon.AutoCAD
                 return;
             }
             Document _doc = Application.DocumentManager.MdiActiveDocument;
-             _propertiesForm = new DrawingPropertiesForm(_doc);
+            _propertiesForm = new DrawingPropertiesForm(_doc);
             _propertiesForm.FormClosed += (sender, args) => { _propertiesForm = null; };
 
             _propertiesForm.Show();
@@ -257,13 +382,13 @@ namespace AutoCADAddon.AutoCAD
 
             using (var tr = doc.TransactionManager.StartTransaction())
             {
-                var ent = tr.GetObject(entityId,OpenMode.ForRead);
+                var ent = tr.GetObject(entityId, OpenMode.ForRead);
                 if (ent is Polyline poly)
                 {
                     // 这里可以传入 area / vertices 等参数
-                    _EditData = new RoomEditForm(poly,tr,
-                        new Building { Code = props.BuildingExternalCode,Name = props.BuildingName},
-                        new Floor { BuildingCode = props.BuildingExternalCode,Code = props.FloorCode,Name = props.FloorName}
+                    _EditData = new RoomEditForm(poly, tr,
+                        new Building { Code = props.BuildingExternalCode, Name = props.BuildingName },
+                        new Floor { BuildingCode = props.BuildingExternalCode, Code = props.FloorCode, Name = props.FloorName }
                         ); // 或：new RoomEditForm(polyId, area, vertices);
                 }
                 //else if (ent is DBText dbText)
@@ -324,21 +449,21 @@ namespace AutoCADAddon.AutoCAD
         /// <param name="e"></param>
         private static void ReconcileAction(object s, EventArgs e) => ShowMessage("Reconcile clicked");
 
-            private static void ShowMessage(string msg)
-            {
-                Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\n{msg}");
-            }
-
-            // 用于处理 RibbonButton 的点击事件
-            private class RelayCommandHandler : System.Windows.Input.ICommand
-            {
-                private readonly EventHandler _handler;
-
-                public RelayCommandHandler(EventHandler handler) => _handler = handler;
-                public bool CanExecute(object parameter) => true;
-                public void Execute(object parameter) => _handler?.Invoke(this, EventArgs.Empty);
-                public event EventHandler CanExecuteChanged { add { } remove { } }
-            }
+        private static void ShowMessage(string msg)
+        {
+            Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\n{msg}");
         }
- 
+
+        // 用于处理 RibbonButton 的点击事件
+        private class RelayCommandHandler : System.Windows.Input.ICommand
+        {
+            private readonly EventHandler _handler;
+
+            public RelayCommandHandler(EventHandler handler) => _handler = handler;
+            public bool CanExecute(object parameter) => true;
+            public void Execute(object parameter) => _handler?.Invoke(this, EventArgs.Empty);
+            public event EventHandler CanExecuteChanged { add { } remove { } }
+        }
+    }
+
 }

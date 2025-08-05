@@ -18,12 +18,12 @@ namespace AutoCADAddon.Common
     public static class DataSyncService
     {
         private static readonly HttpClient _client = new HttpClient();
-        private static readonly string serverUrl ="https://lam-bop-gateway-uat.nwplatform.com.cn/pms";// CacheManager.GetSys_Server().FirstOrDefault(a=>a.IsTrue == "1")?.Url;
+        private static readonly string serverUrl = "https://lam-bop-gateway-uat.nwplatform.com.cn/pms";// CacheManager.GetSys_Server().FirstOrDefault(a=>a.IsTrue == "1")?.Url;
 
         // 同步建筑数据（从服务端到本地缓存）
         public static async Task SyncBuildingsAsync(string serverUrl, string token)
         {
-            _client.DefaultRequestHeaders.Authorization =new AuthenticationHeaderValue("Bearer", token);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var requestBody = new
             {
                 last_sync_time = CacheManager.GetLastSyncTime()
@@ -93,7 +93,7 @@ namespace AutoCADAddon.Common
         }
 
         /// <summary>
-        /// 初始打开图纸执行同步上传
+        /// 发布图纸数据
         /// </summary>
         /// <param name="serverUrl"></param>
         /// <param name="token"></param>
@@ -101,7 +101,7 @@ namespace AutoCADAddon.Common
         public static async Task<string> SyncBlueprintAsync(ResultFloorRoom result)
         {
             //DataSyncService.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-      
+
             // 使用原生JSON序列化
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -120,6 +120,65 @@ namespace AutoCADAddon.Common
         }
 
         #region 绑定图纸属性
+
+        /// <summary>
+        /// 同步服务器上绑定的图纸属性
+        /// </summary>
+        /// <param name="Drawingname"></param>
+        /// <returns></returns>
+        public static async Task<dynamic> SyncDrawingServiceAsync(string name)
+        {
+            //DataSyncService.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var result = new
+            {
+                name
+            };
+            // 使用原生JSON序列化
+            var json = JsonConvert.SerializeObject(result);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync($"{serverUrl}/spaceDraw/page", content);
+
+            // 确保响应成功
+            response.EnsureSuccessStatusCode();
+
+            // 使用原生JSON反序列化
+            var responseJson = await response.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<ResultModel>(responseJson);
+            if (res.code == "200")
+                return res.data;
+            else return "NG" + res.msg;
+
+        }
+
+        /// <summary>
+        ///保存图纸属性
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static async Task<string> SyncDrawingAsync(dynamic result)
+        {
+            //DataSyncService.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            // 使用原生JSON序列化
+            var json = JsonConvert.SerializeObject(result);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync($"{serverUrl}/spaceDraw/save", content);
+
+            // 确保响应成功
+            response.EnsureSuccessStatusCode();
+
+            // 使用原生JSON反序列化
+            var responseJson = await response.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<ResultModel>(responseJson);
+            if (res.code == "200") return "OK";
+            else return "NG";
+
+        }
+
+
         /// <summary>
         /// 获取楼栋数据
         /// </summary>
@@ -144,9 +203,9 @@ namespace AutoCADAddon.Common
             // 使用原生JSON反序列化
             var responseJson = await response.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<ResultModel>(responseJson);
-            if (res.code == "200") 
+            if (res.code == "200")
                 return res.data;
-            else return "NG"+res.msg;
+            else return "NG" + res.msg;
 
         }
 
@@ -154,15 +213,15 @@ namespace AutoCADAddon.Common
         /// 新增楼栋
         /// </summary>
         /// <returns></returns>
-        public static async Task<string> AddBuildingAsync( string buildingCode,string buildingName)
+        public static async Task<string> AddBuildingAsync(string buildingCode, string buildingName)
         {
             //DataSyncService.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // 使用原生JSON序列化
             var result = new
             {
-              buildingCode ,
-              buildingName ,
+                buildingCode,
+                buildingName,
             };
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -207,7 +266,7 @@ namespace AutoCADAddon.Common
             var res = JsonConvert.DeserializeObject<ResultModel>(responseJson);
             if (res.code == "200")
                 return res.data;
-            else return "NG"+res.msg;
+            else return "NG" + res.msg;
 
         }
 
@@ -239,11 +298,44 @@ namespace AutoCADAddon.Common
             var res = JsonConvert.DeserializeObject<ResultModel>(responseJson);
             if (res.code == "200")
                 return "OK";
-            else return  res.msg;
+            else return res.msg;
 
         }
         #endregion
         #region 获取房间属性
+
+
+        /// <summary>
+        /// 获取房间属性
+        /// </summary>
+        /// <param name="building"></param>
+        /// <param name="floor"></param>
+        /// <returns></returns>
+        public static async Task<dynamic> SyncRoomServicedataAsync(string building, string floor)
+        {
+            //DataSyncService.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var result = new
+            {
+                building,
+                floor
+            };
+            // 使用原生JSON序列化
+            var json = JsonConvert.SerializeObject(result);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync($"{serverUrl}/spaceRoom/page", content);
+
+            // 确保响应成功
+            response.EnsureSuccessStatusCode();
+
+            // 使用原生JSON反序列化
+            var responseJson = await response.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<ResultModel>(responseJson);
+            if (res.code == "200")
+                return res.data;
+            else return "NG" + res.msg;
+
+        }
 
         /// <summary>
         /// 保存房间数据
@@ -283,7 +375,7 @@ namespace AutoCADAddon.Common
             // 使用原生JSON序列化
             var result = new
             {
-               
+
             };
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -404,7 +496,7 @@ namespace AutoCADAddon.Common
             // 使用原生JSON序列化
             var result = new
             {
-                
+
             };
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");

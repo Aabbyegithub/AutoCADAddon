@@ -24,14 +24,15 @@ namespace AutoCADAddon
         private readonly Transaction _tr;
         private readonly Building _Building;
         private readonly Floor _Floor;
-        private  List<ItemData> _RoomStanardList;
-        private  List<ItemData> _RoomCategory;
-        private  List<ItemData> _RoomType;
-        private  List<ItemData> _DivisionCode;
-        private  List<ItemData> _DepartmentCode;
-        private  string _SelectRoomType;
-        private  string _SelectDepartmentCode;
-        public  RoomEditForm(Polyline polyline, Transaction tr, Building building,Floor floor)
+        private List<ItemData> _RoomStanardList;
+        private List<ItemData> _RoomCategory;
+        private List<ItemData> _RoomType;
+        private List<ItemData> _DivisionCode;
+        private List<ItemData> _DepartmentCode;
+        private string _SelectRoomType;
+        private string _SelectDepartmentCode;
+        private string _SerId;
+        public RoomEditForm(Polyline polyline, Transaction tr, Building building, Floor floor)
         {
             _Polyline = polyline;
             _tr = tr;
@@ -39,22 +40,22 @@ namespace AutoCADAddon
             _Floor = floor;
             InitializeComponent();
             Prorate.SelectedIndex = 0;
-            Area.Text = polyline.Area.ToString();
-            Length.Text = polyline.Length.ToString();
+            Area.Text = Math.Round(polyline.Area / 1000000, 2).ToString();
+            Length.Text = Math.Round(polyline.Length / 1000, 2).ToString();
             LoeadingRoomData();
         }
 
-        private async  void LoeadingRoomData()
+        private async void LoeadingRoomData()
         {
             var RoomCode = "";
-            var RoomPro =PolylineCommon.GetRoomIdFromAttribute(_Polyline,_tr);
+            var RoomPro = PolylineCommon.GetRoomIdFromAttribute(_Polyline, _tr);
             await GetRoomDownLoadList();
-            if (RoomPro.Length>0)
+            if (RoomPro.Length > 0)
             {
                 RoomCode = RoomPro[0];
             }
             var RoomData = CacheManager.GetRoomsByRoomCode(RoomCode).FirstOrDefault();
-            if (RoomData!=null)
+            if (RoomData != null)
             {
                 var Buildingitems = new List<ItemData>();
                 Buildingitems.Add(new ItemData
@@ -94,6 +95,8 @@ namespace AutoCADAddon
                 RoomCategory.SetSelectedItem(RoomData.Category);
                 //_SelectRoomType = RoomData.Category;
                 RoomType.SetSelectedItem(RoomData.Type);
+                Prorate.Text = RoomData.Prorate;
+                _SerId = RoomData.SerId;
 
 
             }
@@ -101,9 +104,9 @@ namespace AutoCADAddon
             {
                 var Buildingitems = new List<ItemData>();
                 Buildingitems.Add(new ItemData
-                 {
-                     DisplayText = _Building.Name,
-                     Tag = _Building,
+                {
+                    DisplayText = _Building.Name,
+                    Tag = _Building,
                     Columns = new string[] { _Building.Code, _Building.Name },
                 });
                 BuildingCode.SetItems(Buildingitems, new[] { "Building Code", "Building Name" });
@@ -118,11 +121,11 @@ namespace AutoCADAddon
                 FloorCode.SetItems(Flooritems, new[] { "Building Code", "Floor Code", "Floor Name" });
                 FloorCode.SetSelectedItem(_Floor.Name);
                 var Roomitems = new List<ItemData>();
-                Roomitems.Add(new ItemData  
+                Roomitems.Add(new ItemData
                 {
                     DisplayText = RoomCode,
                     Columns = new string[] { RoomCode, RoomCode },
-                    Tag = new JObject { ["code"] = RoomCode, ["name"] = RoomCode}
+                    Tag = new JObject { ["code"] = RoomCode, ["name"] = RoomCode }
                 });
                 RoomCodeBox.SetItems(Roomitems, new[] { "Room Code", "Room Name" });
                 RoomCodeBox.SetSelectedItem(RoomCode);
@@ -136,8 +139,8 @@ namespace AutoCADAddon
         /// <returns></returns>
         private async Task GetRoomDownLoadList()
         {
-            var RoomStanardList =await DataSyncService.GetRoomStanardAsync();
-            if ((RoomStanardList as string)!=null && (RoomStanardList as string).Contains("NG"))
+            var RoomStanardList = await DataSyncService.GetRoomStanardAsync();
+            if ((RoomStanardList as string) != null && (RoomStanardList as string).Contains("NG"))
             {
                 MessageCommon.Error($"获取RoomStanard数据失败：{RoomStanardList}");
             }
@@ -154,7 +157,7 @@ namespace AutoCADAddon
             _RoomStanardList = items;
             RoomStanard.SetItems(items, new[] { "Code", "Description" });
 
-            var DivisionCodeList =await DataSyncService.GetDivisionCodeAsync();
+            var DivisionCodeList = await DataSyncService.GetDivisionCodeAsync();
             if ((DivisionCodeList as string) != null && (DivisionCodeList as string).Contains("NG"))
             {
                 MessageCommon.Error($"获取DivisionCode数据失败：{DivisionCodeList}");
@@ -174,7 +177,7 @@ namespace AutoCADAddon
 
 
 
-            var RoomCategoryList =await DataSyncService.GetRoomCategoryAsync();
+            var RoomCategoryList = await DataSyncService.GetRoomCategoryAsync();
             if ((RoomCategoryList as string) != null && (RoomCategoryList as string).Contains("NG"))
             {
                 MessageCommon.Error($"获取RoomCategory数据失败：{RoomCategoryList}");
@@ -236,22 +239,44 @@ namespace AutoCADAddon
                 divisionCode = DivisionCode.SelectedText,
                 DepartmentCode = DepartmentCode.SelectedText,
                 RoomStanardCode = RoomStanard.SelectedText,
+                Prorate = Prorate.Text,
                 Coordinates = PolylineCommon.GetPolylineCoordinates(_Polyline),
                 Extensions = EditedRoom?.Extensions ?? new Dictionary<string, ExtensionField>()
             });
-            CacheManager.UpsertRooms(Room);
-            await DataSyncService.SyncRoomdataAsync(new
+            var res = "";
+            try
             {
-                 building = _Building.Code,
-                 floor = _Floor.Code,
-                 roomCode = RoomCodeBox.SelectedText,
-                 roomCategory = RoomCategory.SelectedText,
-                 roomArea = Area.Text,
-                 perimeter = Length.Text,
-                 seniorManagement = DivisionCode.SelectedText,
-                 facutly = RoomType.SelectedText,
-                 department = DepartmentCode.SelectedText
-            });
+                res = await DataSyncService.SyncRoomdataAsync(new
+                {
+                    id = _SerId,
+                    building = _Building.Code,
+                    floor = _Floor.Code,
+                    roomCode = RoomCodeBox.SelectedText,
+                    standard = RoomStanard.SelectedText,
+                    seniorManagement = DivisionCode.SelectedText,
+                    department = DepartmentCode.SelectedText,
+                    roomCategory = RoomCategory.SelectedText,
+                    roomType = RoomType.SelectedText,
+                    prorate = Prorate.Text,
+                    roomArea = Area.Text,
+                    perimeter = Length.Text,
+
+
+                });
+                await Task.Delay(100);
+                var room = await DataSyncService.SyncRoomServicedataAsync(_Building.Code, _Floor.Code);
+                Room.First().SerId = room.list[0].id;
+            }
+            catch (Exception)
+            {
+
+            }
+            if (res == "NG")
+            {
+                Room.First().IsSave = "0";
+            }
+
+            CacheManager.UpsertRooms(Room);
             DialogResult = DialogResult.OK;
             Close();
         }
@@ -267,7 +292,7 @@ namespace AutoCADAddon
             var tag = null as JObject;
             //if (e != null)
             //{
-                tag = e.Tag as JObject;
+            tag = e.Tag as JObject;
             //}
             //else
             //{
@@ -276,7 +301,7 @@ namespace AutoCADAddon
             tag = e.Tag as JObject;
             if (tag != null && tag["code"] != null)
             {
-                var res =await DataSyncService.GetRoomTypeAsync(tag["code"].ToString());
+                var res = await DataSyncService.GetRoomTypeAsync(tag["code"].ToString());
                 if ((res as string) != null && (res as string).Contains("NG"))
                 {
                     MessageCommon.Error($"获取RoomType数据失败{res}");
@@ -289,12 +314,12 @@ namespace AutoCADAddon
                     items.Add(new ItemData
                     {
                         DisplayText = item.type_code,
-                        Columns = new string[] {item.category_code, item.type_code, item.description },
+                        Columns = new string[] { item.category_code, item.type_code, item.description },
                         Tag = item
                     });
                 }
                 _RoomType = items;
-                RoomType.SetItems(items, new[]  { "Category Code","Type Code", "Description" });
+                RoomType.SetItems(items, new[] { "Category Code", "Type Code", "Description" });
             }
         }
 
@@ -304,7 +329,7 @@ namespace AutoCADAddon
             var tag = null as JObject;
             //if (e != null)
             //{
-                tag = e.Tag as JObject;
+            tag = e.Tag as JObject;
             //}
             //else
             //{

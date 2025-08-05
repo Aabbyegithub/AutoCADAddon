@@ -14,7 +14,7 @@ namespace AutoCADAddon.Common
 {
     public class PolylineCommon
     {
-        public static List<Room> ParseAndExportDrawingData( Document _doc)
+        public static List<Room> ParseAndExportDrawingData( Document _doc,string FloorCode)
         {
 
             if (_doc == null) return null;
@@ -23,12 +23,12 @@ namespace AutoCADAddon.Common
             var props = CacheManager.GetCurrentDrawingProperties(_doc.Window.Text);
 
             // 2. 获取楼层详情（含floorCode和floorName）
-            var floor = CacheManager.GetFloorsByBuilding(props.BuildingExternalCode).FirstOrDefault();
-            if (floor == null)
-            {
-                _doc.Editor.WriteMessage("\n未找到绑定的楼层数据");
-                return null;
-            }
+            //var floor = CacheManager.GetFloorsByBuilding(props.BuildingExternalCode).FirstOrDefault();
+            //if (floor == null)
+            //{
+            //    _doc.Editor.WriteMessage("\n未找到绑定的楼层数据");
+            //    return null;
+            //}
 
             // 3. 解析图纸中的房间数据
             var roomDataList = new List<RoomData>();
@@ -65,7 +65,7 @@ namespace AutoCADAddon.Common
                                 roomDataList2.Add(roomData); continue;
                             }
                             roomDataList.Add(roomData);
-                            Room.Add(new Room { FloorCode = floor.Code, Name = roomData.rmId, Area = roomData.area.ToString(), Code = roomData.rmId, Coordinates = roomData.coordinate });
+                            Room.Add(new Room { FloorCode = FloorCode, Name = roomData.rmId, Area = roomData.area.ToString(), Code = roomData.rmId, Coordinates = roomData.coordinate });
 
                             Debug.WriteLine($"{roomData.rmId}-----{roomData.area}");
                         }
@@ -83,14 +83,14 @@ namespace AutoCADAddon.Common
                 {
                     item.rmId = "";
                     //roomDataList.Add(item);
-                    Room.Add(new Room { FloorCode = floor.Code, Name = $"Room_{Count}", Area = item.area.ToString(), Code = $"Room_{Count}", Coordinates = item.coordinate });
+                    Room.Add(new Room { FloorCode = FloorCode, Name = $"Room_{Count}", Area = item.area.ToString(), Code = $"Room_{Count}", Coordinates = item.coordinate });
                     Debug.WriteLine($"{item.rmId}-----{item.area}");
                 }
                 else
                 {
                     item.area = double.Parse(item.strings[1]);
                     //roomDataList.Add(item); 
-                    Room.Add(new Room { FloorCode = floor.Code, Name = item.rmId, Area = item.area.ToString(), Code = item.rmId, Coordinates = item.coordinate });
+                    Room.Add(new Room { FloorCode = FloorCode, Name = item.rmId, Area = item.area.ToString(), Code = item.rmId, Coordinates = item.coordinate });
                     Debug.WriteLine($"{item.rmId}-----{item.area}");
                 }
             }

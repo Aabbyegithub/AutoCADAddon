@@ -223,6 +223,5 @@ D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlugin
 D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceMan.A2DCF153.Up2Date
 D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADControls.Controls.ToolMenuData.resources
 D:\ProJect\LqProjrctTest\AutoCAD 2024\AutoCADAddon\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.PublishDrawing.resources
-D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
 D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADControls.Controls.ToolMenuData.resources
 D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.PublishDrawing.resources

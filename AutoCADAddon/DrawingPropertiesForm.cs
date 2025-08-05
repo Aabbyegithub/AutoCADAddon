@@ -21,14 +21,15 @@ namespace AutoCADAddon
     {
         public Document _doc;
         private string _versionCode;
+        private string _SerId;
         public DrawingPropertiesForm(Document doc)
         {
             _doc = doc;
             InitializeComponent();
-            cmbMet.Items.AddRange(new[] { "mm", "cm","dm", "m","km" });
+            cmbMet.Items.AddRange(new[] { "mm", "cm", "dm", "m", "km" });
             cmbMet.SelectedIndex = 0;
             DrawingProperties();
-            Metric.Checked = true;            
+            Metric.Checked = true;
         }
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace AutoCADAddon
         public async Task GetcmbList()
         {
             var res = await DataSyncService.SyncBuildingAsync();
-            if ((res as string)!=null && (res as string).Contains("NG"))
+            if ((res as string) != null && (res as string).Contains("NG"))
             {
                 MessageCommon.Error($"楼栋数据获取失败{res}");
                 return;
@@ -49,11 +50,11 @@ namespace AutoCADAddon
                 items.Add(new ItemData
                 {
                     DisplayText = item.building_name,
-                    Columns = new string[] {item.building_code,item.building_name},
+                    Columns = new string[] { item.building_code, item.building_name },
                     Tag = item
                 });
             }
-            cmbBuilding.SetItems(items,new[] { "Building Code", "Building Name"});
+            cmbBuilding.SetItems(items, new[] { "Building Code", "Building Name" });
 
         }
 
@@ -68,7 +69,7 @@ namespace AutoCADAddon
             if (tag != null && tag["building_code"] != null)
             {
                 var res = await DataSyncService.SyncFloorAsync(tag["building_code"].ToString());
-                if ((res as string)!=null && (res as string).Contains("NG"))
+                if ((res as string) != null && (res as string).Contains("NG"))
                 {
                     MessageCommon.Error($"楼层数据获取失败{res}");
                     return;
@@ -80,11 +81,11 @@ namespace AutoCADAddon
                     items.Add(new ItemData
                     {
                         DisplayText = item.floor_name,
-                        Columns = new string[] {item.building_code, item.floor_code, item.floor_name },
+                        Columns = new string[] { item.building_code, item.floor_code, item.floor_name },
                         Tag = item
                     });
                 }
-                cmbFloor.SetItems(items, new[] { "Building Code", "Floor Code","Floor Name" });
+                cmbFloor.SetItems(items, new[] { "Building Code", "Floor Code", "Floor Name" });
             }
         }
 
@@ -115,6 +116,7 @@ namespace AutoCADAddon
                 {
                     return;
                 }
+                _SerId = props.SerId;
                 cmbBuilding.SetSelectedItem(props.BuildingName);
                 cmbFloor.SetSelectedItem(props.FloorName);
             }
@@ -138,27 +140,27 @@ namespace AutoCADAddon
                 var form = new FloorEditForm(null, tag["building_code"].ToString());
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    cmbBuilding_SelectedItemChanged(null,null);
+                    cmbBuilding_SelectedItemChanged(null, null);
                 }
             }
 
         }
 
-        private void BtnOK_Click(object sender, EventArgs e)
+        private async void BtnOK_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(cmbBuilding.SelectedText)|| string.IsNullOrEmpty(cmbFloor.SelectedText))
+            if (string.IsNullOrEmpty(cmbBuilding.SelectedText) || string.IsNullOrEmpty(cmbFloor.SelectedText))
             {
                 MessageBox.Show("请完整选择建筑、楼层和房间！");
                 return;
             }
 
             var blueprint = new Blueprint();
-            blueprint.BuildingExternalCode = cmbBuilding.SelectedText;
-            blueprint.BuildingName = cmbBuilding.SelectedValue is JObject jObject ? jObject["building_name"].ToString() : cmbBuilding.SelectedText;
-            blueprint.FloorCode = cmbFloor.SelectedText;
-            blueprint.FloorName = cmbFloor.SelectedValue is JObject jObjectFloor ? jObjectFloor["floor_name"].ToString() : cmbFloor.SelectedText;
+            blueprint.BuildingExternalCode = cmbBuilding.SelectedValue is JObject jObject ? jObject["building_code"].ToString() : cmbBuilding.SelectedText;
+            blueprint.BuildingName = cmbBuilding.SelectedText;
+            blueprint.FloorCode = cmbFloor.SelectedValue is JObject jObjectFloor ? jObjectFloor["floor_code"].ToString() : cmbFloor.SelectedText;
+            blueprint.FloorName = cmbFloor.SelectedText;
             blueprint.Name = Filename.Text;
-            blueprint.Version =_versionCode;
+            blueprint.Version = _versionCode;
             if (Metric.Checked)
             {
                 blueprint.UnitType = Metric.Text;
@@ -169,23 +171,48 @@ namespace AutoCADAddon
                 blueprint.UnitType = Imperial.Text;
                 blueprint.Unit = "";
             }
+            var res = "";
+            try
+            {
+                res = await DataSyncService.SyncDrawingAsync(new
+                {
+                    id = _SerId,
+                    name = Filename.Text,
+                    title = Filename.Text,
+                    building = blueprint.BuildingExternalCode,
+                    floor = blueprint.FloorCode,
+                    unitType = blueprint.UnitType,
+                    units = blueprint.Unit
+                });
+                await Task.Delay(100);
+                var Drawing = await DataSyncService.SyncDrawingServiceAsync(_doc.Window.Text);
 
-             CacheManager.SetCurrentDrawingProperties(blueprint);
+                blueprint.SerId = Drawing.list[0].id;
+            }
+            catch (Exception)
+            {
 
+            }
+
+            if (res == "NG")
+            {
+                blueprint.IsSave = "0";
+            }
+            CacheManager.SetCurrentDrawingProperties(blueprint);
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-           this.DialogResult = DialogResult.Cancel;
-           this.Close();
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
         }
 
         private void Imperial_Click(object sender, EventArgs e)
         {
-            Imperial.Checked =true;
-            Metric.Checked =false;
+            Imperial.Checked = true;
+            Metric.Checked = false;
         }
 
         private void Metric_Click(object sender, EventArgs e)
