@@ -21,7 +21,6 @@ namespace AutoCADAddon
     {
         public Document _doc;
         private string _versionCode;
-        private string _SerId;
         public DrawingPropertiesForm(Document doc)
         {
             _doc = doc;
@@ -116,7 +115,6 @@ namespace AutoCADAddon
                 {
                     return;
                 }
-                _SerId = props.SerId;
                 cmbBuilding.SetSelectedItem(props.BuildingName);
                 cmbFloor.SetSelectedItem(props.FloorName);
             }
@@ -146,7 +144,7 @@ namespace AutoCADAddon
 
         }
 
-        private async void BtnOK_Click(object sender, EventArgs e)
+        private void BtnOK_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(cmbBuilding.SelectedText)|| string.IsNullOrEmpty(cmbFloor.SelectedText))
             {
@@ -155,10 +153,10 @@ namespace AutoCADAddon
             }
 
             var blueprint = new Blueprint();
-            blueprint.BuildingExternalCode = cmbBuilding.SelectedValue is JObject jObject ? jObject["building_code"].ToString() : cmbBuilding.SelectedText;
-            blueprint.BuildingName =cmbBuilding.SelectedText; 
-            blueprint.FloorCode = cmbFloor.SelectedValue is JObject jObjectFloor ? jObjectFloor["floor_code"].ToString() : cmbFloor.SelectedText;
-            blueprint.FloorName = cmbFloor.SelectedText;
+            blueprint.BuildingExternalCode = cmbBuilding.SelectedText;
+            blueprint.BuildingName = cmbBuilding.SelectedValue is JObject jObject ? jObject["building_name"].ToString() : cmbBuilding.SelectedText;
+            blueprint.FloorCode = cmbFloor.SelectedText;
+            blueprint.FloorName = cmbFloor.SelectedValue is JObject jObjectFloor ? jObjectFloor["floor_name"].ToString() : cmbFloor.SelectedText;
             blueprint.Name = Filename.Text;
             blueprint.Version =_versionCode;
             if (Metric.Checked)
@@ -171,34 +169,9 @@ namespace AutoCADAddon
                 blueprint.UnitType = Imperial.Text;
                 blueprint.Unit = "";
             }
-            var res = "";
-            try
-            {
-                res = await DataSyncService.SyncDrawingAsync(new
-                {
-                    id = _SerId,
-                    name = Filename.Text,
-                    title = Filename.Text,
-                    building = blueprint.BuildingExternalCode,
-                    floor = blueprint.FloorCode,
-                    unitType = blueprint.UnitType,
-                    units = blueprint.Unit
-                });
-                await Task.Delay(100);
-                 var Drawing = await DataSyncService.SyncDrawingServiceAsync(_doc.Window.Text);
 
-                blueprint.SerId = Drawing.list[0].id;
-            }
-            catch (Exception)
-            {
-
-            }
-
-            if (res == "NG")
-            {
-                blueprint.IsSave = "0";
-            }
              CacheManager.SetCurrentDrawingProperties(blueprint);
+
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
