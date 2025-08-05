@@ -176,6 +176,7 @@ namespace AutoCADAddon.AutoCAD
                         }
                         CacheManager.SetCurrentDrawingProperties(new Blueprint
                         {
+                            SerId = Drawing.list[0].id,
                             BuildingExternalCode = buildcode,
                             BuildingName = BuildingName,
                             FloorCode = floorcode,
@@ -186,30 +187,33 @@ namespace AutoCADAddon.AutoCAD
                             Unit = Drawing.list[0].units,
                             status = Drawing.list[0].status,
                         });
-                        //var RoomData = DataSyncService.SyncRoomServicedataAsync(Drawing.list[0].building,Drawing.list[0].floor);
-                        //var Room = new List<Room>();
-                        //Room.Add(new Room
-                        //{
-                        //    Code = RoomCodeBox.SelectedText,
-                        //    Name = RoomCodeBox.SelectedText,
-                        //    BuildingExternalCode = _Building.Code,
-                        //    BuildingName = _Building.Name,
-                        //    FloorCode = _Floor.Code,
-                        //    FloorName = _Floor.Name,
-                        //    Area = Area.Text,
-                        //    Length = Length.Text,
-                        //    Category = RoomCategory.SelectedText,
-                        //    Type = RoomType.SelectedText,
-                        //    divisionCode = DivisionCode.SelectedText,
-                        //    DepartmentCode = DepartmentCode.SelectedText,
-                        //    RoomStanardCode = RoomStanard.SelectedText,
-                        //    Prorate = Prorate.Text,
-                        //    Coordinates = PolylineCommon.GetPolylineCoordinates(_Polyline),
-                        //    Extensions = EditedRoom?.Extensions ?? new Dictionary<string, ExtensionField>()
-                        //});
-                        //CacheManager.UpsertRooms(Room);
-                    }
+                        var RoomData =await DataSyncService.SyncRoomServicedataAsync(buildcode ,floorcode);
+                        var Room = new List<Room>();
+                        foreach (var item in RoomData.list)
+                        {
+                            Room.Add(new Room
+                            {
+                                Code =item.room_code,
+                                Name = item.room_code,
+                                BuildingExternalCode =buildcode,
+                                BuildingName =BuildingName,
+                                FloorCode =floorcode,
+                                FloorName =floorname,
+                                Area = item.room_area,
+                                Length = item.perimeter,
+                                Category = item.room_category,
+                                //Type = RoomType.SelectedText,
+                                divisionCode = item.senior_management,
+                                DepartmentCode = item.department,
+                                //RoomStanardCode = RoomStanard.SelectedText,
+                                Prorate =item.prorate,
+                                //Coordinates = PolylineCommon.GetPolylineCoordinates(_Polyline),
+                                //Extensions = EditedRoom?.Extensions ?? new Dictionary<string, ExtensionField>()
+                            });
+                        }
 
+                        CacheManager.UpsertRooms(Room);
+                    }
 
                 }
             }
@@ -224,6 +228,50 @@ namespace AutoCADAddon.AutoCAD
 
         }
 
+        private  async static void anewSave()
+        {
+            try
+            {
+                var Drawing = CacheManager.GetCurrentDrawingIsSaveProperties();
+                foreach (var item in Drawing)
+                {
+                    var res = await DataSyncService.SyncDrawingAsync(new
+                    {
+                        id =item.SerId,
+                        name = item.Name,
+                        title = item.Name,
+                        building = item.BuildingExternalCode,
+                        floor = item.FloorCode,
+                        unitType = item.UnitType,
+                        units = item.Unit
+                    });
+                }
+                var Room = CacheManager.GetRoomsByRoomIsSaveCode();
+                foreach (var item in Room)
+                {
+                    var res = await DataSyncService.SyncRoomdataAsync(new
+                    {
+                        id = item.SerId,
+                        building =item.BuildingExternalCode,
+                        floor = item.FloorCode,
+                        roomCode = item.Code,
+                        standard =item.RoomStanardCode,
+                        seniorManagement = item.divisionCode,
+                        department = item.DepartmentCode,
+                        roomCategory = item.Category,
+                        roomType = item.Type,
+                        prorate = item.Prorate,
+                        roomArea = item.Area,
+                        perimeter = item.Length,
+                    });
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+        }
         /// <summary>
         /// 点击展示左侧面板
         /// </summary>
