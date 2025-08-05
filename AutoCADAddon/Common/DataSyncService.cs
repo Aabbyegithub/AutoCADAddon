@@ -93,7 +93,7 @@ namespace AutoCADAddon.Common
         }
 
         /// <summary>
-        /// 发布图纸数据
+        /// 初始打开图纸执行同步上传
         /// </summary>
         /// <param name="serverUrl"></param>
         /// <param name="token"></param>
@@ -120,65 +120,6 @@ namespace AutoCADAddon.Common
         }
 
         #region 绑定图纸属性
-
-        /// <summary>
-        /// 同步服务器上绑定的图纸属性
-        /// </summary>
-        /// <param name="Drawingname"></param>
-        /// <returns></returns>
-        public static async Task<dynamic> SyncDrawingServiceAsync(string name)
-        {
-            //DataSyncService.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var result = new
-            {
-                name
-            };
-            // 使用原生JSON序列化
-            var json = JsonConvert.SerializeObject(result);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await _client.PostAsync($"{serverUrl}/spaceDraw/page", content);
-
-            // 确保响应成功
-            response.EnsureSuccessStatusCode();
-
-            // 使用原生JSON反序列化
-            var responseJson = await response.Content.ReadAsStringAsync();
-            var res = JsonConvert.DeserializeObject<ResultModel>(responseJson);
-            if (res.code == "200")
-                return res.data;
-            else return "NG" + res.msg;
-
-        }
-
-        /// <summary>
-        ///保存图纸属性
-        /// </summary>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        public static async Task<string> SyncDrawingAsync(dynamic result)
-        {
-            //DataSyncService.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            // 使用原生JSON序列化
-            var json = JsonConvert.SerializeObject(result);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await _client.PostAsync($"{serverUrl}/spaceDraw/save", content);
-
-            // 确保响应成功
-            response.EnsureSuccessStatusCode();
-
-            // 使用原生JSON反序列化
-            var responseJson = await response.Content.ReadAsStringAsync();
-            var res = JsonConvert.DeserializeObject<ResultModel>(responseJson);
-            if (res.code == "200") return "OK";
-            else return "NG";
-
-        }
-
-
         /// <summary>
         /// 获取楼栋数据
         /// </summary>
@@ -303,39 +244,6 @@ namespace AutoCADAddon.Common
         }
         #endregion
         #region 获取房间属性
-
-
-        /// <summary>
-        /// 获取房间属性
-        /// </summary>
-        /// <param name="building"></param>
-        /// <param name="floor"></param>
-        /// <returns></returns>
-        public static async Task<dynamic> SyncRoomServicedataAsync(string building,string floor)
-        {
-            //DataSyncService.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var result = new
-            {
-                building,
-                floor
-            };
-            // 使用原生JSON序列化
-            var json = JsonConvert.SerializeObject(result);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await _client.PostAsync($"{serverUrl}/spaceRoom/page", content);
-
-            // 确保响应成功
-            response.EnsureSuccessStatusCode();
-
-            // 使用原生JSON反序列化
-            var responseJson = await response.Content.ReadAsStringAsync();
-            var res = JsonConvert.DeserializeObject<ResultModel>(responseJson);
-            if (res.code == "200")
-                return res.data;
-            else return "NG" + res.msg;
-
-        }
 
         /// <summary>
         /// 保存房间数据

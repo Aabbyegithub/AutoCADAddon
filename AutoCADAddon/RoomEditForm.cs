@@ -31,7 +31,6 @@ namespace AutoCADAddon
         private  List<ItemData> _DepartmentCode;
         private  string _SelectRoomType;
         private  string _SelectDepartmentCode;
-        private  string _SerId;
         public  RoomEditForm(Polyline polyline, Transaction tr, Building building,Floor floor)
         {
             _Polyline = polyline;
@@ -40,8 +39,8 @@ namespace AutoCADAddon
             _Floor = floor;
             InitializeComponent();
             Prorate.SelectedIndex = 0;
-            Area.Text = Math.Round(polyline.Area / 1000000, 2).ToString();
-            Length.Text = Math.Round(polyline.Length / 1000, 2).ToString();
+            Area.Text = polyline.Area.ToString();
+            Length.Text = polyline.Length.ToString();
             LoeadingRoomData();
         }
 
@@ -95,8 +94,6 @@ namespace AutoCADAddon
                 RoomCategory.SetSelectedItem(RoomData.Category);
                 //_SelectRoomType = RoomData.Category;
                 RoomType.SetSelectedItem(RoomData.Type);
-                Prorate.Text = RoomData.Prorate;
-                _SerId = RoomData.SerId;
 
 
             }
@@ -239,44 +236,22 @@ namespace AutoCADAddon
                 divisionCode = DivisionCode.SelectedText,
                 DepartmentCode = DepartmentCode.SelectedText,
                 RoomStanardCode = RoomStanard.SelectedText,
-                Prorate = Prorate.Text,
                 Coordinates = PolylineCommon.GetPolylineCoordinates(_Polyline),
                 Extensions = EditedRoom?.Extensions ?? new Dictionary<string, ExtensionField>()
             });
-            var res = "";
-            try
-            {
-               res = await DataSyncService.SyncRoomdataAsync(new
-                {
-                    id = _SerId,
-                    building = _Building.Code,
-                    floor = _Floor.Code,
-                    roomCode = RoomCodeBox.SelectedText,
-                    standard = RoomStanard.SelectedText,
-                    seniorManagement = DivisionCode.SelectedText,
-                    department = DepartmentCode.SelectedText,
-                    roomCategory = RoomCategory.SelectedText,
-                    roomType = RoomType.SelectedText,
-                    prorate = Prorate.Text,
-                    roomArea = Area.Text,
-                    perimeter = Length.Text,
-
-
-                });
-               await Task.Delay(100);
-                var room = await DataSyncService.SyncRoomServicedataAsync(_Building.Code,_Floor.Code);
-                 Room.First().SerId = room.list[0].id;
-            }
-            catch (Exception)
-            {
-
-            }
-            if (res =="NG")
-            {
-                Room.First().IsSave = "0";
-            }
-
             CacheManager.UpsertRooms(Room);
+            await DataSyncService.SyncRoomdataAsync(new
+            {
+                 building = _Building.Code,
+                 floor = _Floor.Code,
+                 roomCode = RoomCodeBox.SelectedText,
+                 roomCategory = RoomCategory.SelectedText,
+                 roomArea = Area.Text,
+                 perimeter = Length.Text,
+                 seniorManagement = DivisionCode.SelectedText,
+                 facutly = RoomType.SelectedText,
+                 department = DepartmentCode.SelectedText
+            });
             DialogResult = DialogResult.OK;
             Close();
         }
