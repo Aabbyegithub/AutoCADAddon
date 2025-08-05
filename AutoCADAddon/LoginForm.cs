@@ -75,7 +75,7 @@ namespace AutoCADAddon
                 //}
                 //LoginResult = result;
 
-                CacheManager.SetSys_Server(new Sys_Server() { Url = cboServers.Text,IsTrue = "1" });
+                CacheManager.SetSys_Server(new Sys_Server() { Url = cboServers.Text, IsTrue = "1" });
                 //// 是否保存账户密码
                 //if (IsRenember.Checked)
                 //{

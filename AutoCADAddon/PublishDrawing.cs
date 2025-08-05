@@ -71,7 +71,7 @@ namespace AutoCADAddon
 
                         if (room.Where(a => a.Code == item.Code).Count() == 0)
                         {
-                            Application.ShowAlertDialog("还存在房间未绑定属性！请检查");
+                            Application.ShowAlertDialog($"房间【{item.Code}】未绑定属性！请检查");
                             return;
                         }
                         PublishingDrawing.PerformStep();
@@ -94,6 +94,7 @@ namespace AutoCADAddon
                     {
                         floorCode = props.FloorCode,
                         floorName = props.FloorName,
+                        drawId = props.SerId,
                         data = roomData
                     });
                     props.status = "Published";

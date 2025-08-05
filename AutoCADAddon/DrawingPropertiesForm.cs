@@ -140,7 +140,7 @@ namespace AutoCADAddon
                 var form = new FloorEditForm(null, tag["building_code"].ToString());
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    cmbBuilding_SelectedItemChanged(null, null);
+                    cmbBuilding_SelectedItemChanged(null,new ItemData { Tag = tag});
                 }
             }
 

@@ -43,6 +43,7 @@ namespace AutoCADAddon.Model
         {
             public string floorCode { get; set; }
             public string floorName { get; set; }
+            public string drawId { get; set; }
             public List<RoomData> data { get; set; }
 
         }

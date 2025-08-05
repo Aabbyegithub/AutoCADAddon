@@ -15,10 +15,11 @@ namespace AutoCADAddon.Common
     /// <summary>
     /// 数据同步类
     /// </summary>
-    public static class DataSyncService
+    public  class DataSyncService
     {
         private static readonly HttpClient _client = new HttpClient();
-        private static readonly string serverUrl = "https://lam-bop-gateway-uat.nwplatform.com.cn/pms";// CacheManager.GetSys_Server().FirstOrDefault(a=>a.IsTrue == "1")?.Url;
+        private static  string serverUrl =  CacheManager.GetSys_Server().FirstOrDefault(a=>a.IsTrue == "1")?.Url;//"https://lam-bop-gateway-uat.nwplatform.com.cn/pms";
+
 
         // 同步建筑数据（从服务端到本地缓存）
         public static async Task SyncBuildingsAsync(string serverUrl, string token)
@@ -33,7 +34,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(requestBody);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/api/buildings", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/api/buildings", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -56,7 +57,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(requestBody);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/api/floors", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/api/floors", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -79,7 +80,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(requestBody);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/api/rooms", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/api/rooms", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -106,7 +107,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/add", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/space/add", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -138,7 +139,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/spaceDraw/page", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/spaceDraw/page", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -165,7 +166,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/spaceDraw/save", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/spaceDraw/save", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -195,7 +196,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/spaceBuilding/page", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/spaceBuilding/page", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -226,7 +227,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/spaceBuilding/save", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/spaceBuilding/save", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -256,7 +257,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/spaceFloor/page", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/spaceFloor/page", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -288,7 +289,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/spaceFloor/save", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/spaceFloor/save", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -323,7 +324,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/spaceRoom/page", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/spaceRoom/page", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -350,7 +351,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/spaceRoom/save", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/spaceRoom/save", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -380,7 +381,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/spaceRoomStandards/page", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/spaceRoomStandards/page", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -410,7 +411,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/spaceRoomCategory/page", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/spaceRoomCategory/page", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -440,7 +441,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/spaceRoomType/page", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/spaceRoomType/page", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -470,7 +471,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/spaceDepartment/page", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/spaceDepartment/page", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -501,7 +502,7 @@ namespace AutoCADAddon.Common
             var json = JsonConvert.SerializeObject(result);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync($"{serverUrl}/spaceDivision/page", content);
+            var response = await _client.PostAsync($"{GetServerUrl()}/spaceDivision/page", content);
 
             // 确保响应成功
             response.EnsureSuccessStatusCode();
@@ -578,5 +579,17 @@ namespace AutoCADAddon.Common
                 return "";
             }
         }
+
+        private static string GetServerUrl()
+        {
+            var aa = CacheManager.GetSys_Server();
+            var url = CacheManager.GetSys_Server()
+                        .FirstOrDefault(a => a.IsTrue == "1")?.Url;
+            if (string.IsNullOrEmpty(url))
+                return "https://lam-bop-gateway-uat.nwplatform.com.cn/pms";
+                //throw new Exception("未获取到有效的服务器地址！");
+            return url+"/pms";
+        }
+
     }
 }

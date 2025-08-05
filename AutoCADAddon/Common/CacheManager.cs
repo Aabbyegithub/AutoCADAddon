@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using static AutoCADAddon.Model.FloorBuildingDataModel;
@@ -54,12 +55,13 @@ namespace AutoCADAddon.Common
                 ExecuteNonQuery(conn, "DROP TABLE IF EXISTS OfflineOperation");
                 ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Building");
                 ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Floor");
-                //ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Room");
-                //ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Blueprint");
+                ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Room");
+                ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Blueprint");
+                ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Server");
 
                 //创建服务器列表
                 ExecuteNonQuery(conn, @"
-                    CREATE TABLE IF NOT EXISTS Sys_Server (
+                    CREATE TABLE IF NOT EXISTS Server (
                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         Url TEXT UNIQUE,
                         IsTrue TEXT ,
@@ -171,41 +173,28 @@ namespace AutoCADAddon.Common
             using (var conn = new SQLiteConnection(_connectionString))
             {
                 conn.Open();
-                var cmd = new SQLiteCommand(@"
-                            INSERT OR REPLACE INTO Sys_Server (Url,IsTrue, UpdateTime)
-                            VALUES (@Url,@IsTrue, @UpdateTime)", conn);
-                cmd.Parameters.AddWithValue("@Url", sys_Server.Url);
-                cmd.Parameters.AddWithValue("@IsTrue", sys_Server.IsTrue);
-                cmd.Parameters.AddWithValue("@UpdateTime", sys_Server.UpdateTime);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        /// <summary>
-        /// 批量更新服务器信息（Sys_Server）置为空
-        /// </summary>
-        public static void UpSys_Server()
-        {
-            using (var conn = new SQLiteConnection(_connectionString))
-            {
-                conn.Open();
-
                 using (var tran = conn.BeginTransaction())
                 {
                     try
                     {
-                        // 清空现有数据
-                        var Servers = GetSys_Server();
-                        foreach (var b in Servers)
+                        var checkCmd = new SQLiteCommand("PRAGMA table_info(Server);", conn);
+                        using (var reader = checkCmd.ExecuteReader())
                         {
-                            var cmd = new SQLiteCommand(@"
-                            INSERT OR REPLACE INTO Sys_Server (Url,IsTrue, UpdateTime)
-                            VALUES (@Url,@IsTrue, @UpdateTime)", conn);
-                            cmd.Parameters.AddWithValue("@Url", b.Url);
-                            cmd.Parameters.AddWithValue("@IsTrue", "0");
-                            cmd.Parameters.AddWithValue("@UpdateTime", b.UpdateTime);
-                            cmd.ExecuteNonQuery();
+                            Console.WriteLine("表结构验证：");
+                            while (reader.Read())
+                            {
+                                Debug.WriteLine($"字段名: {reader["name"]}, 类型: {reader["type"]}, 约束: {reader["pk"]}");
+                            }
                         }
+                        var cmd = new SQLiteCommand(@"
+                            INSERT OR REPLACE INTO Server (Url, IsTrue, UpdateTime) 
+                            VALUES (@Url, @IsTrue, @UpdateTime)
+                        ", conn);
+                        cmd.Parameters.AddWithValue("@Url", sys_Server.Url);
+                        cmd.Parameters.AddWithValue("@IsTrue", sys_Server.IsTrue);
+                        cmd.Parameters.AddWithValue("@UpdateTime", sys_Server.UpdateTime);
+                        cmd.ExecuteNonQuery();                      
+
                         tran.Commit();
                     }
                     catch
@@ -218,6 +207,35 @@ namespace AutoCADAddon.Common
             }
         }
 
+
+        /// <summary>
+        /// 批量更新服务器信息（Sys_Server）置为空
+        /// </summary>
+        public static void UpSys_Server()
+        {
+            using (var conn = new SQLiteConnection(_connectionString))
+            {
+                conn.Open();
+                using (var tran = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // 一句SQL批量清除所有 IsTrue
+                        var clearCmd = new SQLiteCommand("UPDATE Server SET IsTrue = '0'", conn);
+                        clearCmd.ExecuteNonQuery();
+
+                        tran.Commit();
+                    }
+                    catch
+                    {
+                        tran.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+
         /// <summary>
         /// 获取服务器信息（Sys_Server）
         /// </summary>
@@ -226,7 +244,7 @@ namespace AutoCADAddon.Common
             using (var conn = new SQLiteConnection(_connectionString))
             {
                 conn.Open();
-                var cmd = new SQLiteCommand(@"SELECT * FROM Sys_Server", conn);
+                var cmd = new SQLiteCommand(@"SELECT * FROM Server", conn);
                 using (var reader = cmd.ExecuteReader())
                 {
                     var res = new List<Sys_Server>();

@@ -31,7 +31,7 @@ namespace AutoCADAddon
             Close();
         }
 
-        private void BtnSave_Click(object sender, EventArgs e)
+        private async void BtnSave_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtName.Text))
             {
@@ -47,7 +47,7 @@ namespace AutoCADAddon
             EditedFloor.Code = txtCode.Text;
             EditedFloor.BuildingCode = _buildingCode;
             EditedFloor.UpdateTime = DateTime.Now;
-            var res = DataSyncService.AddFloorAsync(_buildingCode,txtCode.Text, txtName.Text).Result;
+            var res = await DataSyncService.AddFloorAsync(_buildingCode,txtCode.Text, txtName.Text);
             if (res as string == "OK")
             {
                 DialogResult = DialogResult.OK;

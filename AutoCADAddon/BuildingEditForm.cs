@@ -27,7 +27,7 @@ namespace AutoCADAddon
             Close();
         }
 
-        private void BtnSave_Click(object sender, EventArgs e)
+        private async void BtnSave_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtName.Text))
             {
@@ -43,7 +43,7 @@ namespace AutoCADAddon
             EditedBuilding.Name = txtName.Text;
             EditedBuilding.Code = txtCode.Text;
             EditedBuilding.UpdateTime = DateTime.Now;
-            var res = DataSyncService.AddBuildingAsync(txtCode.Text,txtName.Text).Result;
+            var res =await DataSyncService.AddBuildingAsync(txtCode.Text,txtName.Text);
             if (res as string == "OK")
             {
                 DialogResult = DialogResult.OK;

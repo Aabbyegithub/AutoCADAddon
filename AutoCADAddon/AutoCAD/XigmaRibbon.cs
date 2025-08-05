@@ -207,10 +207,10 @@ namespace AutoCADAddon.AutoCAD
                                     Area = item.room_area,
                                     Length = item.perimeter,
                                     Category = item.room_category,
-                                    //Type = RoomType.SelectedText,
+                                    Type = item.room_type,
                                     divisionCode = item.senior_management,
                                     DepartmentCode = item.department,
-                                    //RoomStanardCode = RoomStanard.SelectedText,
+                                    RoomStanardCode = item.standard,
                                     Prorate = item.prorate,
                                     //Coordinates = PolylineCommon.GetPolylineCoordinates(_Polyline),
                                     //Extensions = EditedRoom?.Extensions ?? new Dictionary<string, ExtensionField>()
@@ -259,6 +259,12 @@ namespace AutoCADAddon.AutoCAD
                         unitType = item.UnitType,
                         units = item.Unit
                     });
+                    await Task.Delay(100);
+                    var DrawingId = await DataSyncService.SyncDrawingServiceAsync(item.Name);
+
+                    item.SerId = DrawingId.list[0].id;
+                     CacheManager.SetCurrentDrawingProperties(item);
+                    
                 }
                 var Room = CacheManager.GetRoomsByRoomIsSaveCode();
                 foreach (var item in Room)
@@ -278,7 +284,13 @@ namespace AutoCADAddon.AutoCAD
                         roomArea = item.Area,
                         perimeter = item.Length,
                     });
+
+                    await Task.Delay(100);
+                    var room = await DataSyncService.SyncRoomServicedataAsync( item.BuildingExternalCode, item.FloorCode);
+                    item.SerId = room.list[0].id;
+
                 }
+                CacheManager.UpsertRooms(Room);
             }
             catch (Exception)
             {
@@ -396,11 +408,11 @@ namespace AutoCADAddon.AutoCAD
                 //    var textValue = dbText.TextString;
                 //    _EditData = new RoomEditForm(); // 或：new RoomEditForm(textValue);
                 //}
-                //else if (ent is MText mText)
-                //{
-                //    var textValue = mText.Contents;
-                //    _EditData = new RoomEditForm(); // 或：new RoomEditForm(textValue);
-                //}
+                else if (ent is MText mText)
+                {
+                    var textValue = mText.Contents;
+                    //_EditData = new RoomEditForm(); // 或：new RoomEditForm(textValue);
+                }
                 else
                 {
                     ed.WriteMessage("\n选择的实体类型暂不支持！");
