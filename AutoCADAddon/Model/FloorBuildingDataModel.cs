@@ -87,7 +87,6 @@ namespace AutoCADAddon.Model
             public string RoomType { get; set; } 
             public string DepartmentCode { get; set; } 
             public string divisionCode { get; set; } 
-            public string Prorate { get; set; } 
             public string Length { get; set; } 
 
             [JsonProperty("update_time")]
@@ -150,7 +149,6 @@ namespace AutoCADAddon.Model
             public string UnitType { get; set; }
             public string Unit { get; set; }
             public string Version { get; set; }
-            public string status { get; set; } = "Unpublished";
 
         }
         /// <summary>

@@ -130,7 +130,7 @@ namespace AutoCADAddon.AutoCAD
          /// </summary>
          /// <param name="s"></param>
          /// <param name="e"></param>
-        private static async void LoginAction(object s, EventArgs e)
+        private static void LoginAction(object s, EventArgs e)
         {
             if (!isLoggedIn)
             {
@@ -142,75 +142,12 @@ namespace AutoCADAddon.AutoCAD
                     signInOutButton.Text = "Sign Out";
                     Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\n已登录");
                     Document _doc = Application.DocumentManager.MdiActiveDocument;
-
-                   var Drawing = await DataSyncService.SyncDrawingServiceAsync(_doc.Window.Text);
-                    if (Drawing.total == 0)
+                    var props = CacheManager.GetCurrentDrawingProperties(_doc.Window.Text);
+                    if (props == null || string.IsNullOrEmpty(props.BuildingExternalCode) || string.IsNullOrEmpty(props.FloorCode))
                     {
-                        var props = CacheManager.GetCurrentDrawingProperties(_doc.Window.Text);
-                        if (props == null || string.IsNullOrEmpty(props.BuildingExternalCode) || string.IsNullOrEmpty(props.FloorCode))
-                        {
-                            PropertiesAction(null, null);
-                            return;
-                        }
+                        PropertiesAction(null,null);
+                        return;
                     }
-                    else
-                    {
-                        string buildcode = Drawing.list[0].building;
-                        string floorcode = Drawing.list[0].floor;
-                        var BuildingName = "";var floorname = "";
-                        var build =await DataSyncService.SyncBuildingAsync();
-                        var floor = await DataSyncService.SyncFloorAsync(buildcode);
-                        foreach (var item in build.list)
-                        {
-                            if (item.building_code ==buildcode)
-                            {
-                                BuildingName = item.building_name;
-                            }
-                        }
-                        foreach (var item in floor.list)
-                        {
-                            if (item.floor_code == floorcode)
-                            {
-                                floorname = item.floor_name;
-                            }
-                        }
-                        CacheManager.SetCurrentDrawingProperties(new Blueprint
-                        {
-                            BuildingExternalCode = buildcode,
-                            BuildingName = BuildingName,
-                            FloorCode = floorcode,
-                            FloorName = floorname,
-                            Name = Drawing.list[0].name,
-                            Version = "",
-                            UnitType = Drawing.list[0].unitType,
-                            Unit = Drawing.list[0].units,
-                            status = Drawing.list[0].status,
-                        });
-                        //var RoomData = DataSyncService.SyncRoomServicedataAsync(Drawing.list[0].building,Drawing.list[0].floor);
-                        //var Room = new List<Room>();
-                        //Room.Add(new Room
-                        //{
-                        //    Code = RoomCodeBox.SelectedText,
-                        //    Name = RoomCodeBox.SelectedText,
-                        //    BuildingExternalCode = _Building.Code,
-                        //    BuildingName = _Building.Name,
-                        //    FloorCode = _Floor.Code,
-                        //    FloorName = _Floor.Name,
-                        //    Area = Area.Text,
-                        //    Length = Length.Text,
-                        //    Category = RoomCategory.SelectedText,
-                        //    Type = RoomType.SelectedText,
-                        //    divisionCode = DivisionCode.SelectedText,
-                        //    DepartmentCode = DepartmentCode.SelectedText,
-                        //    RoomStanardCode = RoomStanard.SelectedText,
-                        //    Prorate = Prorate.Text,
-                        //    Coordinates = PolylineCommon.GetPolylineCoordinates(_Polyline),
-                        //    Extensions = EditedRoom?.Extensions ?? new Dictionary<string, ExtensionField>()
-                        //});
-                        //CacheManager.UpsertRooms(Room);
-                    }
-
-
                 }
             }
             else

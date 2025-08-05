@@ -144,7 +144,7 @@ namespace AutoCADAddon
 
         }
 
-        private async void BtnOK_Click(object sender, EventArgs e)
+        private void BtnOK_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(cmbBuilding.SelectedText)|| string.IsNullOrEmpty(cmbFloor.SelectedText))
             {
@@ -153,10 +153,10 @@ namespace AutoCADAddon
             }
 
             var blueprint = new Blueprint();
-            blueprint.BuildingExternalCode = cmbBuilding.SelectedValue is JObject jObject ? jObject["building_code"].ToString() : cmbBuilding.SelectedText;
-            blueprint.BuildingName =cmbBuilding.SelectedText; 
-            blueprint.FloorCode = cmbFloor.SelectedValue is JObject jObjectFloor ? jObjectFloor["floor_code"].ToString() : cmbFloor.SelectedText;
-            blueprint.FloorName = cmbFloor.SelectedText;
+            blueprint.BuildingExternalCode = cmbBuilding.SelectedText;
+            blueprint.BuildingName = cmbBuilding.SelectedValue is JObject jObject ? jObject["building_name"].ToString() : cmbBuilding.SelectedText;
+            blueprint.FloorCode = cmbFloor.SelectedText;
+            blueprint.FloorName = cmbFloor.SelectedValue is JObject jObjectFloor ? jObjectFloor["floor_name"].ToString() : cmbFloor.SelectedText;
             blueprint.Name = Filename.Text;
             blueprint.Version =_versionCode;
             if (Metric.Checked)
@@ -171,15 +171,7 @@ namespace AutoCADAddon
             }
 
              CacheManager.SetCurrentDrawingProperties(blueprint);
-            await DataSyncService.SyncDrawingAsync(new
-            {
-                name=Filename.Text ,
-                title=Filename.Text ,
-                building= blueprint.BuildingExternalCode ,
-                floor= blueprint.FloorCode,
-                unitType=blueprint.UnitType,
-                units =blueprint.Unit
-            });
+
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

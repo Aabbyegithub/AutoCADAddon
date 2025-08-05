@@ -36,15 +36,8 @@ namespace AutoCADControls.Controls
                 return;
             }
             var index = dataGridView1.Rows.Add();
-            var row = dataGridView1.Rows[index];
-
-            row.Cells["DrawingTitle"].Value = props.Name;
-            row.Cells["DrawingName"].Value = props.Name;
-
-            if (props.status == "Published")
-            {
-                row.DefaultCellStyle.BackColor = Color.LightGreen; // 绿色
-            }
+            dataGridView1.Rows[index].Cells["DrawingTitle"].Value = props.Name;
+            dataGridView1.Rows[index].Cells["DrawingName"].Value = props.Name;
         }
 
         public void ClearDrawingData(string name)
