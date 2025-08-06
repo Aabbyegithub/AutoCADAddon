@@ -1,4 +1,5 @@
 ﻿using AutoCADAddon;
+using AutoCADAddon.AutoCAD;
 using AutoCADAddon.Common;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.EditorInput;
@@ -10,6 +11,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 
@@ -66,24 +68,39 @@ namespace AutoCADControls.Controls
         /// <param name="e"></param>
         private void Open_Click(object sender, EventArgs e)
         {
-            var currentRow = dataGridView1.CurrentRow;
-            if (currentRow != null)
+            //var currentRow = dataGridView1.CurrentRow;
+            //if (currentRow != null)
+            //{
+            //    var drawingName = currentRow.Cells["DrawingName"].Value?.ToString();
+            //    var docs = Application.DocumentManager;
+
+            //    foreach (Document doc in docs)
+            //    {
+            //        // 注意：doc.Name 是包含完整路径的
+            //        string fileName = System.IO.Path.GetFileNameWithoutExtension(doc.Name);
+            //        if (fileName.Equals(drawingName, StringComparison.OrdinalIgnoreCase))
+            //        {
+            //            docs.MdiActiveDocument = doc; // 切换激活
+            //            return;
+            //        }
+            //    }
+
+            //    Application.ShowAlertDialog($"没有找到名为 \"{drawingName}\" 的图纸");
+            //}
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                var drawingName = currentRow.Cells["DrawingName"].Value?.ToString();
-                var docs = Application.DocumentManager;
+                openFileDialog.Filter = "AutoCAD图纸 (*.dwg)|*.dwg";
+                openFileDialog.Title = "选择一个 DWG 图纸文件";
 
-                foreach (Document doc in docs)
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    // 注意：doc.Name 是包含完整路径的
-                    string fileName = System.IO.Path.GetFileNameWithoutExtension(doc.Name);
-                    if (fileName.Equals(drawingName, StringComparison.OrdinalIgnoreCase))
-                    {
-                        docs.MdiActiveDocument = doc; // 切换激活
-                        return;
-                    }
-                }
+                    string filePath = openFileDialog.FileName;
 
-                Application.ShowAlertDialog($"没有找到名为 \"{drawingName}\" 的图纸");
+                    // 打开图纸
+                    DocumentCollection docs = Application.DocumentManager;
+                    docs.Open(filePath, false); // false 表示非只读
+                    DrawingPanel.GetDrawingData();
+                }
             }
             CloseAllPropertyForms();
         }
@@ -101,8 +118,7 @@ namespace AutoCADControls.Controls
                 _propertiesFormNew.Activate();
                 return;
             }
-            Document _doc = Application.DocumentManager.MdiActiveDocument;
-            _propertiesFormNew = new DrawingPropertiesForm(_doc);
+            _propertiesFormNew = new DrawingPropertiesForm(null, "ADD");
             _propertiesFormNew.FormClosed += (sender1, args) => { _propertiesFormNew = null; };
 
             _propertiesFormNew.Show();
@@ -121,8 +137,7 @@ namespace AutoCADControls.Controls
                 _propertiesFormAdd.Activate();
                 return;
             }
-            Document _doc = Application.DocumentManager.MdiActiveDocument;
-            _propertiesFormAdd = new DrawingPropertiesForm(_doc);
+            _propertiesFormAdd = new DrawingPropertiesForm(null,"ADD");
             _propertiesFormAdd.FormClosed += (sender1, args) => { _propertiesFormAdd = null; };
 
             _propertiesFormAdd.Show();
@@ -156,6 +171,9 @@ namespace AutoCADControls.Controls
         private void Refresh_Click(object sender, EventArgs e)
         {
             CloseAllPropertyForms();
+            Document _doc = Application.DocumentManager.MdiActiveDocument;
+            XigmaRibbon.Opdc(_doc);
+            Application.ShowAlertDialog("刷新成功！");
         }
 
         private void CloseAllPropertyForms()

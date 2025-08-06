@@ -56,10 +56,14 @@ namespace AutoCADAddon
                         return;
                     }
                     var room = CacheManager.GetRoomsByRoomCode(props.BuildingExternalCode, props.FloorCode);
-
+                   // PolylineCommon.GetLayerXData();
                     var RoomList = PolylineCommon.ParseAndExportDrawingData(doc, props.FloorCode);
                     PublishingDrawing.Maximum = RoomList.Count + 1;
                     PublishingRule.Maximum = RoomList.Count;
+                    if (RoomList.Count ==0 ) {
+                        Application.ShowAlertDialog("解析图纸失败");
+                        return;
+                    }
                     foreach (var item in RoomList)
                     {
                         if (item.Code.Contains("Room_"))

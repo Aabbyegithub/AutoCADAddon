@@ -179,7 +179,7 @@ namespace AutoCADAddon
         // 弹出属性设置窗口
         private void ShowDrawingPropertiesForm()
         {
-            using (var form = new DrawingPropertiesForm(_doc))
+            using (var form = new DrawingPropertiesForm(_doc,"OLD"))
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
@@ -589,10 +589,9 @@ namespace AutoCADAddon
                         if (roomData != null)
                         {
                           
-                            if (roomData.area != double.Parse( roomData.strings ==null ?"0": roomData.strings[1] ) && roomData.rmId != "")
-                            {
-                                roomDataList2.Add(roomData);continue;
-                            }
+
+                                roomDataList2.Add(roomData);
+                            
                             roomDataList.Add(roomData);
                             Room.Add(new Room { FloorCode = floor.Code,  Name = roomData.rmId,Area = roomData.area.ToString(),Code = roomData.rmId ,Coordinates = roomData.coordinate});
 
@@ -604,20 +603,20 @@ namespace AutoCADAddon
                 tr.Commit();
             }
 
-            foreach (var item in roomDataList2)
-            {
-                if (roomDataList.FirstOrDefault(a => a.rmId == item.rmId) != null) { var aa = roomDataList.FirstOrDefault(a => a.rmId == item.rmId); continue; }
+            //foreach (var item in roomDataList2)
+            //{
+            //    if (roomDataList.FirstOrDefault(a => a.rmId == item.rmId) != null) { var aa = roomDataList.FirstOrDefault(a => a.rmId == item.rmId); continue; }
 
-                if (item.area == 0) { 
-                    item.rmId = ""; 
-                    //roomDataList.Add(item);
-                    Room.Add(new Room {FloorCode =floor.Code,  Name =$"Room_{Count}" ,Area = item.area.ToString(),Code =$"Room_{Count}" ,Coordinates = item.coordinate }); 
-                    Debug.WriteLine($"{item.rmId}-----{item.area}");}
-                else { item.area = double.Parse(item.strings[1]);
-                    //roomDataList.Add(item); 
-                    Room.Add(new Room { FloorCode = floor.Code,  Name = item.rmId,Area = item.area.ToString(),Code = item.rmId  ,Coordinates = item.coordinate});
-                    Debug.WriteLine($"{item.rmId}-----{item.area}");}
-            }
+            //    if (item.area == 0) { 
+            //        item.rmId = ""; 
+            //        //roomDataList.Add(item);
+            //        Room.Add(new Room {FloorCode =floor.Code,  Name =$"Room_{Count}" ,Area = item.area.ToString(),Code =$"Room_{Count}" ,Coordinates = item.coordinate }); 
+            //        Debug.WriteLine($"{item.rmId}-----{item.area}");}
+            //    else { item.area = double.Parse(item.strings[1]);
+            //        //roomDataList.Add(item); 
+            //        Room.Add(new Room { FloorCode = floor.Code,  Name = item.rmId,Area = item.area.ToString(),Code = item.rmId  ,Coordinates = item.coordinate});
+            //        Debug.WriteLine($"{item.rmId}-----{item.area}");}
+            //}
             Room.ForEach(item =>
             {
                 if (string.IsNullOrEmpty(item.Code))
@@ -674,7 +673,7 @@ namespace AutoCADAddon
                 rmId =area ==0?"": (idArea == null ? "":idArea[0]),
                 area = area,
                 coordinate = coordinate,
-                strings = idArea
+                
             };
         }
 

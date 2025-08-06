@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -48,12 +49,10 @@ namespace AutoCADAddon
         private async void LoeadingRoomData()
         {
             var RoomCode = "";
-            var RoomPro = PolylineCommon.GetRoomIdFromAttribute(_Polyline, _tr);
+            var RoomPro = PolylineCommon.ParseRoomFromPolyline(_Polyline, _tr);
+
             await GetRoomDownLoadList();
-            if (RoomPro.Length > 0)
-            {
-                RoomCode = RoomPro[0];
-            }
+            RoomCode = RoomPro.rmId;
             var RoomData = CacheManager.GetRoomsByRoomCode(RoomCode).FirstOrDefault();
             if (RoomData != null)
             {

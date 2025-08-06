@@ -15,8 +15,8 @@ namespace AutoCADAddon
     public class DrawingPanel
     {
         private readonly PaletteSet _paletteSet;
-        private readonly ToolMenuData _ToolMenuData;
-        private Document _doc;
+        private static  ToolMenuData _ToolMenuData;
+        private static Document _doc;
         private bool _isProcessing = false;
         public DrawingPanel()
         {
@@ -50,7 +50,7 @@ namespace AutoCADAddon
         /// <summary>
         /// 获取图纸数据
         /// </summary>
-        private void GetDrawingData()
+        public static void GetDrawingData()
         {
             _ToolMenuData.Invoke(new Action(() =>
             {

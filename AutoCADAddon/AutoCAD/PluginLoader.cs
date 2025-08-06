@@ -1,9 +1,10 @@
-﻿using System;
+﻿using AutoCADAddon.Common;
+using Autodesk.AutoCAD.ApplicationServices;
+using Autodesk.AutoCAD.Runtime;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using AutoCADAddon.Common;
-using Autodesk.AutoCAD.Runtime;
 using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 
 [assembly: ExtensionApplication(typeof(AutoCADAddon.AutoCAD.PluginLoader))]
@@ -21,7 +22,8 @@ namespace AutoCADAddon.AutoCAD
         {
             // 使用Idle事件确保UI已完全加载
             Application.Idle += OnApplicationIdle;
-            
+            Application.DocumentManager.DocumentCreated += OnDocumentCreated;
+
         }
 
         private static Assembly ResolveAcadAssemblies()
@@ -67,8 +69,17 @@ namespace AutoCADAddon.AutoCAD
             timer.Start();
         }
         // 插件卸载时执行（一般无需处理）
-        public void Terminate() { }
-
+        public void Terminate() {
+            // 卸载时移除监听
+            Application.DocumentManager.DocumentCreated -= OnDocumentCreated;
+        }
+        private void OnDocumentCreated(object sender, DocumentCollectionEventArgs e)
+        {
+            // 打开新图纸或新建图纸时触发
+            var doc = e.Document;
+            XigmaRibbon.Opdc(doc);
+            // 也可以在这里进行你自己的业务逻辑，比如绑定事件、初始化数据等
+        }
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, UIntPtr dwExtraInfo);

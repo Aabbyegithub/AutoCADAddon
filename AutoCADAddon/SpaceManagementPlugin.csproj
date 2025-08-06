@@ -43,19 +43,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="accoremgd">
-      <HintPath>..\..\..\..\安装\AutoCAD2024\AutoCAD 2024\accoremgd.dll</HintPath>
+      <HintPath>..\..\..\..\anzhuang-chengxu\AutoCAD\AutoCAD 2024\accoremgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="acdbmgd">
-      <HintPath>..\..\..\..\安装\AutoCAD2024\AutoCAD 2024\acdbmgd.dll</HintPath>
+      <HintPath>..\..\..\..\anzhuang-chengxu\AutoCAD\AutoCAD 2024\acdbmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="acmgd">
-      <HintPath>..\..\..\..\安装\AutoCAD2024\AutoCAD 2024\acmgd.dll</HintPath>
+      <HintPath>..\..\..\..\anzhuang-chengxu\AutoCAD\AutoCAD 2024\acmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="AdWindows">
-      <HintPath>..\..\..\..\安装\AutoCAD2024\AutoCAD 2024\AdWindows.dll</HintPath>
+      <HintPath>..\..\..\..\anzhuang-chengxu\AutoCAD\AutoCAD 2024\AdWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
@@ -180,6 +180,12 @@
     <Compile Include="PublishDrawing.Designer.cs">
       <DependentUpon>PublishDrawing.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reconcile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reconcile.Designer.cs">
+      <DependentUpon>Reconcile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -215,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PublishDrawing.resx">
       <DependentUpon>PublishDrawing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reconcile.resx">
+      <DependentUpon>Reconcile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

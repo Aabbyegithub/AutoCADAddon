@@ -35,7 +35,7 @@ namespace AutoCADAddon.Model
             public string rmId { get; set; }
             public double area { get; set; }
             public string coordinate { get; set; }
-            public string[] strings { get; set; }
+            //public string[] strings { get; set; }
         }
 
 

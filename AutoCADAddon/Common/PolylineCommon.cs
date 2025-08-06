@@ -1,6 +1,8 @@
 ﻿using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
+using Autodesk.AutoCAD.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,18 +24,10 @@ namespace AutoCADAddon.Common
             // 1. 获取当前图纸绑定的楼层信息
             var props = CacheManager.GetCurrentDrawingProperties(_doc.Window.Text);
 
-            // 2. 获取楼层详情（含floorCode和floorName）
-            //var floor = CacheManager.GetFloorsByBuilding(props.BuildingExternalCode).FirstOrDefault();
-            //if (floor == null)
-            //{
-            //    _doc.Editor.WriteMessage("\n未找到绑定的楼层数据");
-            //    return null;
-            //}
-
             // 3. 解析图纸中的房间数据
             var roomDataList = new List<RoomData>();
             var Room = new List<Room>();
-            var roomDataList2 = new List<RoomData>();
+            //var roomDataList2 = new List<RoomData>();
             var Count = 1;
             using (Transaction tr = _doc.Database.TransactionManager.StartTransaction())
             {
@@ -56,14 +50,11 @@ namespace AutoCADAddon.Common
                     // 过滤出房间边界（假设为闭合多段线且在房间图层）
                     if (entity is Polyline polyline)
                     {
+                        Debug.WriteLine($"图层名称：{polyline.Layer}");
+                        if (!polyline.Layer.ToString().Contains("RM$")) continue;
                         var roomData = ParseRoomFromPolyline(polyline, tr);
                         if (roomData != null)
                         {
-
-                            if (roomData.area != double.Parse(roomData.strings == null ? "0" : roomData.strings[1]) && roomData.rmId != "")
-                            {
-                                roomDataList2.Add(roomData); continue;
-                            }
                             roomDataList.Add(roomData);
                             Room.Add(new Room { FloorCode = FloorCode, Name = roomData.rmId, Area = roomData.area.ToString(), Code = roomData.rmId, Coordinates = roomData.coordinate });
 
@@ -73,26 +64,6 @@ namespace AutoCADAddon.Common
                     }
                 }
                 tr.Commit();
-            }
-
-            foreach (var item in roomDataList2)
-            {
-                if (roomDataList.FirstOrDefault(a => a.rmId == item.rmId) != null) { var aa = roomDataList.FirstOrDefault(a => a.rmId == item.rmId); continue; }
-
-                if (item.area == 0)
-                {
-                    item.rmId = "";
-                    //roomDataList.Add(item);
-                    Room.Add(new Room { FloorCode = FloorCode, Name = $"Room_{Count}", Area = item.area.ToString(), Code = $"Room_{Count}", Coordinates = item.coordinate });
-                    Debug.WriteLine($"{item.rmId}-----{item.area}");
-                }
-                else
-                {
-                    item.area = double.Parse(item.strings[1]);
-                    //roomDataList.Add(item); 
-                    Room.Add(new Room { FloorCode = FloorCode, Name = item.rmId, Area = item.area.ToString(), Code = item.rmId, Coordinates = item.coordinate });
-                    Debug.WriteLine($"{item.rmId}-----{item.area}");
-                }
             }
             Room.ForEach(item =>
             {
@@ -106,20 +77,53 @@ namespace AutoCADAddon.Common
                     item.Name = $"Room_{Count}";
                 }
             });
-            //// 4. 生成目标JSON格式
-            //var result = new ResultFloorRoom
-            //{
-            //    floorCode = floor.Code,
-            //    floorName = floor.Name,
-            //    data = roomDataList
-            //};
-            //加入图纸房间
-            //CacheManager.UpsertRooms(Room);
             return Room;
-
-            //await DataSyncService.SyncBlueprintAsync(result);
-
         }
+
+
+        public static void GetLayerXData()
+        {
+            Document doc = Application.DocumentManager.MdiActiveDocument;
+            Database db = doc.Database;
+            Editor ed = doc.Editor;
+
+            using (Transaction tr = db.TransactionManager.StartTransaction())
+            {
+
+
+
+                LayerTable lt = tr.GetObject(db.LayerTableId, OpenMode.ForRead) as LayerTable;
+
+                foreach (ObjectId layerId in lt)
+                {
+                    LayerTableRecord ltr = tr.GetObject(layerId, OpenMode.ForRead) as LayerTableRecord;
+                    ResultBuffer xdata = null;
+                    Debug.WriteLine(ltr.Name);
+                    if (ltr.Name.Equals("RM$", StringComparison.OrdinalIgnoreCase))
+                    {
+                        RegAppTable regTable = tr.GetObject(db.RegAppTableId, OpenMode.ForRead) as RegAppTable;
+                        foreach (ObjectId id in regTable)
+                        {
+                            var app = tr.GetObject(id, OpenMode.ForRead) as RegAppTableRecord;
+                            xdata = ltr.GetXDataForApplication(app.Name);
+                            if (xdata != null)
+                            {
+                                Debug.WriteLine($"\n图层 {ltr.Name} 的 XData 来自 App：{app.Name}");
+                                //ed.WriteMessage($"\n图层 {ltr.Name} 的 XData 来自 App：{app.Name}");
+                                foreach (TypedValue tv in xdata)
+                                {
+                                    Debug.WriteLine($"\n  类型: {tv.TypeCode}, 值: {tv.Value}");
+                                    //ed.WriteMessage($"\n  类型: {tv.TypeCode}, 值: {tv.Value}");
+                                }
+                            }
+                        }
+                    }
+                }
+
+                tr.Commit();
+            }
+        }
+
 
         // 辅助：判断是否为房间图层（根据命名规则）
         private bool IsRoomLayer(string layerName)
@@ -130,28 +134,43 @@ namespace AutoCADAddon.Common
         }
 
         // 辅助：从多段线解析房间数据
-        private static RoomData ParseRoomFromPolyline(Polyline polyline, Transaction tr)
+        public static RoomData ParseRoomFromPolyline(Polyline polyline, Transaction tr)
         {
-            var idArea = GetRoomIdFromAttribute(polyline, tr);
-            //if (string.IsNullOrEmpty(rmId))
-            //{
-            //    // 如果属性块中未获取到，再从图层名提取
-            //    rmId = polyline.Layer.Split('_').LastOrDefault();
-            //}
-            //if (string.IsNullOrEmpty(rmId)) return null;
-
             // 计算面积（转换为平方米，假设图纸单位为毫米）
             double area = Math.Round(polyline.Area / 1000000, 2); // 1平方米 = 1e6平方毫米
+            if (area.ToString() == "3.24")
+            {
+                var bb = "";
+            }
+            //var idArea = GetRoomIdFromAttribute(polyline, tr);
+            var Roomcode = "";
+            var XData = polyline.XData;
+            if (XData != null)
+            {
+                foreach (var item in XData)
+                {
+                    if (item.Value.ToString().Contains("}"))
+                        break;
+                    if (item.TypeCode.ToString().Contains("1000"))
+                    {
+                        Roomcode = item.Value.ToString();
+                    }
+                    Debug.WriteLine($"键值{item.TypeCode}--value{item.Value}");
+
+                }
+            }
+
+
 
             // 提取坐标（转换为字符串格式）
             string coordinate = GetPolylineCoordinates(polyline);
 
             return new RoomData
             {
-                rmId = area == 0 ? "" : (idArea == null ? "" : idArea[0]),
+                rmId =Roomcode,
                 area = area,
                 coordinate = coordinate,
-                strings = idArea
+                //strings = idArea
             };
         }
 

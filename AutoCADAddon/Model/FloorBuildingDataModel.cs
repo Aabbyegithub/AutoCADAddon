@@ -91,6 +91,7 @@ namespace AutoCADAddon.Model
             public string Prorate { get; set; }
             public string Length { get; set; }
             public string IsSave { get; set; } = "1";
+            public string OldCode { get; set; } 
 
             [JsonProperty("update_time")]
             public DateTime UpdateTime { get; set; } = DateTime.Now;

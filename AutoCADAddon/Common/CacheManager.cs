@@ -148,6 +148,7 @@ namespace AutoCADAddon.Common
                         layerName TEXT,
                         Coordinates TEXT,
                         IsSave TEXT,
+                        OldCode TEXT,
                         Extensions TEXT  -- 存储 JSON 字符串
                     )
                 ");
@@ -633,10 +634,10 @@ namespace AutoCADAddon.Common
                             var cmd = new SQLiteCommand(@"
                                 INSERT OR REPLACE INTO Room (
                                      BuildingExternalCode,BuildingName,FloorCode,FloorName,  Name, Code, Area, Type, RoomStanardCode,Category,RoomType,Length,DepartmentCode,divisionCode,Prorate,
-                                    UpdateTime, Extensions,LayerId,layerName,Coordinates,SerId,IsSave
+                                    UpdateTime, Extensions,LayerId,layerName,Coordinates,SerId,IsSave,OldCode
                                 ) VALUES (
                                      @BuildingExternalCode,@BuildingName,@FloorCode,@FloorName,  @Name, @Code, @Area, @Type,@RoomStanardCode, @Category,@RoomType,@Length,@DepartmentCode,@divisionCode,@Prorate,
-                                    @UpdateTime, @Extensions,@LayerId,@layerName,@Coordinates,@SerId,@IsSave
+                                    @UpdateTime, @Extensions,@LayerId,@layerName,@Coordinates,@SerId,@IsSave,@OldCode
                                 )
                             ", conn, tran);
                             cmd.Parameters.AddWithValue("@BuildingExternalCode", r.BuildingExternalCode);
@@ -660,6 +661,7 @@ namespace AutoCADAddon.Common
                             cmd.Parameters.AddWithValue("@Coordinates", r.Coordinates);
                             cmd.Parameters.AddWithValue("@SerId", r.SerId);
                             cmd.Parameters.AddWithValue("@IsSave", r.IsSave);
+                            cmd.Parameters.AddWithValue("@OldCode", r.OldCode);
                             cmd.Parameters.AddWithValue("@Extensions", JsonConvert.SerializeObject(r.Extensions));
                             cmd.ExecuteNonQuery();
                         }
@@ -713,6 +715,7 @@ namespace AutoCADAddon.Common
                             Coordinates = reader["Coordinates"].ToString(),
                             SerId = reader["SerId"].ToString(),
                             IsSave = reader["IsSave"].ToString(),
+                            OldCode = reader["OldCode"].ToString(),
                             Extensions = JsonConvert.DeserializeObject<Dictionary<string, ExtensionField>>(
                                 reader["Extensions"].ToString() ?? "{}")
                         });
@@ -765,6 +768,7 @@ namespace AutoCADAddon.Common
                             Coordinates = reader["Coordinates"].ToString(),
                             SerId = reader["SerId"].ToString(),
                             IsSave = reader["IsSave"].ToString(),
+                            OldCode = reader["OldCode"].ToString(),
                             Extensions = JsonConvert.DeserializeObject<Dictionary<string, ExtensionField>>(
                                 reader["Extensions"].ToString() ?? "{}")
                         });
@@ -811,6 +815,7 @@ namespace AutoCADAddon.Common
                             Coordinates = reader["Coordinates"].ToString(),
                             SerId = reader["SerId"].ToString(),
                             IsSave = reader["IsSave"].ToString(),
+                            OldCode = reader["OldCode"].ToString(),
                             Extensions = JsonConvert.DeserializeObject<Dictionary<string, ExtensionField>>(
                                 reader["Extensions"].ToString() ?? "{}")
                         });

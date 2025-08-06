@@ -8,12 +8,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using static AutoCADAddon.Model.FloorBuildingDataModel;
+using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace AutoCADAddon
 {
@@ -22,7 +24,8 @@ namespace AutoCADAddon
         public Document _doc;
         private string _versionCode;
         private string _SerId;
-        public DrawingPropertiesForm(Document doc)
+        private string _IsNew;
+        public DrawingPropertiesForm(Document doc,string IsNew)
         {
             _doc = doc;
             InitializeComponent();
@@ -30,6 +33,7 @@ namespace AutoCADAddon
             cmbMet.SelectedIndex = 0;
             DrawingProperties();
             Metric.Checked = true;
+            _IsNew = IsNew;
         }
 
         /// <summary>
@@ -96,7 +100,7 @@ namespace AutoCADAddon
             {
                 Filename.Text = _doc.Window.Text;//图纸名称
                 Title.Text = _doc.Window.Text;//图纸标题
-                Path.Text = Path.Text + _doc.Name ?? "(none)"; //图纸路径
+                Path1.Text = Path1.Text + _doc.Name ?? "(none)"; //图纸路径
 
                 // 使用反射调用内部方法
                 var method = _doc.Database.GetType().GetMethod("GetSysVar",
@@ -153,6 +157,46 @@ namespace AutoCADAddon
                 MessageBox.Show("请完整选择建筑、楼层和房间！");
                 return;
             }
+            DocumentCollection docs = null; Document newDoc = null;string fullPath = "";
+            if (_IsNew == "ADD")
+            {
+                using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+                {
+                    folderDialog.Description = "请选择一个文件夹用来保存图纸";
+                    folderDialog.ShowNewFolderButton = true;  // 允许用户新建文件夹
+
+                    if (folderDialog.ShowDialog() == DialogResult.OK)
+                    {
+                         // 1. 新建图纸
+                         docs = Application.DocumentManager;
+                         newDoc = docs.Add("");
+
+
+                        // 2. 保存为指定名称（改变标题）
+                        string folder = folderDialog.SelectedPath; // 返回用户选择的路径
+                        if (!Directory.Exists(folder))
+                            Directory.CreateDirectory(folder);
+
+                         fullPath = Path.Combine(folder, $"{Filename.Text.Replace(".dwg", "")}.dwg");
+
+                        using (DocumentLock docLock = newDoc.LockDocument())
+                        {
+                            newDoc.Database.SaveAs(fullPath, DwgVersion.Current);
+                        }
+                        // 3. 注册 DocumentActivated 事件（提前监听）
+                        var dm = Application.DocumentManager;
+                        dm.DocumentActivated += (s, e1) =>
+                        {
+                            _doc = e1.Document;
+                        };
+                    }
+                    else
+                    {
+                        return; // 用户取消
+                    }
+                }
+
+            }
 
             var blueprint = new Blueprint();
             blueprint.BuildingExternalCode = cmbBuilding.SelectedValue is JObject jObject ? jObject["building_code"].ToString() : cmbBuilding.SelectedText;
@@ -185,7 +229,7 @@ namespace AutoCADAddon
                     units = blueprint.Unit
                 });
                 await Task.Delay(100);
-                var Drawing = await DataSyncService.SyncDrawingServiceAsync(_doc.Window.Text);
+                var Drawing = await DataSyncService.SyncDrawingServiceAsync(Filename.Text);
 
                 blueprint.SerId = Drawing.list[0].id;
             }
@@ -199,6 +243,16 @@ namespace AutoCADAddon
                 blueprint.IsSave = "0";
             }
             CacheManager.SetCurrentDrawingProperties(blueprint);
+
+            if (_IsNew == "ADD")
+            {
+                // 4. 打开刚刚保存的图纸（系统自动激活）
+                docs.Open(fullPath, false);
+
+                // 5. 关闭原来的临时图纸（不是当前活动文档了，可以安全关闭）
+                newDoc.CloseAndDiscard();
+                DrawingPanel.GetDrawingData();
+            }
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

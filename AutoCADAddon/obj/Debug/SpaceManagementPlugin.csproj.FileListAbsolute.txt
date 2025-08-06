@@ -266,3 +266,4 @@ D:\ProJect\LqProjrctTest\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceManagementPlug
 D:\ProJect\LqProjrctTest\AutoCADAddon\AutoCADAddon\obj\Debug\SpaceMan.A2DCF153.Up2Date
 D:\ProJect\LqProjrctTest\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.dll
 D:\ProJect\LqProjrctTest\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.pdb
+D:\LQProject\WaiBaoPro\AutoCADAddon\AutoCADAddon\obj\Debug\AutoCADAddon.Reconcile.resources

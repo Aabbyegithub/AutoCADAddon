@@ -28,6 +28,7 @@ namespace AutoCADAddon.AutoCAD
         private static DrawingPropertiesForm _propertiesForm;
         private static RoomEditForm _EditData;
         private static PublishDrawing _PublishDrawing;
+        private static Reconcile _Reconcile;
 
 
         public static void AddXigmaRibbon()
@@ -145,87 +146,7 @@ namespace AutoCADAddon.AutoCAD
                     Document _doc = Application.DocumentManager.MdiActiveDocument;
 
                    await anewSave();
-
-                    var Drawing = await DataSyncService.SyncDrawingServiceAsync(_doc.Window.Text);
-                    if (Drawing.total == 0)
-                    {
-                        var props = CacheManager.GetCurrentDrawingProperties(_doc.Window.Text);
-                        if (props == null || string.IsNullOrEmpty(props.BuildingExternalCode) || string.IsNullOrEmpty(props.FloorCode))
-                        {
-                            PropertiesAction(null, null);
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        try
-                        {
-                            string buildcode = Drawing.list[0].building;
-                            string floorcode = Drawing.list[0].floor;
-                            var BuildingName = ""; var floorname = "";
-                            var build = await DataSyncService.SyncBuildingAsync();
-                            var floor = await DataSyncService.SyncFloorAsync(buildcode);
-                            foreach (var item in build.list)
-                            {
-                                if (item.building_code == buildcode)
-                                {
-                                    BuildingName = item.building_name;
-                                }
-                            }
-                            foreach (var item in floor.list)
-                            {
-                                if (item.floor_code == floorcode)
-                                {
-                                    floorname = item.floor_name;
-                                }
-                            }
-                            CacheManager.SetCurrentDrawingProperties(new Blueprint
-                            {
-                                SerId = Drawing.list[0].id,
-                                BuildingExternalCode = buildcode,
-                                BuildingName = BuildingName,
-                                FloorCode = floorcode,
-                                FloorName = floorname,
-                                Name = Drawing.list[0].name,
-                                Version = "",
-                                UnitType = Drawing.list[0].unitType,
-                                Unit = Drawing.list[0].units,
-                                status = Drawing.list[0].status,
-                            });
-                            var RoomData = await DataSyncService.SyncRoomServicedataAsync(buildcode, floorcode);
-                            var Room = new List<Room>();
-                            foreach (var item in RoomData.list)
-                            {
-                                Room.Add(new Room
-                                {
-                                    Code = item.room_code,
-                                    Name = item.room_code,
-                                    BuildingExternalCode = buildcode,
-                                    BuildingName = BuildingName,
-                                    FloorCode = floorcode,
-                                    FloorName = floorname,
-                                    Area = item.room_area,
-                                    Length = item.perimeter,
-                                    Category = item.room_category,
-                                    Type = item.room_type,
-                                    divisionCode = item.senior_management,
-                                    DepartmentCode = item.department,
-                                    RoomStanardCode = item.standard,
-                                    Prorate = item.prorate,
-                                    //Coordinates = PolylineCommon.GetPolylineCoordinates(_Polyline),
-                                    //Extensions = EditedRoom?.Extensions ?? new Dictionary<string, ExtensionField>()
-                                });
-                            }
-
-                            CacheManager.UpsertRooms(Room);
-                        }
-                        catch (Exception)
-                        {
-                            Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\n同步图纸数据失败");
-                        }
-                        
-                    }
-
+                    Opdc(_doc);
                 }
             }
             else
@@ -237,6 +158,88 @@ namespace AutoCADAddon.AutoCAD
             }
 
 
+        }
+        public async static void Opdc(Document _doc)
+        {
+            var Drawing = await DataSyncService.SyncDrawingServiceAsync(_doc.Window.Text);
+            if (Drawing.total == 0)
+            {
+                var props = CacheManager.GetCurrentDrawingProperties(_doc.Window.Text);
+                if (props == null || string.IsNullOrEmpty(props.BuildingExternalCode) || string.IsNullOrEmpty(props.FloorCode))
+                {
+                    PropertiesAction(null, null);
+                    return;
+                }
+            }
+            else
+            {
+                try
+                {
+                    string buildcode = Drawing.list[0].building;
+                    string floorcode = Drawing.list[0].floor;
+                    var BuildingName = ""; var floorname = "";
+                    var build = await DataSyncService.SyncBuildingAsync();
+                    var floor = await DataSyncService.SyncFloorAsync(buildcode);
+                    foreach (var item in build.list)
+                    {
+                        if (item.building_code == buildcode)
+                        {
+                            BuildingName = item.building_name;
+                        }
+                    }
+                    foreach (var item in floor.list)
+                    {
+                        if (item.floor_code == floorcode)
+                        {
+                            floorname = item.floor_name;
+                        }
+                    }
+                    CacheManager.SetCurrentDrawingProperties(new Blueprint
+                    {
+                        SerId = Drawing.list[0].id,
+                        BuildingExternalCode = buildcode,
+                        BuildingName = BuildingName,
+                        FloorCode = floorcode,
+                        FloorName = floorname,
+                        Name = Drawing.list[0].name,
+                        Version = "",
+                        UnitType = Drawing.list[0].unitType,
+                        Unit = Drawing.list[0].units,
+                        status = Drawing.list[0].status,
+                    });
+                    var RoomData = await DataSyncService.SyncRoomServicedataAsync(buildcode, floorcode);
+                    var Room = new List<Room>();
+                    foreach (var item in RoomData.list)
+                    {
+                        Room.Add(new Room
+                        {
+                            Code = item.room_code,
+                            Name = item.room_code,
+                            BuildingExternalCode = buildcode,
+                            BuildingName = BuildingName,
+                            FloorCode = floorcode,
+                            FloorName = floorname,
+                            Area = item.room_area,
+                            Length = item.perimeter,
+                            Category = item.room_category,
+                            Type = item.room_type,
+                            divisionCode = item.senior_management,
+                            DepartmentCode = item.department,
+                            RoomStanardCode = item.standard,
+                            Prorate = item.prorate,
+                            //Coordinates = PolylineCommon.GetPolylineCoordinates(_Polyline),
+                            //Extensions = EditedRoom?.Extensions ?? new Dictionary<string, ExtensionField>()
+                        });
+                    }
+
+                    CacheManager.UpsertRooms(Room);
+                }
+                catch (Exception)
+                {
+                    Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\n同步图纸数据失败");
+                }
+
+            }
         }
 
         /// <summary>
@@ -340,7 +343,7 @@ namespace AutoCADAddon.AutoCAD
                 return;
             }
             Document _doc = Application.DocumentManager.MdiActiveDocument;
-            _propertiesForm = new DrawingPropertiesForm(_doc);
+            _propertiesForm = new DrawingPropertiesForm(_doc,"OLD");
             _propertiesForm.FormClosed += (sender, args) => { _propertiesForm = null; };
 
             _propertiesForm.Show();
@@ -408,11 +411,11 @@ namespace AutoCADAddon.AutoCAD
                 //    var textValue = dbText.TextString;
                 //    _EditData = new RoomEditForm(); // 或：new RoomEditForm(textValue);
                 //}
-                else if (ent is MText mText)
-                {
-                    var textValue = mText.Contents;
-                    //_EditData = new RoomEditForm(); // 或：new RoomEditForm(textValue);
-                }
+                //else if (ent is MText mText)
+                //{
+                //    var textValue = mText.Contents;
+                //    //_EditData = new RoomEditForm(); // 或：new RoomEditForm(textValue);
+                //}
                 else
                 {
                     ed.WriteMessage("\n选择的实体类型暂不支持！");
@@ -455,11 +458,28 @@ namespace AutoCADAddon.AutoCAD
         }
 
         /// <summary>
-        /// 
+        /// 对比图纸还有那些没有绑定的房间
         /// </summary>
         /// <param name="s"></param>
         /// <param name="e"></param>
-        private static void ReconcileAction(object s, EventArgs e) => ShowMessage("Reconcile clicked");
+        private static void ReconcileAction(object s, EventArgs e){
+            if (!isLoggedIn)
+            {
+                Application.ShowAlertDialog("请先登录系统！");
+                return;
+            }
+
+            if (_Reconcile != null && !_Reconcile.IsDisposed)
+            {
+                _Reconcile.Activate();
+                return;
+            }
+             Document _doc = Application.DocumentManager.MdiActiveDocument;
+            _Reconcile = new Reconcile(_doc);
+            _Reconcile.FormClosed += (sender, args) => { _Reconcile = null; };
+
+            _Reconcile.Show();
+        }
 
         private static void ShowMessage(string msg)
         {
