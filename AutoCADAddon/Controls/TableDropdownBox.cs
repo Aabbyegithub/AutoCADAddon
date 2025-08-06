@@ -130,8 +130,9 @@ namespace AutoCADAddon.Controls
         private void OnItemClick(ItemData item)
         {
             bool changed = _selectedItem != item;
-            mainButton.Text = item.DisplayText + " ▼";
+            mainButton.Text = item.DisplayText + "▼";
             _dropdown.Close();
+
             ItemSelected?.Invoke(this, item);
             if (changed)
             {
@@ -141,7 +142,7 @@ namespace AutoCADAddon.Controls
         public void SetSelectedItem(string DisplayText)
         {
             _selectedItem = _items?.FirstOrDefault(i => i.DisplayText == DisplayText);
-            mainButton.Text =DisplayText + " ▼";
+            mainButton.Text =DisplayText + "▼";
             SelectedItemChanged?.Invoke(this, _selectedItem);
         }
 
@@ -151,12 +152,12 @@ namespace AutoCADAddon.Controls
         public void ClearSelection()
         {
             _selectedItem = null;
-            mainButton.Text = " ▼";  // 或者你想显示的默认文本
+            mainButton.Text = "▼";  // 或者你想显示的默认文本
             SelectedItemChanged?.Invoke(this, null);  // 通知外部选择已清空
         }
 
-        public string SelectedText => mainButton?.Text.Replace(" ▼", "");
-        public object SelectedValue => _items?.FirstOrDefault(i => i.DisplayText == SelectedText)?.Tag;
+        public string SelectedText => mainButton?.Text.Replace("▼", "");
+        public object SelectedValue => _items?.FirstOrDefault(i => i.DisplayText.Trim() == SelectedText.Trim())?.Tag;
     }
 
     [Serializable]

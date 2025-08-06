@@ -40,10 +40,10 @@ namespace AutoCADAddon
                 return;
             }
 
-            EditedBuilding.Name = txtName.Text;
-            EditedBuilding.Code = txtCode.Text;
+            EditedBuilding.Name = txtName.Text.Trim();
+            EditedBuilding.Code = txtCode.Text.Trim();
             EditedBuilding.UpdateTime = DateTime.Now;
-            var res =await DataSyncService.AddBuildingAsync(txtCode.Text,txtName.Text);
+            var res =await DataSyncService.AddBuildingAsync(txtCode.Text.Trim(),txtName.Text.Trim());
             if (res as string == "OK")
             {
                 DialogResult = DialogResult.OK;

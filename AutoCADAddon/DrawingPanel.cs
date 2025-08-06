@@ -39,11 +39,20 @@ namespace AutoCADAddon
             {
                 timer.Dispose(); // 执行一次后销毁定时器
             };
-            _doc = Application.DocumentManager.MdiActiveDocument;
-            if (_doc !=null)
+            //_doc = Application.DocumentManager.MdiActiveDocument;
+            //if (_doc !=null)
+            //{
+            //    GetDrawingData();
+            //}
+
+            var docs = Application.DocumentManager;
+
+            foreach (Document doc in docs)
             {
+                _doc = doc;
                 GetDrawingData();
             }
+
             timer.Start();
         }
 
@@ -52,12 +61,23 @@ namespace AutoCADAddon
         /// </summary>
         public static void GetDrawingData()
         {
-            _ToolMenuData.Invoke(new Action(() =>
+            if (_ToolMenuData != null && !_ToolMenuData.IsDisposed && _ToolMenuData.IsHandleCreated)
             {
-                _ToolMenuData.GetDrawingData(_doc);
-            }));
+                if (_ToolMenuData.InvokeRequired)
+                {
+                    _ToolMenuData.Invoke(new Action(() =>
+                    {
+                        _ToolMenuData.GetDrawingData(_doc);
+                    }));
+                }
+                else
+                {
+                    _ToolMenuData.GetDrawingData(_doc);
+                }
+            }
         }
-        private void DocumentManager_DocumentCreated(object sender, DocumentCollectionEventArgs e)
+
+        private  void DocumentManager_DocumentCreated(object sender, DocumentCollectionEventArgs e)
         {
             _doc = e.Document;
 
@@ -70,22 +90,32 @@ namespace AutoCADAddon
             }
             //// 判断是否已绑定属性
             var props = CacheManager.GetCurrentDrawingProperties(_doc.Window.Text);
-            if (!string.IsNullOrEmpty(props.Name) && !string.IsNullOrEmpty(props.BuildingExternalCode))
+            if (props == null || string.IsNullOrEmpty(props.BuildingExternalCode) || string.IsNullOrEmpty(props.FloorCode))
             {
                 return;
             }
             GetDrawingData();
         }
 
-        private void DocumentManager_DocumentToBeDestroyed(object sender, DocumentCollectionEventArgs e)
+        private  void DocumentManager_DocumentToBeDestroyed(object sender, DocumentCollectionEventArgs e)
         {
             // 文档即将关闭
             if (_doc != null && e.Document.Name == _doc.Name)
             {
-                _ToolMenuData.Invoke(new Action(() =>
+                if (_ToolMenuData != null && !_ToolMenuData.IsDisposed && _ToolMenuData.IsHandleCreated)
                 {
-                    _ToolMenuData.ClearDrawingData(_doc.Window.Text);
-                }));
+                    if (_ToolMenuData.InvokeRequired)
+                    {
+                        _ToolMenuData.Invoke(new Action(() =>
+                        {
+                            _ToolMenuData.ClearDrawingData(_doc.Window.Text);
+                        }));
+                    }
+                    else
+                    {
+                        _ToolMenuData.ClearDrawingData(_doc.Window.Text);
+                    }
+                }
                 _doc.Database.SaveComplete -= Database_SaveComplete;
                 _doc = null;
             }

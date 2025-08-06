@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -32,10 +33,18 @@ namespace AutoCADControls.Controls
         /// <param name="_doc"></param>
         public void GetDrawingData(Document _doc)
         {
+            Debug.WriteLine("执行添加");
             var props = CacheManager.GetCurrentDrawingProperties(_doc.Window.Text);
             if (props == null || string.IsNullOrEmpty(props.BuildingExternalCode) || string.IsNullOrEmpty(props.FloorCode))
             {
                 return;
+            }
+            foreach (DataGridViewRow existingRow in dataGridView1.Rows)
+            {
+                if (existingRow.Cells["DrawingName"].Value?.ToString() == props.Name)
+                {
+                    return; // 已存在就不添加
+                }
             }
             var index = dataGridView1.Rows.Add();
             var row = dataGridView1.Rows[index];
@@ -47,6 +56,7 @@ namespace AutoCADControls.Controls
             {
                 row.DefaultCellStyle.BackColor = Color.LightGreen; // 绿色
             }
+            dataGridView1.Refresh();
         }
 
         public void ClearDrawingData(string name)
@@ -59,6 +69,7 @@ namespace AutoCADControls.Controls
                     break; // 删除后必须 break，否则会抛异常
                 }
             }
+           dataGridView1.Refresh();
         }
 
         /// <summary>
@@ -99,6 +110,7 @@ namespace AutoCADControls.Controls
                     // 打开图纸
                     DocumentCollection docs = Application.DocumentManager;
                     docs.Open(filePath, false); // false 表示非只读
+
                     DrawingPanel.GetDrawingData();
                 }
             }
@@ -150,7 +162,43 @@ namespace AutoCADControls.Controls
         /// <param name="e"></param>
         private void Remove_Click(object sender, EventArgs e)
         {
-            CloseAllPropertyForms();
+            try
+            {
+                // 遍历选中的行
+                foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+                {
+                    if (row.Cells["DrawingName"].Value is string drawingTitle)
+                    {
+                        // 1. 查找并关闭该图纸（如果打开）
+                        var docToClose = Application.DocumentManager
+                            .Cast<Document>()
+                            .FirstOrDefault(doc => doc.Window?.Text == drawingTitle);
+
+                        if (docToClose != null)
+                        {
+                            try
+                            {
+                                // 切换到目标文档后关闭它
+                                Application.DocumentManager.MdiActiveDocument = docToClose;
+                                docToClose.CloseAndDiscard(); // 或 CloseAndSave()
+                            }
+                            catch (System.Exception ex)
+                            {
+                                MessageBox.Show($"关闭图纸失败: {ex.Message}");
+                            }
+                        }
+
+                        // 2. 移除该行
+                        dataGridView1.Rows.Remove(row);
+                    }
+                }
+                CloseAllPropertyForms();
+            }
+            catch (Exception)
+            {
+
+            }
+           
         }
 
         /// <summary>

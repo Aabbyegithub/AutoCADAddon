@@ -43,11 +43,11 @@ namespace AutoCADAddon
                 MessageBox.Show("楼层编码不能为空", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            EditedFloor.Name = txtName.Text;
-            EditedFloor.Code = txtCode.Text;
+            EditedFloor.Name = txtName.Text.Trim();
+            EditedFloor.Code = txtCode.Text.Trim();
             EditedFloor.BuildingCode = _buildingCode;
             EditedFloor.UpdateTime = DateTime.Now;
-            var res = await DataSyncService.AddFloorAsync(_buildingCode,txtCode.Text, txtName.Text);
+            var res = await DataSyncService.AddFloorAsync(_buildingCode,txtCode.Text.Trim(), txtName.Text.Trim());
             if (res as string == "OK")
             {
                 DialogResult = DialogResult.OK;

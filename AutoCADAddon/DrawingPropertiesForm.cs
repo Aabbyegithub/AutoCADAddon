@@ -58,7 +58,8 @@ namespace AutoCADAddon
                     Tag = item
                 });
             }
-            cmbBuilding.SetItems(items, new[] { "Building Code", "Building Name" });
+            if(items.Count >0)
+                cmbBuilding.SetItems(items, new[] { "Building Code", "Building Name" });
 
         }
 
@@ -69,6 +70,7 @@ namespace AutoCADAddon
         /// <param name="e"></param>
         private async void cmbBuilding_SelectedItemChanged(object sender, ItemData e)
         {
+            cmbFloor.ClearSelection();
             var tag = e.Tag as JObject;
             if (tag != null && tag["building_code"] != null)
             {
@@ -89,7 +91,12 @@ namespace AutoCADAddon
                         Tag = item
                     });
                 }
-                cmbFloor.SetItems(items, new[] { "Building Code", "Floor Code", "Floor Name" });
+
+                if (items.Count>0)
+                {
+                     cmbFloor.SetItems(items, new[] { "Building Code", "Floor Code", "Floor Name" });
+                }
+
             }
         }
 
@@ -251,8 +258,8 @@ namespace AutoCADAddon
 
                 // 5. 关闭原来的临时图纸（不是当前活动文档了，可以安全关闭）
                 newDoc.CloseAndDiscard();
-                DrawingPanel.GetDrawingData();
             }
+             DrawingPanel.GetDrawingData();
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

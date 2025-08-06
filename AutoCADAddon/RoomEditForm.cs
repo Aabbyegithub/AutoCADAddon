@@ -154,7 +154,8 @@ namespace AutoCADAddon
                 });
             }
             _RoomStanardList = items;
-            RoomStanard.SetItems(items, new[] { "Code", "Description" });
+            if (items.Count > 0)
+                RoomStanard.SetItems(items, new[] { "Code", "Description" });
 
             var DivisionCodeList = await DataSyncService.GetDivisionCodeAsync();
             if ((DivisionCodeList as string) != null && (DivisionCodeList as string).Contains("NG"))
@@ -172,7 +173,8 @@ namespace AutoCADAddon
                 });
             }
             _DivisionCode = DivisionCodeitems;
-            DivisionCode.SetItems(DivisionCodeitems, new[] { "Code", "Nmae" });
+            if (DivisionCodeitems.Count > 0)
+                DivisionCode.SetItems(DivisionCodeitems, new[] { "Code", "Nmae" });
 
 
 
@@ -192,7 +194,8 @@ namespace AutoCADAddon
                 });
             }
             _RoomCategory = RoomCategoryListitems;
-            RoomCategory.SetItems(RoomCategoryListitems, new[] { "Code", "Description" });
+            if (RoomCategoryListitems.Count > 0)
+                RoomCategory.SetItems(RoomCategoryListitems, new[] { "Code", "Description" });
         }
 
 
@@ -207,21 +210,11 @@ namespace AutoCADAddon
 
         private async void BtnSave_Click(object sender, EventArgs e)
         {
-            //if(string.IsNullOrWhiteSpace(RoomStanard.SelectedText))
-            //{
-            //    MessageCommon.Waring("请选择RoomStanard");
-            //    return;
-            //}
-            //if (string.IsNullOrWhiteSpace(RoomCategory.SelectedText))
-            //{
-            //    MessageCommon.Waring("请选择RoomCategory");
-            //    return;
-            //}
-            //if (string.IsNullOrWhiteSpace(RoomType.SelectedText))
-            //{
-            //    MessageCommon.Waring("请选择RoomType");
-            //    return;
-            //}
+            if (string.IsNullOrWhiteSpace(BuildingCode.SelectedText)||string.IsNullOrWhiteSpace(FloorCode.SelectedText)||string.IsNullOrWhiteSpace(RoomCodeBox.SelectedText))
+            {
+                MessageCommon.Waring("请选择楼栋，楼层或房间属性");
+                return;
+            }
             var Room = new List<Room>();
             Room.Add(new Room
             {
@@ -318,6 +311,7 @@ namespace AutoCADAddon
                     });
                 }
                 _RoomType = items;
+                   if(items.Count > 0)
                 RoomType.SetItems(items, new[] { "Category Code", "Type Code", "Description" });
             }
         }
@@ -354,6 +348,7 @@ namespace AutoCADAddon
                     });
                 }
                 _DepartmentCode = items;
+                if(items.Count > 0)
                 DepartmentCode.SetItems(items, new[] { "Division Code", "Code", "Name" });
             }
         }
