@@ -25,6 +25,7 @@ namespace AutoCADAddon
         public Room EditedRoom { get; private set; }
         private readonly int _floorId;
         private readonly Polyline _Polyline;
+        private readonly MText _mText;
         private readonly Transaction _tr;
         private readonly Building _Building;
         private readonly Floor _Floor;
@@ -37,9 +38,10 @@ namespace AutoCADAddon
         private string _SelectDepartmentCode;
         private string _SerId;
         private const string XDATA_APP_ID = "ROOMDATA";
-        public RoomEditForm(Polyline polyline, Transaction tr, Building building, Floor floor)
+        public RoomEditForm(Polyline polyline, MText mText, Transaction tr, Building building, Floor floor)
         {
             _Polyline = polyline;
+            _mText = mText;
             _tr = tr;
             _Building = building;
             _Floor = floor;
@@ -273,7 +275,7 @@ namespace AutoCADAddon
             }
 
             CacheManager.UpsertRooms(Room);
-            WriteRoomDataToXdata(Room.FirstOrDefault());
+            //WriteRoomDataToXdata(Room.FirstOrDefault());
             DialogResult = DialogResult.OK;
             Close();
         }
@@ -355,6 +357,54 @@ namespace AutoCADAddon
                 _DepartmentCode = items;
                 if(items.Count > 0)
                 DepartmentCode.SetItems(items, new[] { "Division Code", "Code", "Name" });
+            }
+        }
+
+        private void SetMtext(Room roomData)
+        {
+            if (roomData == null) return;
+            if (_mText != null)
+            {
+                var db = _Polyline.Database;
+                var mtextId = _mText.ObjectId;
+                try
+                {
+                    // 重新开启事务
+                    var doc = Application.DocumentManager.MdiActiveDocument;
+                    using (var docLock = doc.LockDocument())
+                    using (var tr = db.TransactionManager.StartTransaction())
+                    {
+                        var mtext = tr.GetObject(mtextId, OpenMode.ForWrite) as MText;
+
+                        if (mtext == null)
+                        {
+                            //MessageCommon.Error("无法获取 Polyline 对象。");
+                            return;
+                        }
+                        mtext.Contents = $"F{roomData.Code}\n" +
+                            $"AREA:{roomData.Area}\n" +
+                            $"TYPE:{roomData.Type}\n" +
+                            $"RoomStanardCode:{roomData.RoomStanardCode}\n" +
+                            $"DIVISION:{roomData.divisionCode}\n" +
+                            $"DEPARTMENT:{roomData.DepartmentCode}\n" +
+                            $"PRORATE:{roomData.Prorate}";
+                        tr.Commit(); // 提交事务
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+                // 打开写模式
+                //mText.UpgradeOpen();
+
+                //// 构造要显示的文本（示例：拼接房间编码、面积）
+                //var newText = $"F{room.Code}\n" +
+                //              $"AREA:{room.Area}\n" +
+                //              $"TYPE:{room.Type}";
+
+                //mText.Contents = newText; // 修改 MText 内容
             }
         }
 

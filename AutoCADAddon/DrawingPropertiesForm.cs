@@ -29,7 +29,7 @@ namespace AutoCADAddon
         {
             _doc = doc;
             InitializeComponent();
-            cmbMet.Items.AddRange(new[] { "mm", "cm", "dm", "m", "km" });
+            cmbMet.Items.AddRange(new[] { "mm", "cm","m", });
             cmbMet.SelectedIndex = 0;
             DrawingProperties();
             Metric.Checked = true;
@@ -274,12 +274,18 @@ namespace AutoCADAddon
         {
             Imperial.Checked = true;
             Metric.Checked = false;
+            cmbMet.Items.Clear();
+            cmbMet.Items.AddRange(new[] { "Inches", });
+            cmbMet.SelectedIndex = 0;
         }
 
         private void Metric_Click(object sender, EventArgs e)
         {
             Imperial.Checked = false;
             Metric.Checked = true;
+            cmbMet.Items.Clear();
+            cmbMet.Items.AddRange(new[] { "mm", "cm", "m", });
+            cmbMet.SelectedIndex = 0;
         }
     }
 }

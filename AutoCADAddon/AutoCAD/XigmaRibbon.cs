@@ -25,6 +25,7 @@ namespace AutoCADAddon.AutoCAD
         private static bool isLoggedIn = false;
         private static bool IsPanelAdded { get; set; } = false;
         private static RibbonButton signInOutButton;
+        private static List<RibbonButton> _pluginButtons = new List<RibbonButton>();
         private static DrawingPanel _BuildingPanel = null;
         private static DrawingPropertiesForm _propertiesForm;
         private static RoomEditForm _EditData;
@@ -34,6 +35,7 @@ namespace AutoCADAddon.AutoCAD
 
         public static void AddXigmaRibbon()
         {
+            DataSyncService.TokenExpired += OnTokenExpired;
             RibbonControl ribbon = ComponentManager.Ribbon;
             if (ribbon == null) return;
 
@@ -109,6 +111,11 @@ namespace AutoCADAddon.AutoCAD
 
             button.ToolTip = tip;
             button.CommandHandler = new RelayCommandHandler(clickHandler);
+            if (text!= "Sign In" && text != "Sign Out")
+            {
+                button.IsEnabled = false;
+                _pluginButtons.Add(button); // 添加到插件按钮列表
+            }
             return button;
         }
 
@@ -135,34 +142,50 @@ namespace AutoCADAddon.AutoCAD
         /// <param name="e"></param>
         private static async void LoginAction(object s, EventArgs e)
         {
-            if (!isLoggedIn)
+            try
             {
-                //显示登录窗口和面板
-                var loginForm = new LoginForm();
-                if (loginForm.ShowDialog() == DialogResult.OK)
+                if (!isLoggedIn)
                 {
-                    isLoggedIn = !isLoggedIn;
-                    signInOutButton.Text = "Sign Out";
-                    Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\n已登录");
-                    Document _doc = Application.DocumentManager.MdiActiveDocument;
+                    //显示登录窗口和面板
+                    var loginForm = new LoginForm();
+                    if (loginForm.ShowDialog() == DialogResult.OK)
+                    {
+                        isLoggedIn = !isLoggedIn;
+                        signInOutButton.Text = "Sign Out";
+                        OnLoginSuccess();
+                        Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\n已登录");
+                        Document _doc = Application.DocumentManager.MdiActiveDocument;
 
-                   await anewSave();
-                    Opdc(_doc);
+                        await anewSave();
+                        Opdc(_doc);
+                    }
+                }
+                else
+                {
+                    //退出登录，清空登录信息
+                    isLoggedIn = !isLoggedIn;
+                    signInOutButton.Text = "Sign In";
+                    Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\n已登出");
                 }
             }
-            else
+            catch (Exception)
             {
-                //退出登录，清空登录信息
-                isLoggedIn = !isLoggedIn;
-                signInOutButton.Text = "Sign In";
-                Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\n已登出");
+
+                Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\n登录过程出错");
             }
+
 
 
         }
         public async static void Opdc(Document _doc)
         {
             var Drawing = await DataSyncService.SyncDrawingServiceAsync(_doc.Window.Text);
+            if (Drawing is string error)
+            {
+                Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\n获取图纸失败: {error}");
+                return;
+            }
+
             if (Drawing.total == 0)
             {
                 var props = CacheManager.GetCurrentDrawingProperties(_doc.Window.Text);
@@ -402,26 +425,27 @@ namespace AutoCADAddon.AutoCAD
                 var ent = tr.GetObject(entityId, OpenMode.ForRead);
                 if (ent is Polyline poly)
                 {
+                    var mtext = FindMTextInPolyline(poly, tr);
                     // 这里可以传入 area / vertices 等参数
-                    _EditData = new RoomEditForm(poly, tr,
+                    _EditData = new RoomEditForm(poly,mtext, tr,
                         new Building { Code = props.BuildingExternalCode, Name = props.BuildingName },
                         new Floor { BuildingCode = props.BuildingExternalCode, Code = props.FloorCode, Name = props.FloorName }
                         ); // 或：new RoomEditForm(polyId, area, vertices);
                 }
-                else if (ent is DBText dbText)
-                {
-                    var textValue = dbText.TextString;
-                    var dbTextpoly = FindPolylineOnRMLayerContainingPoint(doc,tr,dbText.Position);
-                    _EditData = new RoomEditForm(dbTextpoly, tr,
-                        new Building { Code = props.BuildingExternalCode, Name = props.BuildingName },
-                        new Floor { BuildingCode = props.BuildingExternalCode, Code = props.FloorCode, Name = props.FloorName }
-                        );
-                }
+                //else if (ent is DBText dbText)
+                //{
+                //    var textValue = dbText.TextString;
+                //    var dbTextpoly = FindPolylineOnRMLayerContainingPoint(doc,tr,dbText.Position);
+                //    _EditData = new RoomEditForm(dbTextpoly, tr,
+                //        new Building { Code = props.BuildingExternalCode, Name = props.BuildingName },
+                //        new Floor { BuildingCode = props.BuildingExternalCode, Code = props.FloorCode, Name = props.FloorName }
+                //        );
+                //}
                 else if (ent is MText mText)
                 {
                     var textValue = mText.Contents;
                     var mTextpoly = FindPolylineOnRMLayerContainingPoint(doc, tr, mText.Location);
-                    _EditData = new RoomEditForm(mTextpoly, tr,
+                    _EditData = new RoomEditForm(mTextpoly,mText, tr,
                         new Building { Code = props.BuildingExternalCode, Name = props.BuildingName },
                         new Floor { BuildingCode = props.BuildingExternalCode, Code = props.FloorCode, Name = props.FloorName }
                         );
@@ -439,6 +463,76 @@ namespace AutoCADAddon.AutoCAD
             }
         }
 
+        /// <summary>
+        /// 查找与多段线位置关联的 MText（示例：简单判断包围盒是否在多段线内）
+        /// </summary>
+        /// <param name="polyline">目标多段线</param>
+        /// <param name="tr">事务</param>
+        /// <returns>关联的 MText，无则返回 null</returns>
+        private static MText FindMTextInPolyline(Polyline polyline, Transaction tr)
+        {
+            var db = polyline.Database;
+            var mSpace = (BlockTableRecord)tr.GetObject(db.CurrentSpaceId, OpenMode.ForRead);
+
+            foreach (ObjectId id in mSpace)
+            {
+                var ent = tr.GetObject(id, OpenMode.ForRead) as MText;
+                if (ent == null) continue;
+
+                // 获取 MText 包围盒的两个对角点
+                var textBbox = ent.GeometricExtents;
+                Point3d minPt = textBbox.MinPoint;
+                Point3d maxPt = textBbox.MaxPoint;
+
+                // 用射线法判断点是否在多段线内
+                bool isMinIn = IsPointInPolyline(polyline, minPt);
+                bool isMaxIn = IsPointInPolyline(polyline, maxPt);
+
+                // 若两个点都在多段线内，认为 MText 与多段线关联
+                if (isMinIn && isMaxIn)
+                {
+                    return ent;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 射线法判断点是否在多段线（多边形）内
+        /// </summary>
+        /// <param name="polyline">目标多段线</param>
+        /// <param name="point">待判断点</param>
+        /// <returns>点在多段线内返回 true，否则 false</returns>
+        private static bool IsPointInPolyline(Polyline polyline, Point3d point)
+        {
+            // 转换为 2D 点（忽略 Z 轴，假设在同一平面）
+            Point2d pt = new Point2d(point.X, point.Y);
+            int intersections = 0;
+            int numVertices = polyline.NumberOfVertices;
+
+            for (int i = 0; i < numVertices; i++)
+            {
+                // 获取当前顶点和下一个顶点（处理闭合）
+                Point2d v1 = polyline.GetPoint2dAt(i);
+                Point2d v2 = polyline.GetPoint2dAt((i + 1) % numVertices);
+
+                // 判断点是否在边的 Y 范围内
+                if ((v1.Y > pt.Y) != (v2.Y > pt.Y))
+                {
+                    // 计算边与射线（水平向右）的交点 X 坐标
+                    double xIntersect = (pt.Y - v1.Y) * (v2.X - v1.X) / (v2.Y - v1.Y) + v1.X;
+
+                    // 若交点 X 大于点的 X，说明射线与边相交
+                    if (pt.X < xIntersect)
+                    {
+                        intersections++;
+                    }
+                }
+            }
+
+            // 交点数为奇数则在内部
+            return intersections % 2 == 1;
+        }
 
         /// <summary>
         /// 查找RM$图层上包含指定点的多段线
@@ -560,6 +654,34 @@ namespace AutoCADAddon.AutoCAD
         {
             Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\n{msg}");
         }
+
+        private static void OnTokenExpired()
+        {
+            // 更新登录按钮文字
+            if (signInOutButton != null)
+                signInOutButton.Text = "Sign In";
+
+            // 禁用插件功能按钮
+            foreach (var btn in _pluginButtons)
+            {
+                btn.IsEnabled = false;
+            }
+
+            // 这里可以弹个提示
+           Application.ShowAlertDialog("登录已过期，请重新登录！");
+        }
+
+        private static void OnLoginSuccess()
+        {
+            if (signInOutButton != null)
+                signInOutButton.Text = "Sign Out";
+
+            foreach (var btn in _pluginButtons)
+            {
+                btn.IsEnabled = true;
+            }
+        }
+
 
         // 用于处理 RibbonButton 的点击事件
         private class RelayCommandHandler : System.Windows.Input.ICommand

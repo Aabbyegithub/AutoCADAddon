@@ -74,80 +74,80 @@ namespace AutoCADAddon.AutoCAD
         //    }
         //}
         // 同步建筑楼层数据命令
-        [CommandMethod("SPACESYNC", CommandFlags.Modal)]
-        public async void SpaceSync()
-        {
-            Document doc = Application.DocumentManager.MdiActiveDocument;
-            Editor ed = doc.Editor;
+        //[CommandMethod("SPACESYNC", CommandFlags.Modal)]
+        //public async void SpaceSync()
+        //{
+        //    Document doc = Application.DocumentManager.MdiActiveDocument;
+        //    Editor ed = doc.Editor;
 
-            if (CurrentLoginInfo == null)
-            {
-                ed.WriteMessage("\n请先执行 SPACELOGIN 登录");
-                return;
-            }
+        //    if (CurrentLoginInfo == null)
+        //    {
+        //        ed.WriteMessage("\n请先执行 SPACELOGIN 登录");
+        //        return;
+        //    }
 
-            ed.WriteMessage("\n开始同步建筑数据...");
-            await DataSyncService.SyncBuildingsAsync(
-                serverUrl: "http://your-server-url", // 需替换为实际地址
-                token: CurrentLoginInfo.Token
-            );
-            ed.WriteMessage("\n建筑数据同步完成，开始同步楼层数据...");
-            await DataSyncService.SyncFloorsAsync(
-                serverUrl: "http://your-server-url", // 需替换为实际地址
-                token: CurrentLoginInfo.Token
-            );
-            ed.WriteMessage("\n楼层数据同步完成！");
+        //    ed.WriteMessage("\n开始同步建筑数据...");
+        //    await DataSyncService.SyncBuildingsAsync(
+        //        serverUrl: "http://your-server-url", // 需替换为实际地址
+        //        token: CurrentLoginInfo.Token
+        //    );
+        //    ed.WriteMessage("\n建筑数据同步完成，开始同步楼层数据...");
+        //    await DataSyncService.SyncFloorsAsync(
+        //        serverUrl: "http://your-server-url", // 需替换为实际地址
+        //        token: CurrentLoginInfo.Token
+        //    );
+        //    ed.WriteMessage("\n楼层数据同步完成！");
 
-            // 初始化并显示面板
-            if (_buildingPanel == null)
-            {
-                _buildingPanel = new BuildingPanel();
-            }
-            _buildingPanel.LoadData();
-        }
+        //    // 初始化并显示面板
+        //    if (_buildingPanel == null)
+        //    {
+        //        _buildingPanel = new BuildingPanel();
+        //    }
+        //    _buildingPanel.LoadData();
+        //}
 
-        // 刷新数据命令
-        [CommandMethod("SPACEREFRESH", CommandFlags.Modal)]
-        public async void SpaceRefresh()
-        {
-            Document doc = Application.DocumentManager.MdiActiveDocument;
-            Editor ed = doc.Editor;
+        //// 刷新数据命令
+        //[CommandMethod("SPACEREFRESH", CommandFlags.Modal)]
+        //public async void SpaceRefresh()
+        //{
+        //    Document doc = Application.DocumentManager.MdiActiveDocument;
+        //    Editor ed = doc.Editor;
 
-            if (CurrentLoginInfo == null)
-            {
-                ed.WriteMessage("\n请先执行 SPACELOGIN 登录");
-                return;
-            }
+        //    if (CurrentLoginInfo == null)
+        //    {
+        //        ed.WriteMessage("\n请先执行 SPACELOGIN 登录");
+        //        return;
+        //    }
 
-            //// 先同步离线操作
-            //ed.WriteMessage("\n开始同步离线操作...");
-            //await DataSyncService.SyncOfflineOperations(
-            //    serverUrl: "http://your-server-url",
-            //    token: CurrentLoginInfo.Token
-            //);
+        //    //// 先同步离线操作
+        //    //ed.WriteMessage("\n开始同步离线操作...");
+        //    //await DataSyncService.SyncOfflineOperations(
+        //    //    serverUrl: "http://your-server-url",
+        //    //    token: CurrentLoginInfo.Token
+        //    //);
 
-            // 再同步最新数据
-            ed.WriteMessage("\n开始同步最新数据...");
-            await DataSyncService.SyncBuildingsAsync(
-                serverUrl: "http://your-server-url",
-                token: CurrentLoginInfo.Token
-            );
-            await DataSyncService.SyncFloorsAsync(
-                serverUrl: "http://your-server-url",
-                token: CurrentLoginInfo.Token
-            );
-            await DataSyncService.SyncRoomsAsync(
-                serverUrl: "http://your-server-url",
-                token: CurrentLoginInfo.Token
-            );
+        //    // 再同步最新数据
+        //    ed.WriteMessage("\n开始同步最新数据...");
+        //    await DataSyncService.SyncBuildingsAsync(
+        //        serverUrl: "http://your-server-url",
+        //        token: CurrentLoginInfo.Token
+        //    );
+        //    await DataSyncService.SyncFloorsAsync(
+        //        serverUrl: "http://your-server-url",
+        //        token: CurrentLoginInfo.Token
+        //    );
+        //    await DataSyncService.SyncRoomsAsync(
+        //        serverUrl: "http://your-server-url",
+        //        token: CurrentLoginInfo.Token
+        //    );
 
-            ed.WriteMessage("\n数据刷新完成！");
+        //    ed.WriteMessage("\n数据刷新完成！");
 
-            // 刷新面板
-            if (_buildingPanel != null)
-            {
-                _buildingPanel.LoadData();
-            }
-        }
+        //    // 刷新面板
+        //    if (_buildingPanel != null)
+        //    {
+        //        _buildingPanel.LoadData();
+        //    }
+        //}
     }
 }
