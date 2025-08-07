@@ -12,8 +12,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
+using static AutoCADAddon.Model.ClassModel;
 using static AutoCADAddon.Model.FloorBuildingDataModel;
+using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace AutoCADAddon
 {
@@ -33,6 +36,7 @@ namespace AutoCADAddon
         private string _SelectRoomType;
         private string _SelectDepartmentCode;
         private string _SerId;
+        private const string XDATA_APP_ID = "ROOMDATA";
         public RoomEditForm(Polyline polyline, Transaction tr, Building building, Floor floor)
         {
             _Polyline = polyline;
@@ -269,6 +273,7 @@ namespace AutoCADAddon
             }
 
             CacheManager.UpsertRooms(Room);
+            WriteRoomDataToXdata(Room.FirstOrDefault());
             DialogResult = DialogResult.OK;
             Close();
         }
@@ -352,5 +357,114 @@ namespace AutoCADAddon
                 DepartmentCode.SetItems(items, new[] { "Division Code", "Code", "Name" });
             }
         }
+
+        /// <summary>
+        /// 将房间数据写入 Polyline 的 Xdata
+        /// </summary>
+        private void WriteRoomDataToXdata(Room roomData)
+        {
+            if (roomData == null) return;
+
+            var db = _Polyline.Database;
+            var plineId = _Polyline.ObjectId; // 保存 ObjectId，避免用已失效的实体对象
+
+            try
+            {
+                // 重新开启事务
+                var doc = Application.DocumentManager.MdiActiveDocument;
+                using (var docLock = doc.LockDocument())
+                using (var tr = db.TransactionManager.StartTransaction())
+                {
+                    var pline = tr.GetObject(plineId, OpenMode.ForWrite) as Polyline;
+
+                    if (pline == null)
+                    {
+                        MessageCommon.Error("无法获取 Polyline 对象。");
+                        return;
+                    }
+
+                    // 注册 App ID
+                    RegisterXdataAppId(db);
+
+                    // 构造 XData 数据
+                    var xdata = new Dictionary<string, string>
+                    {
+                        { "RoomCode", roomData.Code },
+                        { "RoomName", roomData.Name },
+                        { "BuildingCode", roomData.BuildingExternalCode },
+                        { "BuildingName", roomData.BuildingName },
+                        { "FloorCode", roomData.FloorCode },
+                        { "FloorName", roomData.FloorName },
+                        { "Area", roomData.Area },
+                        { "Length", roomData.Length },
+                        { "Category", roomData.Category },
+                        { "Type", roomData.Type },
+                        { "DivisionCode", roomData.divisionCode },
+                        { "DepartmentCode", roomData.DepartmentCode },
+                        { "StandardCode", roomData.RoomStanardCode },
+                        { "Prorate", roomData.Prorate }
+                    };
+
+                    // 构造 ResultBuffer
+                    var rb = new ResultBuffer();
+                    rb.Add(new TypedValue((int)DxfCode.ExtendedDataRegAppName, XDATA_APP_ID));
+                    foreach (var kvp in xdata)
+                    {
+                        rb.Add(new TypedValue((int)DxfCode.ExtendedDataAsciiString, kvp.Key));
+                        rb.Add(new TypedValue((int)DxfCode.ExtendedDataAsciiString, kvp.Value));
+                    }
+
+                    // 设置 XData
+                    pline.XData = rb;
+
+                    tr.Commit(); // 提交事务
+                }
+            }
+            catch (System.Exception ex)
+            {
+                MessageCommon.Error($"写入 XData 失败：{ex.Message}");
+            }
+        }
+
+
+        private void RegisterXdataAppId(Database db)
+        {
+            // 使用独立的事务来注册应用程序 ID
+            using (Transaction trans = db.TransactionManager.StartTransaction())
+            {
+                try
+                {
+                    // 以读模式打开 RegAppTable
+                    RegAppTable regTable = trans.GetObject(db.RegAppTableId, OpenMode.ForRead) as RegAppTable;
+                    bool needCreate = !regTable.Has(XDATA_APP_ID);
+
+                    if (needCreate)
+                    {
+                        // 尝试升级为可写模式
+                        if (regTable.IsWriteEnabled == false)
+                        {
+                            regTable.UpgradeOpen();
+                        }
+
+                        RegAppTableRecord newRegApp = new RegAppTableRecord
+                        {
+                            Name = XDATA_APP_ID
+                        };
+
+                        regTable.Add(newRegApp);
+                        trans.AddNewlyCreatedDBObject(newRegApp, true);
+                    }
+
+                    trans.Commit();
+                }
+                catch (Exception ex)
+                {
+                    trans.Abort();
+                    MessageCommon.Error($"注册 Xdata 应用程序 ID 失败: {ex.Message}");
+                }
+            }
+        }
+
+
     }
 }

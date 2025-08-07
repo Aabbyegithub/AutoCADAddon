@@ -2,6 +2,7 @@
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
+using Autodesk.AutoCAD.Geometry;
 using Autodesk.Windows;
 using Newtonsoft.Json.Linq;
 using System;
@@ -407,16 +408,24 @@ namespace AutoCADAddon.AutoCAD
                         new Floor { BuildingCode = props.BuildingExternalCode, Code = props.FloorCode, Name = props.FloorName }
                         ); // 或：new RoomEditForm(polyId, area, vertices);
                 }
-                //else if (ent is DBText dbText)
-                //{
-                //    var textValue = dbText.TextString;
-                //    _EditData = new RoomEditForm(); // 或：new RoomEditForm(textValue);
-                //}
-                //else if (ent is MText mText)
-                //{
-                //    var textValue = mText.Contents;
-                //    //_EditData = new RoomEditForm(); // 或：new RoomEditForm(textValue);
-                //}
+                else if (ent is DBText dbText)
+                {
+                    var textValue = dbText.TextString;
+                    var dbTextpoly = FindPolylineOnRMLayerContainingPoint(doc,tr,dbText.Position);
+                    _EditData = new RoomEditForm(dbTextpoly, tr,
+                        new Building { Code = props.BuildingExternalCode, Name = props.BuildingName },
+                        new Floor { BuildingCode = props.BuildingExternalCode, Code = props.FloorCode, Name = props.FloorName }
+                        );
+                }
+                else if (ent is MText mText)
+                {
+                    var textValue = mText.Contents;
+                    var mTextpoly = FindPolylineOnRMLayerContainingPoint(doc, tr, mText.Location);
+                    _EditData = new RoomEditForm(mTextpoly, tr,
+                        new Building { Code = props.BuildingExternalCode, Name = props.BuildingName },
+                        new Floor { BuildingCode = props.BuildingExternalCode, Code = props.FloorCode, Name = props.FloorName }
+                        );
+                }
                 else
                 {
                     ed.WriteMessage("\n选择的实体类型暂不支持！");
@@ -429,6 +438,71 @@ namespace AutoCADAddon.AutoCAD
                 _EditData.Show();
             }
         }
+
+
+        /// <summary>
+        /// 查找RM$图层上包含指定点的多段线
+        /// </summary>
+        private static Polyline FindPolylineOnRMLayerContainingPoint(Document doc, Transaction tr, Point3d point)
+        {
+            // 获取RM$图层ID
+            var blockTable = (BlockTable)tr.GetObject(doc.Database.BlockTableId, OpenMode.ForRead);
+            // 获取模型空间块表记录 ID
+            var modelSpaceId = blockTable[BlockTableRecord.ModelSpace];
+            // 打开模型空间
+            var modelSpace = (BlockTableRecord)tr.GetObject(
+               modelSpaceId,
+                OpenMode.ForRead
+            );
+
+            // 遍历模型空间中的所有实体
+            foreach (ObjectId objId in modelSpace)
+            {
+                var entity = tr.GetObject(objId, OpenMode.ForRead) as Entity;
+                if (entity == null) continue;
+
+                // 过滤出房间边界（假设为闭合多段线且在房间图层）
+                if (entity is Polyline polyline)
+                {
+                    Debug.WriteLine($"图层名称：{polyline.Layer}");
+                    if (!polyline.Layer.ToString().Contains("RM$")) continue;
+
+                    // 检查点是否在多段线内部
+                    if (IsPointInsidePolyline(polyline, point))
+                    {
+                        return polyline;
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 判断点是否在闭合多段线内部
+        /// </summary>
+        private static bool IsPointInsidePolyline(Polyline poly, Point3d point)
+        {
+            // 将3D点转换为2D点（忽略Z坐标）
+            Point2d testPoint = new Point2d(point.X, point.Y);
+            int vertexCount = poly.NumberOfVertices;
+            bool inside = false;
+
+            for (int i = 0; i < vertexCount; i++)
+            {
+                Point2d p1 = poly.GetPoint2dAt(i);
+                Point2d p2 = poly.GetPoint2dAt((i + 1) % vertexCount);
+
+                // 检查点是否在多边形内部的射线法
+                if (((p1.Y > testPoint.Y) != (p2.Y > testPoint.Y)) &&
+                    (testPoint.X < p1.X + (p2.X - p1.X) * (testPoint.Y - p1.Y) / (p2.Y - p1.Y)))
+                {
+                    inside = !inside;
+                }
+            }
+
+            return inside;
+        }
+
 
         private static void CatalogAction(object s, EventArgs e) => ShowMessage("Catalog clicked");
         private static void UncatalogAction(object s, EventArgs e) => ShowMessage("Uncatalog clicked");

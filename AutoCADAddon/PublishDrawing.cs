@@ -73,11 +73,11 @@ namespace AutoCADAddon
                             continue;
                         }
 
-                        if (room.Where(a => a.Code == item.Code).Count() == 0)
-                        {
-                            Application.ShowAlertDialog($"房间【{item.Code}】未绑定属性！请检查");
-                            return;
-                        }
+                        //if (room.Where(a => a.Code == item.Code).Count() == 0)
+                        //{
+                        //    Application.ShowAlertDialog($"房间【{item.Code}】未绑定属性！请检查");
+                        //    return;
+                        //}
                         PublishingDrawing.PerformStep();
                         PublishingRule.PerformStep();
                         await Task.Delay(10);
@@ -128,7 +128,8 @@ namespace AutoCADAddon
             {
                 PublishingDrawing.Value = 0;
                 PublishingRule.Value = 0;
-
+                Application.ShowAlertDialog($"发布成功！");
+                this.Close();
             }
         }
 
