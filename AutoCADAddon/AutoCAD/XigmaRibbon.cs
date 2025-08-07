@@ -213,6 +213,7 @@ namespace AutoCADAddon.AutoCAD
                     {
                         Room.Add(new Room
                         {
+                            SerId = item.id,
                             Code = item.room_code,
                             Name = item.room_code,
                             BuildingExternalCode = buildcode,
