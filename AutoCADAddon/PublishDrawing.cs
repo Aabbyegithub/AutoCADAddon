@@ -96,6 +96,8 @@ namespace AutoCADAddon
                     }
                     await DataSyncService.SyncBlueprintAsync(new ResultFloorRoom
                     {
+                        buildingCode = props.BuildingExternalCode,
+                        buildingName = props.BuildingName,
                         floorCode = props.FloorCode,
                         floorName = props.FloorName,
                         drawId = props.SerId,

@@ -41,6 +41,8 @@ namespace AutoCADAddon.Model
 
         public class ResultFloorRoom
         {
+            public string buildingCode { get; set; }
+            public string buildingName { get; set; }
             public string floorCode { get; set; }
             public string floorName { get; set; }
             public string drawId { get; set; }
