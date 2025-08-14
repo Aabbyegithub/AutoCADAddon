@@ -67,13 +67,12 @@ namespace AutoCADAddon
 
             try
             {
-                //var result = await LoginAsync(cboServers.Text, ProjectList.Text, UserName.Text, Password.Text);
-                //if (result == null || string.IsNullOrEmpty(result.Token))
-                //{
-                //    MessageBox.Show("登录失败，请检查用户名和密码", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //    return;
-                //}
-                //LoginResult = result;
+                var result = await DataSyncService.LoginAsync(cboServers.Text,UserName.Text, Password.Text);
+                if (!result.Contains("OK"))
+                {
+                    MessageBox.Show("登录失败，请检查用户名和密码", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 CacheManager.SetSys_Server(new Sys_Server() { Url = cboServers.Text, IsTrue = "1" });
                 //// 是否保存账户密码

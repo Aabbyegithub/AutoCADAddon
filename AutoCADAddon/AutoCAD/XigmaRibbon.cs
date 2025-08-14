@@ -165,6 +165,7 @@ namespace AutoCADAddon.AutoCAD
                     //退出登录，清空登录信息
                     isLoggedIn = !isLoggedIn;
                     signInOutButton.Text = "Sign In";
+                    OnLoginOutSuccess();
                     Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\n已登出");
                 }
             }
@@ -679,6 +680,17 @@ namespace AutoCADAddon.AutoCAD
             foreach (var btn in _pluginButtons)
             {
                 btn.IsEnabled = true;
+            }
+        }
+
+        private static void OnLoginOutSuccess()
+        {
+            if (signInOutButton != null)
+                signInOutButton.Text = "Sign In";
+
+            foreach (var btn in _pluginButtons)
+            {
+                btn.IsEnabled = false;
             }
         }
 

@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -66,7 +67,7 @@ namespace AutoCADAddon.Common
         /// <summary>
         /// 登录并设置令牌
         /// </summary>
-        public static async Task<string> LoginAsync(string account, string password)
+        public static async Task<string> LoginAsync(string Url, string account, string password)
         {
             try
             {
@@ -79,14 +80,14 @@ namespace AutoCADAddon.Common
                 var json = JsonConvert.SerializeObject(requestBody);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await _client.PostAsync($"{ServerUrl}/space/login", content);
+                var response = await _client.PostAsync($"{ServerUrl}/space/auth/login", content);
                 var responseJson = await response.Content.ReadAsStringAsync();
                 var loginResult = JsonConvert.DeserializeObject<ResultModel>(responseJson);
-
-                if (loginResult != null && !string.IsNullOrEmpty(loginResult.data?.token))
+                Debug.WriteLine(loginResult);
+                if (loginResult != null && !string.IsNullOrEmpty(loginResult.data[1]))
                 {
                     // 登录成功，设置令牌
-                    SetAuthToken(loginResult.data.token);
+                    SetAuthToken(loginResult.data[1]);
                     return "OK";
                 }
 
