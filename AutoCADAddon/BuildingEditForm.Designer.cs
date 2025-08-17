@@ -115,6 +115,7 @@
             this.Name = "BuildingEditForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add New Value";
+            this.TopMost = true;
             this.panel.ResumeLayout(false);
             this.panel.PerformLayout();
             this.ResumeLayout(false);

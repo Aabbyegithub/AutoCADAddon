@@ -32,9 +32,12 @@ namespace AutoCADAddon.Model
 
         public class RoomData
         {
+            public string layerType { get; set; }
             public string rmId { get; set; }
             public double area { get; set; }
             public string coordinate { get; set; }
+
+
             //public string[] strings { get; set; }
         }
 

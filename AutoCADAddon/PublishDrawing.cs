@@ -89,6 +89,7 @@ namespace AutoCADAddon
                             item.Code = "";
                         roomData.Add(new RoomData
                         {
+                            layerType = item.layerName,
                             rmId = item.Code,
                             area = double.Parse(item.Area),
                             coordinate = item.Coordinates
@@ -128,9 +129,10 @@ namespace AutoCADAddon
             }
             finally
             {
+                Application.ShowAlertDialog($"发布成功！");
                 PublishingDrawing.Value = 0;
                 PublishingRule.Value = 0;
-                Application.ShowAlertDialog($"发布成功！");
+
                 this.Close();
             }
         }

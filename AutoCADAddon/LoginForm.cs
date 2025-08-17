@@ -1,6 +1,7 @@
 ﻿using AutoCADAddon.Common;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -14,18 +15,24 @@ namespace AutoCADAddon
     public partial class LoginForm : Form
     {
         public LoginResult LoginResult { get; private set; }
+        public Dictionary<string, string> _Servers;
         public LoginForm()
         {
             InitializeComponent();
             // 加载服务器列表
             CacheManager.UpSys_Server();
-            var Servers = CacheManager.GetSys_Server();
+            //var Servers = CacheManager.GetSys_Server();
             var User = CacheManager.GetSys_User();
-            cboServers.Items.AddRange(Servers.Select(a=>a.Url).ToArray());
+            var Servers = CADAppConfig.GetInstance().GetServiseUrl;
+            _Servers = Servers;
+            var Project = CADAppConfig.GetInstance().GetProject;
+            cboServers.Items.AddRange(Servers.Select(a=>a.Value).ToArray());
             if (Servers.Count >0)
             {
                 cboServers.SelectedIndex = 0;
             }
+            ProjectList.Items.AddRange(Project.Select(a => a.Value).ToArray());
+            if (Project.Count > 0) ProjectList.SelectedIndex = 0;
 
             // 加载记住密码状态
             if (User !=null)
@@ -73,13 +80,33 @@ namespace AutoCADAddon
                     MessageBox.Show("登录失败，请检查用户名和密码", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+                Dictionary<string,string> map = new Dictionary<string,string>();var count = 0;
+                if (_Servers.Where(a=>a.Value == cboServers.Text).Count() >0)
+                {
+                    
+                    foreach (var item in _Servers)
+                    {
+                        if (item.Value == cboServers.Text) map.Add("Url-USE", item.Value);
+                        else map.Add($"Url-{count++}", item.Value);
+                    }
+                }
+                else
+                {
+                    map.Add("Url-USE", cboServers.Text);
+                    foreach (var item in _Servers)
+                    {
+                         map.Add($"Url-{count++}", item.Value);
+                    }
+                }
+                CADAppConfig.GetInstance().GetServiseUrl = map;
 
-                CacheManager.SetSys_Server(new Sys_Server() { Url = cboServers.Text, IsTrue = "1" });
-                //// 是否保存账户密码
-                //if (IsRenember.Checked)
-                //{
-                //    CacheManager.SetSys_User(new Sys_User() { UserName = UserName.Text,Password = Password.Text});
-                //}
+
+               // CacheManager.SetSys_Server(new Sys_Server() { Url = cboServers.Text, IsTrue = "1" });
+                // 是否保存账户密码
+                if (IsRenember.Checked)
+                {
+                    CacheManager.SetSys_User(new Sys_User() { UserName = UserName.Text, Password = Password.Text });
+                }
 
                 DialogResult = DialogResult.OK; // 登录成功，关闭窗口
                 Close();

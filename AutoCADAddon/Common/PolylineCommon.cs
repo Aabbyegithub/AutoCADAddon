@@ -25,7 +25,7 @@ namespace AutoCADAddon.Common
             var props = CacheManager.GetCurrentDrawingProperties(_doc.Window.Text);
 
             // 3. 解析图纸中的房间数据
-            var roomDataList = new List<RoomData>();
+            //var roomDataList = new List<RoomData>();
             var Room = new List<Room>();
             //var roomDataList2 = new List<RoomData>();
             var Count = 1;
@@ -51,12 +51,12 @@ namespace AutoCADAddon.Common
                     if (entity is Polyline polyline)
                     {
                         Debug.WriteLine($"图层名称：{polyline.Layer}");
-                        if (!polyline.Layer.ToString().Contains("RM$")) continue;
+                        //if (!polyline.Layer.ToString().Contains("RM$")) continue;
                         var roomData = ParseRoomFromPolyline(polyline, tr);
                         if (roomData != null)
                         {
-                            roomDataList.Add(roomData);
-                            Room.Add(new Room { FloorCode = FloorCode, Name = roomData.rmId, Area = roomData.area.ToString(), Code = roomData.rmId, Coordinates = roomData.coordinate });
+                           // roomDataList.Add(roomData);
+                            Room.Add(new Room { FloorCode = FloorCode, Name = roomData.rmId, Area = roomData.area.ToString(), Code = roomData.rmId, Coordinates = roomData.coordinate,layerName = polyline.Layer });
 
                             Debug.WriteLine($"{roomData.rmId}-----{roomData.area}");
                         }

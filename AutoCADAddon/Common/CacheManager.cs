@@ -52,12 +52,13 @@ namespace AutoCADAddon.Common
             using (var conn = new SQLiteConnection(_connectionString))
             {
                 conn.Open();
-                ExecuteNonQuery(conn, "DROP TABLE IF EXISTS OfflineOperation");
-                ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Building");
-                ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Floor");
-                ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Room");
-                ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Blueprint");
-                ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Server");
+                //ExecuteNonQuery(conn, "DROP TABLE IF EXISTS OfflineOperation");
+                //ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Building");
+                //ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Floor");
+                //ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Room");
+                //ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Blueprint");
+                //ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Server");
+                //ExecuteNonQuery(conn, "DROP TABLE IF EXISTS Sys_User");
 
                 //创建服务器列表
                 ExecuteNonQuery(conn, @"
@@ -275,8 +276,8 @@ namespace AutoCADAddon.Common
             {
                 conn.Open();
                 var cmd = new SQLiteCommand(@"
-                            INSERT OR REPLACE INTO Sys_User (UserName，Password, UpdateTime)
-                            VALUES (@UserName,@Password， @UpdateTime)
+                            INSERT OR REPLACE INTO Sys_User (UserName,Password,UpdateTime)
+                            VALUES (@UserName,@Password,@UpdateTime)
                         ", conn);
                 cmd.Parameters.AddWithValue("@UserName", sys_User.UserName);
                 cmd.Parameters.AddWithValue("@Password", sys_User.Password);

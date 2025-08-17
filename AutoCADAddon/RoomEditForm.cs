@@ -381,7 +381,7 @@ namespace AutoCADAddon
                             //MessageCommon.Error("无法获取 Polyline 对象。");
                             return;
                         }
-                        mtext.Contents = $"F{roomData.Code}\n" +
+                        mtext.Contents = $"{roomData.Code}\n" +
                             $"AREA:{roomData.Area}\n" +
                             $"TYPE:{roomData.Type}\n" +
                             $"RoomStanardCode:{roomData.RoomStanardCode}\n" +

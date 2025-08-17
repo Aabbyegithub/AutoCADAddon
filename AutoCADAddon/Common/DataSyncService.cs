@@ -80,14 +80,14 @@ namespace AutoCADAddon.Common
                 var json = JsonConvert.SerializeObject(requestBody);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await _client.PostAsync($"{ServerUrl}/space/auth/login", content);
+                var response = await _client.PostAsync($"{ServerUrl}/pms/space/auth/login", content);
                 var responseJson = await response.Content.ReadAsStringAsync();
                 var loginResult = JsonConvert.DeserializeObject<ResultModel>(responseJson);
-                Debug.WriteLine(loginResult);
-                if (loginResult != null && !string.IsNullOrEmpty(loginResult.data[1]))
+                if (loginResult != null &&loginResult.code == "200")
                 {
+                    string token = loginResult.data.token;
                     // 登录成功，设置令牌
-                    SetAuthToken(loginResult.data[1]);
+                    SetAuthToken(token);
                     return "OK";
                 }
 
@@ -157,7 +157,7 @@ namespace AutoCADAddon.Common
         {
             try
             {
-                var response = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/space/add", result);
+                var response = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/pms/space/add", result);
                 return response.code == "200" ? "OK" : $"NG: {response.msg}";
             }
             catch (UnauthorizedAccessException)
@@ -178,7 +178,7 @@ namespace AutoCADAddon.Common
 
             try
             {
-                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/spaceDraw/page", new { name });
+                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/pms/spaceDraw/page", new { name });
                 return result.code == "200" ? result.data : $"NG: {result.msg}";
             }
             catch (UnauthorizedAccessException)
@@ -198,7 +198,7 @@ namespace AutoCADAddon.Common
         {
             try
             {
-                var response = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/spaceDraw/save", result);
+                var response = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/pms/spaceDraw/save", result);
                 return response.code == "200" ? "OK" : $"NG: {response.msg}";
             }
             catch (UnauthorizedAccessException)
@@ -219,7 +219,7 @@ namespace AutoCADAddon.Common
 
             try
             {
-                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/spaceBuilding/page", new { });
+                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/pms/spaceBuilding/page", new { });
                 return result.code == "200" ? result.data : $"NG: {result.msg}";
             }
             catch (UnauthorizedAccessException)
@@ -240,7 +240,7 @@ namespace AutoCADAddon.Common
 
             try
             {
-                var response = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/spaceBuilding/save", new { buildingCode, buildingName });
+                var response = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/pms/spaceBuilding/save", new { buildingCode, buildingName });
                 return response.code == "200" ? "OK" : response.msg;
             }
             catch (UnauthorizedAccessException)
@@ -261,7 +261,7 @@ namespace AutoCADAddon.Common
 
             try
             {
-                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/spaceFloor/page", new { buildingCode = BuildCode });
+                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/pms/spaceFloor/page", new { buildingCode = BuildCode });
                 return result.code == "200" ? result.data : $"NG: {result.msg}";
             }
             catch (UnauthorizedAccessException)
@@ -282,7 +282,7 @@ namespace AutoCADAddon.Common
 
             try
             {
-                var response = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/spaceFloor/save", new { buildingCode, floorCode, floorName });
+                var response = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/pms/spaceFloor/save", new { buildingCode, floorCode, floorName });
                 return response.code == "200" ? "OK" : response.msg;
             }
             catch (UnauthorizedAccessException)
@@ -303,7 +303,7 @@ namespace AutoCADAddon.Common
 
             try
             {
-                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/spaceRoom/page", new { building, floor });
+                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/pms/spaceRoom/page", new { building, floor });
                 return result.code == "200" ? result.data : $"NG: {result.msg}";
             }
             catch (UnauthorizedAccessException)
@@ -324,7 +324,7 @@ namespace AutoCADAddon.Common
 
             try
             {
-                var response = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/spaceRoom/save", result);
+                var response = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/pms/spaceRoom/save", result);
                 return response.code == "200" ? "OK" : $"NG: {response.msg}";
             }
             catch (UnauthorizedAccessException)
@@ -345,7 +345,7 @@ namespace AutoCADAddon.Common
 
             try
             {
-                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/spaceRoomStandards/page", new { });
+                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/pms/spaceRoomStandards/page", new { });
                 return result.code == "200" ? result.data : $"NG: {result.msg}";
             }
             catch (UnauthorizedAccessException)
@@ -366,7 +366,7 @@ namespace AutoCADAddon.Common
 
             try
             {
-                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/spaceRoomCategory/page", new { });
+                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/pms/spaceRoomCategory/page", new { });
                 return result.code == "200" ? result.data : $"NG: {result.msg}";
             }
             catch (UnauthorizedAccessException)
@@ -387,7 +387,7 @@ namespace AutoCADAddon.Common
 
             try
             {
-                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/spaceRoomType/page", new { categoryCode });
+                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/pms/spaceRoomType/page", new { categoryCode });
                 return result.code == "200" ? result.data : $"NG: {result.msg}";
             }
             catch (UnauthorizedAccessException)
@@ -408,7 +408,7 @@ namespace AutoCADAddon.Common
 
             try
             {
-                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/spaceDepartment/page", new { divisionCode });
+                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/pms/spaceDepartment/page", new { divisionCode });
                 return result.code == "200" ? result.data : $"NG: {result.msg}";
             }
             catch (UnauthorizedAccessException)
@@ -428,7 +428,7 @@ namespace AutoCADAddon.Common
         {
             try
             {
-                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/spaceDivision/page", new { });
+                var result = await PostWithAuthAsync<ResultModel>($"{ServerUrl}/pms/spaceDivision/page", new { });
                 return result.code == "200" ? result.data : $"NG: {result.msg}";
             }
             catch (UnauthorizedAccessException)
@@ -445,12 +445,13 @@ namespace AutoCADAddon.Common
 
         private static string GetServerUrl()
         {
-            var url = CacheManager.GetSys_Server()
-                        .FirstOrDefault(a => a.IsTrue == "1")?.Url;
+            //var url = CacheManager.GetSys_Server()
+            //            .FirstOrDefault(a => a.IsTrue == "1")?.Url;
+            var url = CADAppConfig.GetInstance().GetServiseUrl.FirstOrDefault(a => a.Key == "Url-USE").Value;
             if (string.IsNullOrEmpty(url))
-                return "https://lam-bop-gateway-uat.nwplatform.com.cn/pms";
+                return "https://lam-bop-gateway-uat.nwplatform.com.cn";
 
-            return $"{url}/pms";
+            return $"{url}";
         }
     }
 }
