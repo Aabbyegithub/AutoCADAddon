@@ -70,11 +70,8 @@ namespace AutoCADAddon
         /// <param name="e"></param>
         private async void cmbBuilding_SelectedItemChanged(object sender, ItemData e)
         {
-            for (int i = 0; i < 3; i++)
-            {
-                cmbFloor.ClearSelection();
-            }
 
+            cmbFloor.ClearSelection();
             var tag = e.Tag as JObject;
             if (tag != null && tag["building_code"] != null)
             {

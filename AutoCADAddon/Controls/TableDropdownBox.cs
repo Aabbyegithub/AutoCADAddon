@@ -130,6 +130,7 @@ namespace AutoCADAddon.Controls
         private void OnItemClick(ItemData item)
         {
             bool changed = _selectedItem != item;
+            _selectedItem = item;
             mainButton.Text = item.DisplayText + "▼";
             _dropdown.Close();
 
@@ -152,6 +153,14 @@ namespace AutoCADAddon.Controls
         public void ClearSelection()
         {
             _selectedItem = null;
+            _items = null;
+            if (_table != null)
+            {
+                _table.Controls.Clear();
+                _table.RowStyles.Clear();
+                _table.RowCount = 0;
+                _table.ColumnCount = 0;
+            }
             mainButton.Text = "▼";  // 或者你想显示的默认文本
             SelectedItemChanged?.Invoke(this, null);  // 通知外部选择已清空
         }

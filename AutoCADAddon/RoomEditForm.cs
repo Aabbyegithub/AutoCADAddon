@@ -70,7 +70,8 @@ namespace AutoCADAddon
                     Columns = new string[] { RoomData.BuildingExternalCode, RoomData.BuildingName },
                 });
                 BuildingCode.SetItems(Buildingitems, new[] { "Building Code", "Building Name" });
-                BuildingCode.SetSelectedItem(_Building.Name);
+                if (!string.IsNullOrEmpty(_Building.Name))
+                    BuildingCode.SetSelectedItem(_Building.Name);
                 var Flooritems = new List<ItemData>();
                 Flooritems.Add(new ItemData
                 {
@@ -79,7 +80,8 @@ namespace AutoCADAddon
                     Tag = _Floor
                 });
                 FloorCode.SetItems(Flooritems, new[] { "Building Code", "Floor Code", "Floor Name" });
-                FloorCode.SetSelectedItem(_Floor.Name);
+                if (!string.IsNullOrEmpty(_Floor.Name))
+                    FloorCode.SetSelectedItem(_Floor.Name);
                 var Roomitems = new List<ItemData>();
                 Roomitems.Add(new ItemData
                 {
@@ -88,18 +90,24 @@ namespace AutoCADAddon
                     Tag = new JObject { ["code"] = RoomData.Code, ["name"] = RoomData.Name }
                 });
                 RoomCodeBox.SetItems(Roomitems, new[] { "Room Code", "Room Name" });
-                RoomCodeBox.SetSelectedItem(RoomCode);
+                if(!string.IsNullOrEmpty(RoomCode))
+                   RoomCodeBox.SetSelectedItem(RoomCode);
 
                 //RoomStanard.SetItems(_RoomStanardList, new[] { "Code", "Description" });
-                RoomStanard.SetSelectedItem(RoomData.RoomStanardCode);
+                if (!string.IsNullOrEmpty(RoomData.RoomStanardCode))
+                    RoomStanard.SetSelectedItem(RoomData.RoomStanardCode);
                 //DivisionCode.SetItems(_DivisionCode, new[] { "Code", "Nmae" });
-                DivisionCode.SetSelectedItem(RoomData.divisionCode);
+                if (!string.IsNullOrEmpty(RoomData.divisionCode))
+                    DivisionCode.SetSelectedItem(RoomData.divisionCode);
                 //_SelectDepartmentCode = RoomData.divisionCode;
-                DepartmentCode.SetSelectedItem(RoomData.DepartmentCode);
+                if (!string.IsNullOrEmpty(RoomData.DepartmentCode))
+                    DepartmentCode.SetSelectedItem(RoomData.DepartmentCode);
                 //RoomCategory.SetItems(_RoomCategory, new[] { "Code", "Description" });
-                RoomCategory.SetSelectedItem(RoomData.Category);
+                if (!string.IsNullOrEmpty(RoomData.Category))
+                    RoomCategory.SetSelectedItem(RoomData.Category);
                 //_SelectRoomType = RoomData.Category;
-                RoomType.SetSelectedItem(RoomData.Type);
+                if (!string.IsNullOrEmpty(RoomData.Type))
+                    RoomType.SetSelectedItem(RoomData.Type);
                 Prorate.Text = RoomData.Prorate;
                 _SerId = RoomData.SerId;
 
@@ -276,6 +284,7 @@ namespace AutoCADAddon
 
             CacheManager.UpsertRooms(Room);
             //WriteRoomDataToXdata(Room.FirstOrDefault());
+            SetMtext(Room.FirstOrDefault());
             DialogResult = DialogResult.OK;
             Close();
         }
@@ -381,31 +390,80 @@ namespace AutoCADAddon
                             //MessageCommon.Error("无法获取 Polyline 对象。");
                             return;
                         }
-                        mtext.Contents = $"{roomData.Code}\n" +
-                            $"AREA:{roomData.Area}\n" +
-                            $"TYPE:{roomData.Type}\n" +
-                            $"RoomStanardCode:{roomData.RoomStanardCode}\n" +
-                            $"DIVISION:{roomData.divisionCode}\n" +
-                            $"DEPARTMENT:{roomData.DepartmentCode}\n" +
-                            $"PRORATE:{roomData.Prorate}";
+                        var contents = new List<string>();
+
+                        if (!string.IsNullOrEmpty(roomData.Code))
+                            contents.Add(roomData.Code);
+
+                        if (roomData.Area != null)
+                            contents.Add($"AREA-{roomData.Area}");
+
+                        if (!string.IsNullOrEmpty(roomData.Type))
+                            contents.Add($"TYPE-{roomData.Type}");
+
+                        if (!string.IsNullOrEmpty(roomData.RoomStanardCode))
+                            contents.Add($"RoomStanardCode-{roomData.RoomStanardCode}");
+
+                        if (!string.IsNullOrEmpty(roomData.divisionCode))
+                            contents.Add($"DIVISION-{roomData.divisionCode}");
+
+                        if (!string.IsNullOrEmpty(roomData.DepartmentCode))
+                            contents.Add($"DEPARTMENT-{roomData.DepartmentCode}");
+
+                        if (roomData.Prorate != null)
+                            contents.Add($"PRORATE-{roomData.Prorate}");
+
+                        // 最终拼接
+                        mtext.Contents = string.Join("\n", contents);
+                        //mtext.Contents = $"{roomData.Code}\n" +
+                        //    $"AREA:{roomData.Area}\n" +
+                        //    $"TYPE:{roomData.Type}\n" +
+                        //    $"RoomStanardCode:{roomData.RoomStanardCode}\n" +
+                        //    $"DIVISION:{roomData.divisionCode}\n" +
+                        //    $"DEPARTMENT:{roomData.DepartmentCode}\n" +
+                        //    $"PRORATE:{roomData.Prorate}";
                         tr.Commit(); // 提交事务
                     }
+                    doc.Database.SaveAs(doc.Name, true, DwgVersion.Current, doc.Database.SecurityParameters);
                 }
                 catch (Exception)
                 {
 
                     throw;
                 }
-                // 打开写模式
-                //mText.UpgradeOpen();
-
-                //// 构造要显示的文本（示例：拼接房间编码、面积）
-                //var newText = $"F{room.Code}\n" +
-                //              $"AREA:{room.Area}\n" +
-                //              $"TYPE:{room.Type}";
-
-                //mText.Contents = newText; // 修改 MText 内容
             }
+        }
+        /// <summary>
+        /// 根据对象的属性自动拼接非空值，每个属性一行
+        /// 支持简单属性或自定义映射
+        /// </summary>
+        public static string BuildMTextContents(object data, Dictionary<string, string> displayNames = null)
+        {
+            if (data == null) return string.Empty;
+
+            var lines = new List<string>();
+            var type = data.GetType();
+
+            foreach (var prop in type.GetProperties())
+            {
+                var value = prop.GetValue(data);
+                if (value == null) continue;
+
+                string strValue = value.ToString();
+                if (string.IsNullOrWhiteSpace(strValue)) continue;
+
+                string displayName = displayNames != null && displayNames.ContainsKey(prop.Name)
+                    ? displayNames[prop.Name]
+                    : prop.Name;
+
+                // 如果 displayName 和值相同就只显示值，否则显示 "displayName:value"
+                if (displayName.Equals(strValue, StringComparison.OrdinalIgnoreCase))
+                    lines.Add(strValue);
+                else
+                    lines.Add($"{displayName}:{strValue}");
+            }
+
+            return string.Join("\n", lines);
         }
 
         /// <summary>
