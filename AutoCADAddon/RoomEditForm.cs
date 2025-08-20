@@ -394,24 +394,22 @@ namespace AutoCADAddon
 
                         if (!string.IsNullOrEmpty(roomData.Code))
                             contents.Add(roomData.Code);
-
-                        if (roomData.Area != null)
-                            contents.Add($"AREA-{roomData.Area}");
-
+                        //if (!string.IsNullOrEmpty(roomData.RoomStanardCode))
+                        //    contents.Add($"RoomStanardCode-{roomData.RoomStanardCode}");
+                        if (!string.IsNullOrEmpty(roomData.Category))
+                            contents.Add(roomData.Category);
                         if (!string.IsNullOrEmpty(roomData.Type))
-                            contents.Add($"TYPE-{roomData.Type}");
-
-                        if (!string.IsNullOrEmpty(roomData.RoomStanardCode))
-                            contents.Add($"RoomStanardCode-{roomData.RoomStanardCode}");
+                            contents.Add($"{roomData.Type}");
 
                         if (!string.IsNullOrEmpty(roomData.divisionCode))
-                            contents.Add($"DIVISION-{roomData.divisionCode}");
+                            contents.Add($"{roomData.divisionCode}");
 
                         if (!string.IsNullOrEmpty(roomData.DepartmentCode))
-                            contents.Add($"DEPARTMENT-{roomData.DepartmentCode}");
-
-                        if (roomData.Prorate != null)
-                            contents.Add($"PRORATE-{roomData.Prorate}");
+                            contents.Add($"{roomData.DepartmentCode}");
+                        //if (roomData.Prorate != null)
+                        //    contents.Add($"PRORATE-{roomData.Prorate}");
+                        if (roomData.Area != null)
+                            contents.Add($"{roomData.Area}");
 
                         // 最终拼接
                         mtext.Contents = string.Join("\n", contents);
