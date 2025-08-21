@@ -129,8 +129,10 @@ namespace AutoCADAddon
                     return;
                 }
                 _SerId = props.SerId;
-                cmbBuilding.SetSelectedItem(props.BuildingName);
-                cmbFloor.SetSelectedItem(props.FloorName);
+                if(!string.IsNullOrEmpty(props.BuildingName))
+                  cmbBuilding.SetSelectedItem(props.BuildingName);
+                if(!string.IsNullOrEmpty(props.FloorName))
+                  cmbFloor.SetSelectedItem(props.FloorName);
             }
         }
 
