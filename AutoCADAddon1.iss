@@ -13,7 +13,7 @@
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{41A1F12B-55ED-49CD-B189-907ECFB1A93D}
+AppId={{E15C2BDF-DB32-47F1-A6BF-29502EABC633}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -48,8 +48,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "D:\ProJect\LqProjrctTest\AutoCADAddon\ModifyAcadLsp\bin\Debug\net8.0\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\ProJect\LqProjrctTest\AutoCADAddon\ModifyAcadLsp\bin\Debug\net8.0\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "D:\ProJect\LqProjrctTest\AutoCADAddon\AutoCADAddon\bin\Debug\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\ProJect\LqProjrctTest\AutoCADAddon\ModifyAcadLsp\bin\Debug\net8.0\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\ProJect\LqProjrctTest\AutoCADAddon\UninstallAcadLsp\bin\Debug\net8.0\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
@@ -63,5 +64,9 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}";Parameters: """{app}""";  Flags: nowait postinstall skipifsilent
+; Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}";Parameters: """{app}""";  Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#MyAppExeName}";Parameters: """{app}""";  Flags: nowait postinstall skipifsilent
+
+[UninstallRun]
+Filename: "{app}\UninstallAcadLsp.exe"; Parameters: """{app}"""; Flags: runhidden 
 
